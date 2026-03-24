@@ -19,7 +19,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-DEFAULT_MODEL = "qwen2.5-coder:7b"
+DEFAULT_MODEL = "gemma3:12b"
 DEFAULT_HOST = "http://192.168.100.52:11434"
 
 
