@@ -152,3 +152,7 @@
 2026-03-24 17:43:58,915 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
 2026-03-24 17:44:01,103 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
 2026-03-24 17:44:22,135 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-03-24 17:47:09,487 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-03-24 17:47:11,737 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-03-24 17:47:11,756 - __main__ - INFO - 실험 완료. 소요 시간: 64.8분
+2026-03-24 17:47:11,759 - __main__ - INFO - 실험 결과 저장: results/pilot_20260324_174711.json
