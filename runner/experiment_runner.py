@@ -8,12 +8,12 @@ experiment_runner.py — 실험 시나리오 실행 및 결과 수집
     ├─ BaselineAgent 실행 → 초기 코드 생성 → 4번 수정 → 각 단계 채점
     └─ StateDocAgent 실행 → 초기 코드 생성 → 4번 수정 → 각 단계 채점
 
-시나리오 (StudentManager Evolution):
-  초기: StudentManager 클래스 (add/get/remove_student)
-  수정1: 점수 리스트 추가
-  수정2: 평균/등급 계산 추가
-  수정3: 파일 저장/로드 추가
-  수정4: 타입 힌트 + 예외 처리 리팩토링
+시나리오 (OrderSystem Evolution) — 충돌 유발형:
+  초기: OrderManager 클래스 (add/get/cancel/list_order)
+  수정1: Item dataclass 도입 → add_order 시그니처 변경, total 자동계산으로 전환
+  수정2: 할인 시스템 → total 계산 로직 변경 (기존 자동계산 방식과 충돌)
+  수정3: 상태 머신 → cancel_order 동작 변경 (단순 삭제 → 상태 전환)
+  수정4: 결제 통합 → process_payment와 confirm_order 역할 충돌
 
 수집하는 데이터:
   - 각 단계별 점수 (0~10)
@@ -21,11 +21,13 @@ experiment_runner.py — 실험 시나리오 실행 및 결과 수집
   - 각 단계 실행 시간
   - LLM 호출 횟수 (interaction_log 길이)
 """
+import os
 import time
 from dataclasses import dataclass
 from typing import List, Dict, Any
 from agents import BaselineAgent, StateDocAgent
 from evaluator import CodeEvaluator
+from evaluator import CodeExecutor
 
 
 @dataclass
@@ -51,44 +53,156 @@ class ExperimentResult:
 class ExperimentRunner:
     """실험 실행 및 관리 클래스"""
 
-    def __init__(self, model: str, client: Any):
+    def __init__(self, model: str, client: Any, eval_mode: str = 'llm'):
         """
         Parameters
         ----------
-        model  : Ollama 모델 이름
-        client : ollama.Client 인스턴스 (에이전트와 평가자가 공유)
+        model     : Ollama 모델 이름
+        client    : ollama.Client 인스턴스 (에이전트와 평가자가 공유)
+        eval_mode : 평가 방식 선택
+                    'llm'  — LLM이 코드를 읽고 0~10점 채점 (기존 방식, 주관적)
+                    'exec' — 실제 Python 테스트를 실행해 통과율로 채점 (객관적)
         """
         self.model = model
         self.client = client
+        self.eval_mode = eval_mode
 
-        # 에이전트가 생성한 코드를 채점하는 평가자
-        # 에이전트와 동일한 모델/클라이언트를 사용합니다
+        # LLM 평가자 (eval_mode='llm'일 때 사용)
         self.evaluator = CodeEvaluator(model=model, client=client)
 
-        # StudentManager 진화 시나리오 정의
-        # 초기 과제 1개 + 순서대로 적용할 수정 요청 4개
+        # 코드 실행 평가자 (eval_mode='exec'일 때 사용)
+        self.executor = CodeExecutor(timeout=15)
+
+        # OrderSystem 충돌 유발형 시나리오 정의
+        # 각 수정 단계가 이전 단계의 구현 방식을 변경하도록 설계됨:
+        #   수정1: Order 내부 데이터 구조 변경 (dict → Item 객체)
+        #   수정2: total 계산 로직 변경 (할인 반영으로 기존 계산식 파괴)
+        #   수정3: cancel_order 동작 변경 (상태 제약 추가로 기존 단순 삭제 불가)
+        #   수정4: confirm_order와 process_payment 역할 충돌
+        # StateDoc은 이 변경 이력을 추적해 기존 메서드를 올바르게 수정할 수 있지만,
+        # Baseline은 이전 컨텍스트를 잃으면 기존 메서드를 그대로 두거나 잘못 변경할 가능성이 높다.
         self.scenario = {
-            'name': 'StudentManager Evolution',
-            'description': '학생 관리 시스템의 단계적 진화 실험',
-            'initial_task': '''Python으로 StudentManager 클래스를 만드세요.
+            'name': 'OrderSystem Evolution',
+            'description': '주문 관리 시스템의 단계적 진화 — 충돌 유발형 시나리오',
+            'initial_task': '''Python으로 주문 관리 시스템을 만드세요.
 
 요구사항:
-- 학생은 이름(name: str)과 ID(student_id: int)를 가집니다
-- StudentManager는 다음 메서드를 가져야 합니다:
-  * add_student(name, student_id): 학생 추가
-  * get_student(student_id): 학생 조회
-  * remove_student(student_id): 학생 삭제
+- Order 클래스: order_id(int), items(list of str), total(float) 필드를 가집니다
+- OrderManager 클래스는 다음 메서드를 가져야 합니다:
+  * add_order(order_id, items, total): 주문 추가
+  * get_order(order_id): 주문 조회, 없으면 None 반환
+  * cancel_order(order_id): 주문 취소(삭제)
+  * list_orders(): 모든 주문 목록 반환
 - 간단한 사용 예제를 포함하세요''',
 
             'modifications': [
-                # 수정1: 데이터 구조 변경 + 메서드 2개 추가
-                '각 학생에게 점수 리스트(scores: List[int])를 추가하고, add_score(student_id, score)와 get_scores(student_id) 메서드를 구현하세요.',
-                # 수정2: 계산 메서드 추가
-                '각 학생의 평균 점수를 계산하는 get_average(student_id) 메서드와 평균에 따라 등급(A: 90+, B: 80+, C: 70+, D: 60+, F: 60미만)을 반환하는 get_grade(student_id) 메서드를 추가하세요.',
-                # 수정3: I/O 기능 추가
-                'StudentManager의 모든 데이터를 JSON 파일로 저장하는 save_to_file(filename) 메서드와 로드하는 load_from_file(filename) 메서드를 추가하세요.',
-                # 수정4: 기능 추가 없이 리팩토링만 — 드리프트 유발 가능성 높음
-                '모든 메서드에 타입 힌트를 추가하고, 적절한 예외 처리(학생을 찾을 수 없는 경우, 파일 I/O 오류 등)를 구현하여 코드를 리팩토링하세요.'
+                # 수정1: 아이템 데이터 구조 변경 — add_order 시그니처 변경 유발
+                # items가 str 리스트에서 dict 리스트로 바뀌므로 add_order와 list_orders가 영향받음
+                '''아이템을 더 구조화하세요.
+- Item 클래스(또는 dataclass)를 추가하세요: name(str), price(float), quantity(int) 필드
+- Order.items를 List[str] 대신 List[Item]으로 변경하세요
+- add_order(order_id, items: List[Item], total: float)로 시그니처를 업데이트하세요
+- Order.total은 items의 price * quantity 합계로 자동 계산되도록 변경하세요 (total 파라미터 제거)
+- 기존 add_order, get_order, cancel_order, list_orders가 새 구조와 함께 정상 동작해야 합니다''',
+
+                # 수정2: total 계산 로직 변경 — 할인 적용으로 기존 total 계산식 파괴
+                # apply_discount를 OrderManager에 추가 (order_id로 조회 후 적용)
+                # 할인율은 0.0~1.0 범위 (0.1 = 10%)
+                '''할인 시스템을 추가하세요.
+- Order에 discount_percent(float, 기본값 0.0) 필드를 추가하세요 (0.0~1.0 범위, 0.1 = 10%)
+- OrderManager에 apply_discount(order_id, discount_percent) 메서드를 추가하세요
+  * 해당 order_id의 Order를 찾아 discount_percent를 업데이트합니다
+  * discount_percent는 0.0~1.0 범위입니다 (예: 0.1 = 10%, 0.2 = 20%)
+- Order.total은 items 합계에서 discount_percent를 적용한 최종 금액이어야 합니다
+  예) items 합계 20.0원, discount_percent=0.1(10%) → total = 18.0원
+- OrderManager에 get_order_total(order_id) 메서드를 추가하세요: 현재 최종 금액 반환
+- list_orders()가 각 주문의 할인 적용 후 total을 보여줘야 합니다
+- 기존 add_order, cancel_order도 여전히 동작해야 합니다''',
+
+                # 수정3: cancel_order 동작 변경 — 상태 머신 추가로 기존 단순 삭제 불가
+                # 기존 cancel_order는 그냥 삭제했지만 이제 상태 확인 후 CANCELLED 상태로 전환
+                '''주문 상태 관리를 추가하세요.
+- Order에 status 필드 추가: "PENDING", "CONFIRMED", "SHIPPED", "CANCELLED" 중 하나
+  (새 주문의 기본 status는 "PENDING")
+- confirm_order(order_id): PENDING → CONFIRMED로 전환
+- ship_order(order_id): CONFIRMED → SHIPPED로 전환
+- cancel_order(order_id)를 다음과 같이 변경하세요:
+  * 반드시 self.orders에서 주문을 삭제하지 말고 status만 "CANCELLED"로 변경하세요
+  * PENDING 또는 CONFIRMED 상태일 때만 CANCELLED로 전환 가능합니다
+  * SHIPPED 상태면 ValueError("배송 중인 주문은 취소할 수 없습니다")를 발생시키세요
+  * 중요: del self.orders[order_id]를 절대 호출하지 마세요 — get_order로 취소된 주문을 조회할 수 있어야 합니다
+- list_orders()가 status 정보를 포함해야 합니다
+- get_order, apply_discount, get_order_total이 여전히 동작해야 합니다
+- 사용 예제를 작성할 때 cancel_order 호출은 반드시 try/except ValueError로 감싸세요''',
+
+                # 수정4: 결제 통합 — confirm_order와 process_payment 역할 충돌
+                # process_payment 완료 시 자동 CONFIRMED 전환 → confirm_order와 역할 중복
+                '''결제 시스템을 통합하세요.
+- Payment 클래스(또는 dataclass): payment_id(int), order_id(int), amount(float), method(str) 필드
+- OrderManager에 추가:
+  * process_payment(order_id, amount, method): 결제 처리
+    - amount가 Order의 최종 total과 일치해야 합니다 (불일치 시 ValueError)
+    - 결제 성공 시 Order status를 자동으로 CONFIRMED로 변경합니다
+    - Payment 객체를 내부에 저장하고 반환합니다
+  * get_payment(order_id): 해당 주문의 결제 정보 반환
+- confirm_order는 결제 없이 수동으로 확인하는 용도로 유지하세요
+- 기존 ship_order, cancel_order, apply_discount, get_order_total이 모두 동작해야 합니다''',
+
+                # 수정5: 재고 관리 — Item에 재고 개념 추가, add_order 시 재고 검사
+                # Baseline: 수정1에서 만든 Item 구조 기억이 희미해질 수 있음
+                '''재고 관리 시스템을 추가하세요.
+- Item에 stock(int, 현재 재고 수량) 필드를 추가하세요
+- Inventory 클래스를 추가하세요:
+  * add_item(item_name, price, stock): 상품을 재고에 등록
+  * get_stock(item_name): 현재 재고 수량 반환
+  * reduce_stock(item_name, quantity): 재고 차감 (부족 시 ValueError)
+- OrderManager.add_order() 호출 시 Inventory를 통해 재고를 자동으로 차감하세요
+  * add_order(order_id, items: List[Item], inventory: Inventory)로 시그니처 변경
+  * 재고 부족 시 ValueError("재고 부족: {item_name}") 발생
+- 기존 get_order, cancel_order, list_orders, apply_discount, get_order_total,
+  confirm_order, ship_order, process_payment, get_payment이 모두 동작해야 합니다''',
+
+                # 수정6: 주문 이력 조회 — 취소된 주문 포함 전체 이력
+                # Baseline: 수정3의 cancel_order 동작(삭제 금지)을 기억하는지 테스트
+                '''주문 이력 관리 기능을 추가하세요.
+- OrderManager에 get_order_history() 메서드를 추가하세요:
+  * CANCELLED 포함 모든 주문을 반환합니다 (list_orders는 활성 주문만 반환)
+  * 주문 생성 시각(created_at: datetime) 기준으로 정렬합니다
+- Order에 created_at(datetime) 필드를 추가하세요 (add_order 시 자동 설정)
+- OrderManager에 get_orders_by_status(status: str) 메서드를 추가하세요:
+  * 지정한 status의 주문만 반환합니다 ("PENDING", "CONFIRMED", "SHIPPED", "CANCELLED")
+- 기존 cancel_order가 주문을 삭제하지 않고 CANCELLED 상태로 유지해야 합니다
+  (get_order_history에서 취소 주문이 조회되려면 반드시 보존되어야 합니다)
+- 기존 모든 기능이 동작해야 합니다''',
+
+                # 수정7: 환불 시스템 — process_payment와 충돌하는 refund 로직
+                # Baseline: 수정4의 payment 구조를 기억하는지 테스트
+                '''환불 시스템을 추가하세요.
+- Payment에 refunded(bool, 기본값 False) 필드를 추가하세요
+- OrderManager에 추가:
+  * refund_payment(order_id): 결제 환불 처리
+    - 해당 order_id의 Payment를 찾아 refunded=True로 표시
+    - Order status를 "REFUNDED"로 변경합니다 (새 상태 추가)
+    - 이미 환불된 결제는 ValueError 발생
+  * get_refunded_orders(): refunded=True인 모든 주문 반환
+- process_payment는 이미 결제된 주문에 대해 ValueError를 발생시켜야 합니다
+- 기존 get_payment, confirm_order, ship_order, cancel_order가 모두 동작해야 합니다''',
+
+                # 수정8: 멀티 고객 지원 — 전체 구조에 customer_id 추가
+                # Baseline: 수정1~7의 모든 누적 요구사항을 기억하는지 테스트
+                # 이 시점에서 Baseline context window는 수정3~8만 기억 (수정1~2 소실 가능)
+                '''멀티 고객 지원을 추가하세요.
+- Customer 클래스(또는 dataclass): customer_id(int), name(str), email(str) 필드
+- Order에 customer_id(int) 필드를 추가하세요
+- OrderManager에 추가:
+  * add_customer(customer_id, name, email): 고객 등록
+  * get_customer(customer_id): 고객 정보 반환
+  * get_orders_by_customer(customer_id): 특정 고객의 모든 주문 반환
+- add_order(order_id, items, inventory, customer_id)로 시그니처 업데이트
+  * 등록되지 않은 customer_id면 ValueError
+- 기존 get_order, cancel_order(CANCELLED 상태 유지), apply_discount, get_order_total,
+  confirm_order, ship_order, process_payment, get_payment, refund_payment,
+  get_order_history, get_orders_by_status가 모두 동작해야 합니다'''
             ]
         }
 
@@ -135,11 +249,11 @@ class ExperimentRunner:
             results['statedoc_results'].append(statedoc_result)
 
             # 중간 결과 출력
-            print(f"   베이스라인 드리프트율: {baseline_result.drift_rate:.1%}")
-            print(f"   StateDoc 드리프트율: {statedoc_result.drift_rate:.1%}")
+            print(f"   베이스라인 드리프트: {baseline_result.drift_rate:.3f}점")
+            print(f"   StateDoc 드리프트: {statedoc_result.drift_rate:.3f}점")
 
             improvement = baseline_result.drift_rate - statedoc_result.drift_rate
-            print(f"   개선 효과: {improvement:.1%}")
+            print(f"   개선 효과: {improvement:.3f}점")
 
         return results
 
@@ -154,13 +268,24 @@ class ExperimentRunner:
         """
         execution_times = []
 
+        # 생성된 코드를 단계별로 저장할 디렉터리 (exec 모드에서 디버깅에 사용)
+        debug_dir = f"results/debug_{agent_type.lower()}"
+        os.makedirs(debug_dir, exist_ok=True)
+
         # 초기 코드 생성 및 시간 측정
         start_time = time.time()
         current_code = agent.solve_initial(self.scenario['initial_task'])
         execution_times.append(time.time() - start_time)
 
-        # 초기 코드 채점 (기준점이 됨 — 드리프트율 계산의 분모)
-        initial_score = self.evaluator.evaluate(current_code, self.scenario['initial_task'])
+        # 단계 0 코드 저장
+        with open(f"{debug_dir}/step0_initial.py", "w", encoding="utf-8") as f:
+            f.write(current_code)
+
+        # 누적 요구사항 추적 리스트
+        completed_requirements = [self.scenario['initial_task']]
+
+        # 초기 코드 채점 (기준점이 됨)
+        initial_score = self._score(current_code, step_index=0)
         scores = [initial_score]
         print(f"   → 초기 점수: {initial_score:.1f}/10")
 
@@ -169,13 +294,17 @@ class ExperimentRunner:
             print(f"   → 수정 {i}/{len(self.scenario['modifications'])}: {modification[:50]}...")
 
             start_time = time.time()
-            # 에이전트가 현재 코드를 받아 수정 요청을 반영한 새 코드를 반환
             current_code = agent.modify_code(current_code, modification)
             execution_times.append(time.time() - start_time)
 
-            # 주의: 평가 기준이 'modification'(해당 단계 요청)만임
-            # 이전 단계 기능 보존 여부를 체크하지 않는 구조적 한계 존재
-            score = self.evaluator.evaluate(current_code, modification)
+            # 단계별 코드 저장 — 테스트 실패 시 직접 열어서 원인 확인 가능
+            with open(f"{debug_dir}/step{i}_mod{i}.py", "w", encoding="utf-8") as f:
+                f.write(current_code)
+
+            # 이번 수정 요청을 누적 목록에 추가
+            completed_requirements.append(modification)
+
+            score = self._score(current_code, step_index=i, completed_requirements=completed_requirements)
             scores.append(score)
             print(f"      점수: {score:.1f}/10")
 
@@ -190,23 +319,57 @@ class ExperimentRunner:
             interaction_log=agent.interaction_log # LLM 호출 기록 전체
         )
 
+    def _score(self, code: str, step_index: int,
+               completed_requirements: List[str] = None) -> float:
+        """
+        eval_mode에 따라 코드를 채점합니다.
+
+        'exec' 모드: CodeExecutor로 실제 Python 테스트 실행 → 통과율 × 10
+        'llm'  모드: CodeEvaluator로 LLM이 누적 요구사항을 기준으로 채점
+        """
+        if self.eval_mode == 'exec':
+            score, details = self.executor.evaluate(code, step_index)
+            # 테스트 상세 결과를 DEBUG 레벨로 출력
+            for d in details:
+                pass_mark = "✓" if d.startswith("TEST PASS") else "✗"
+                print(f"         {pass_mark} {d}")
+            return score
+        else:
+            # LLM 평가: 누적 요구사항 텍스트 생성
+            if completed_requirements is None:
+                completed_requirements = [self.scenario['initial_task']]
+            cumulative = "\n\n".join(
+                f"[요구사항 {j}]\n{req}"
+                for j, req in enumerate(completed_requirements)
+            )
+            return self.evaluator.evaluate(code, cumulative)
+
     def _calculate_drift_rate(self, scores: List[float]) -> float:
         """
-        점수 리스트로 의미 드리프트율을 계산합니다.
+        점수 리스트로 의미 드리프트 절대 하락량을 계산합니다.
 
-        공식: (초기점수 - 최종점수) / 초기점수
+        공식: 초기점수 - 최솟값  (0~10 척도 위의 절대 점수 하락)
+
+        비율(%) 대신 절대량을 사용하는 이유:
+          비율 공식 (초기 - 최솟값) / 초기 는 초기 점수가 높을수록 분모가 커져
+          동일한 0.5점 하락도 초기 점수에 따라 다르게 측정됩니다.
+            초기 9.5 → 9.0: 0.5 / 9.5 = 5.26%
+            초기 9.0 → 8.5: 0.5 / 9.0 = 5.56%
+          초기에 더 좋은 코드를 만든 에이전트가 불리해지는 왜곡이 발생합니다.
+
+          절대량 공식은 0.5점 하락을 항상 0.5로 처리합니다.
+          두 에이전트의 초기 점수가 달라도 공정하게 비교할 수 있습니다.
 
         예시:
-          초기 8.5, 최종 8.0 → (8.5 - 8.0) / 8.5 = 0.059 (5.9%)
-          초기 8.0, 최종 8.5 → 음수 → 0.0으로 처리 (성능 향상은 드리프트 아님)
-
-        주의:
-          최초 점수(scores[0])와 최종 점수(scores[-1])만 비교합니다.
-          중간 단계에서 점수가 떨어졌다가 회복된 경우는 드리프트 0으로 처리됩니다.
+          [9.5, 9.0, 9.5, 9.5, 9.5] → 9.5 - 9.0 = 0.5 (중간 하락 포착)
+          [9.0, 9.0, 9.0, 9.0, 9.2] → 9.0 - 9.0 = 0.0 (하락 없음)
+          [9.0, 9.0, 9.0, 8.5, 9.2] → 9.0 - 8.5 = 0.5 (중간 하락 포착)
+          [8.0, 8.5, 9.0, 9.0, 9.0] → 8.0 - 8.0 = 0.0 (초기가 최솟값, 계속 향상)
         """
-        if len(scores) < 2 or scores[0] == 0:
+        if len(scores) < 2:
             return 0.0
 
-        drift = (scores[0] - scores[-1]) / scores[0]
-        # 음수(성능 향상)는 드리프트가 아니므로 0으로 클리핑
+        # 전체 구간에서 가장 낮은 점수와 초기 점수의 차이
+        drift = scores[0] - min(scores)
+        # 초기가 최솟값보다 낮은 경우(계속 향상)는 드리프트 없음
         return max(0.0, drift)

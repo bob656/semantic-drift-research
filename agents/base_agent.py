@@ -20,15 +20,14 @@ class BaseAgent:
     """모든 에이전트의 기본 클래스"""
 
     def __init__(self, model: str, client: Any,
-                 temperature: float = 0.1, max_tokens: int = 2048):
+                 temperature: float = 0.5, max_tokens: int = 2048):
         """
         Parameters
         ----------
         model       : Ollama 모델 이름 (예: "qwen2.5-coder:7b")
         client      : ollama.Client 인스턴스 — 원격 서버 연결 정보를 담고 있음
         temperature : 출력 다양성 조절 (0.0=결정론적, 1.0=창의적)
-                      현재 0.1로 설정되어 있어 거의 같은 결과를 반복 생성함
-                      → 실험 독립성 문제의 원인 (explore.md 참고)
+                      0.5로 설정하여 실험 간 독립성 확보 (0.1은 너무 결정론적)
         max_tokens  : LLM이 한 번에 생성할 최대 토큰 수
         """
         self.model = model
@@ -112,23 +111,44 @@ class BaseAgent:
           1. ```python ... ``` 블록 (언어 명시된 경우)
           2. ``` ... ```       블록 (언어 미명시)
           3. 코드 블록 없으면 응답 전체를 그대로 반환
+
+        주의: LLM이 닫는 ```를 생략하는 경우도 처리합니다.
+              코드가 여전히 ``` 로 시작하면 fence를 강제 제거합니다.
         """
+        text = response.strip()
+
         # 1순위: ```python 으로 시작하는 블록
-        if "```python" in response:
-            start = response.find("```python") + 9  # "```python" 길이 = 9
-            end = response.find("```", start)        # 닫는 ```의 위치
+        if "```python" in text:
+            start = text.find("```python") + 9  # "```python" 길이 = 9
+            end = text.find("```", start)        # 닫는 ```의 위치
             if end != -1:
-                return response[start:end].strip()
-
+                code = text[start:end].strip()
+            else:
+                # 닫는 ``` 없는 경우 — 열린 fence만 제거하고 나머지 전체 사용
+                code = text[start:].strip()
         # 2순위: 언어 표시 없는 일반 코드 블록
-        if "```" in response:
-            start = response.find("```") + 3
-            end = response.find("```", start)
+        elif "```" in text:
+            start = text.find("```") + 3
+            end = text.find("```", start)
             if end != -1:
-                return response[start:end].strip()
+                code = text[start:end].strip()
+            else:
+                code = text[start:].strip()
+        else:
+            # 코드 블록이 아예 없는 경우 (LLM이 그냥 코드만 바로 쓴 경우)
+            code = text
 
-        # 코드 블록이 아예 없는 경우 (LLM이 그냥 코드만 바로 쓴 경우)
-        return response.strip()
+        # 안전장치: 추출 결과가 여전히 ``` 로 시작하면 강제 제거
+        # (오염된 current_code가 프롬프트에 포함되어 중첩 fence가 생긴 경우)
+        if code.startswith("```"):
+            first_newline = code.find("\n")
+            if first_newline != -1:
+                code = code[first_newline + 1:]
+            if code.endswith("```"):
+                code = code[:-3]
+            code = code.strip()
+
+        return code
 
     def solve_initial(self, task: str) -> str:
         """

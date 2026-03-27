@@ -63,6 +63,7 @@ def save_results(results: Dict, stats_result: Dict, args) -> str:
             'host': args.host,
             'repeats': args.repeats,
             'mode': args.mode,
+            'eval_mode': args.eval_mode,
             'system_info': {
                 'platform': 'macOS',
                 'environment': 'Ollama + VSCode'
@@ -101,9 +102,9 @@ def print_results(stats_result: Dict):
     print(f"\n{'='*60}")
     print("📊 실험 결과 요약")
     print(f"{'='*60}")
-    print(f"베이스라인 평균 드리프트율: {stats_result['baseline_mean_drift']:.1%} (±{stats_result['baseline_std']:.1%})")
-    print(f"StateDoc 평균 드리프트율: {stats_result['statedoc_mean_drift']:.1%} (±{stats_result['statedoc_std']:.1%})")
-    print(f"📈 개선 효과: {stats_result['improvement']:.1%}")
+    print(f"베이스라인 평균 드리프트: {stats_result['baseline_mean_drift']:.3f}점 (±{stats_result['baseline_std']:.3f})")
+    print(f"StateDoc 평균 드리프트: {stats_result['statedoc_mean_drift']:.3f}점 (±{stats_result['statedoc_std']:.3f})")
+    print(f"📈 개선 효과: {stats_result['improvement']:.3f}점")
 
     if stats_result['p_value'] != 1.0:
         print(f"P-value: {stats_result['p_value']:.4f}")
@@ -122,18 +123,20 @@ def print_recommendations(stats_result: Dict, args):
     improvement = stats_result['improvement']
     significant = stats_result['significant']
 
-    if improvement > 0.1 and significant:
+    # 절대 하락량 기준: 0.5점 이상 개선 + 유의미 → 성공
+    if improvement > 0.5 and significant:
         print(f"\n🎉 성공적인 결과!")
-        print(f"상태 문서 접근법이 의미 드리프트를 {improvement:.1%} 감소시켰습니다.")
+        print(f"상태 문서 접근법이 의미 드리프트를 {improvement:.3f}점 감소시켰습니다.")
         print("📝 이 결과로 교수님께 보고서를 작성할 수 있습니다.")
         print("\n📋 다음 단계 권장사항:")
         print("1. 더 많은 반복 실험으로 신뢰성 강화")
         print("2. 다른 도메인(웹 API, 알고리즘)으로 확장")
         print("3. 더 큰 모델(13B, 34B)로 검증")
 
-    elif improvement > 0.05:
+    # 0.2점 이상 개선이지만 유의미하지 않은 경우
+    elif improvement > 0.2:
         print(f"\n🤔 제한적인 개선 효과")
-        print(f"상태 문서가 {improvement:.1%} 개선 효과를 보였으나 통계적 유의성이 부족합니다.")
+        print(f"상태 문서가 {improvement:.3f}점 개선 효과를 보였으나 통계적 유의성이 부족합니다.")
         print("\n🔧 개선 방안:")
         print(f"1. --repeats {args.repeats * 2}로 실험 반복 횟수 증가")
         print("2. 더 복잡한 시나리오로 차이 극대화")
@@ -183,6 +186,12 @@ def main():
         default=DEFAULT_MODEL,
         help=f'사용할 Ollama 모델 (기본값: {DEFAULT_MODEL})'
     )
+    parser.add_argument(
+        '--eval-mode',
+        choices=['llm', 'exec'],
+        default='llm',
+        help='평가 방식: llm=LLM 채점(기본), exec=코드 실행 테스트'
+    )
 
     args = parser.parse_args()
 
@@ -200,7 +209,9 @@ def main():
     print("실험이 진행되는 동안 컴퓨터를 사용하셔도 됩니다 ☕")
 
     start_time = datetime.now()
-    runner = ExperimentRunner(model=args.model, client=client)
+    eval_mode = args.eval_mode
+    print(f"평가 방식: {'코드 실행 테스트' if eval_mode == 'exec' else 'LLM 채점'}")
+    runner = ExperimentRunner(model=args.model, client=client, eval_mode=eval_mode)
     results = runner.run_pilot_experiment(num_repeats=args.repeats)
     end_time = datetime.now()
 

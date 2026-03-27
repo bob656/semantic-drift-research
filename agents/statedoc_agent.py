@@ -23,7 +23,7 @@ class StateDocAgent(BaseAgent):
     """상태 문서를 유지하며 작업하는 에이전트"""
 
     def __init__(self, model: str, client: Any,
-                 temperature: float = 0.1, max_tokens: int = 2048):
+                 temperature: float = 0.5, max_tokens: int = 2048):
         super().__init__(model, client, temperature, max_tokens)
 
         # 3개의 상태 문서를 문자열로 메모리에 유지
