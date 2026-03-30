@@ -103,7 +103,7 @@ def print_results(stats_result: Dict):
     print("📊 실험 결과 요약")
     print(f"{'='*60}")
     print(f"베이스라인 평균 드리프트: {stats_result['baseline_mean_drift']:.3f}점 (±{stats_result['baseline_std']:.3f})")
-    print(f"StateDoc 평균 드리프트: {stats_result['statedoc_mean_drift']:.3f}점 (±{stats_result['statedoc_std']:.3f})")
+    print(f"CoTDoc 평균 드리프트:   {stats_result['statedoc_mean_drift']:.3f}점 (±{stats_result['statedoc_std']:.3f})")
     print(f"📈 개선 효과: {stats_result['improvement']:.3f}점")
 
     if stats_result['p_value'] != 1.0:

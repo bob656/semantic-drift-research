@@ -25,7 +25,7 @@ import os
 import time
 from dataclasses import dataclass
 from typing import List, Dict, Any
-from agents import BaselineAgent, StateDocAgent
+from agents import BaselineAgent, CoTDocAgent
 from evaluator import CodeEvaluator
 from evaluator import CodeExecutor
 
@@ -243,9 +243,9 @@ class ExperimentRunner:
             baseline_result = self._run_single_experiment(baseline_agent, "Baseline")
             results['baseline_results'].append(baseline_result)
 
-            print("📋 StateDoc 에이전트 실행 중...")
-            statedoc_agent = StateDocAgent(self.model, self.client)
-            statedoc_result = self._run_single_experiment(statedoc_agent, "StateDoc")
+            print("🧠 CoTDoc 에이전트 실행 중...")
+            statedoc_agent = CoTDocAgent(self.model, self.client)
+            statedoc_result = self._run_single_experiment(statedoc_agent, "CoTDoc")
             results['statedoc_results'].append(statedoc_result)
 
             # 중간 결과 출력

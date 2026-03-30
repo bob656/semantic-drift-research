@@ -15,7 +15,7 @@ class Order:
     STATUS_CONFIRMED = "CONFIRMED"
     STATUS_SHIPPED = "SHIPPED"
     STATUS_CANCELLED = "CANCELLED"
-    STATUS_REFUNDED = "REFUNDED"  # 새 상태 추가
+    STATUS_REFUNDED = "REFUNDED"  # 새로운 상태
 
     def __init__(self, order_id, items, discount_percent=0.0, status=STATUS_PENDING, customer_id=None):
         self.order_id = order_id
@@ -23,8 +23,8 @@ class Order:
         self.discount_percent = discount_percent
         self.status = status
         self.created_at = datetime.datetime.now()  # 주문 생성 시각
-        self.customer_id = customer_id
         self.total = self.calculate_total()
+        self.customer_id = customer_id
 
     def calculate_total(self):
         subtotal = 0
@@ -54,15 +54,12 @@ class Inventory:
 
     def get_stock(self, item_name):
         item = self.items.get(item_name)
-        if item:
-            return item.stock
-        else:
-            return 0
+        return item.stock if item else 0
 
     def reduce_stock(self, item_name, quantity):
         item = self.items.get(item_name)
         if not item:
-            raise ValueError(f"Item {item_name} not found in inventory.")
+            raise ValueError(f"재고에 {item_name}이(가) 없습니다.")
         if item.stock < quantity:
             raise ValueError(f"재고 부족: {item_name}")
         item.stock -= quantity
@@ -82,36 +79,29 @@ class OrderManager:
     def __init__(self, inventory):
         self.orders = {}
         self.payments = {}
-        self.customers = {}  # 고객 정보 저장
-        self.next_order_id = 1
         self.next_payment_id = 1
-        self.next_customer_id = 1
         self.inventory = inventory
+        self.customers = {}  # 고객 정보 저장
 
-    def add_customer(self, name, email):
-        customer_id = self.next_customer_id
-        self.next_customer_id += 1
-        customer = Customer(customer_id, name, email)
-        self.customers[customer_id] = customer
-        return customer
+    def add_customer(self, customer_id, name, email):
+        self.customers[customer_id] = Customer(customer_id, name, email)
 
     def get_customer(self, customer_id):
         return self.customers.get(customer_id)
 
-    def add_order(self, items, inventory: Inventory, customer_id):
-        if customer_id not in self.customers:
-            raise ValueError(f"고객 ID {customer_id}를 찾을 수 없습니다.")
+    def add_order(self, order_id, items, inventory, customer_id):
+        customer = self.get_customer(customer_id)
+        if not customer:
+            raise ValueError(f"고객 {customer_id}를 찾을 수 없습니다.")
 
-        order_id = self.next_order_id
-        self.next_order_id += 1
+        try:
+            for item in items:
+                inventory.reduce_stock(item.name, item.quantity)
+        except ValueError as e:
+            raise e  # Re-raise the stock-related ValueError
+
         order = Order(order_id, items, status=Order.STATUS_PENDING, customer_id=customer_id)
-
-        # 재고 차감
-        for item in items:
-            inventory.reduce_stock(item.name, item.quantity)
-
         self.orders[order_id] = order
-        return order
 
     def get_order(self, order_id):
         return self.orders.get(order_id)
@@ -119,44 +109,47 @@ class OrderManager:
     def cancel_order(self, order_id):
         order = self.get_order(order_id)
         if not order:
-            raise ValueError(f"주문을 찾을 수 없습니다.")
-        order.status = Order.STATUS_CANCELLED  # CANCELLED 상태 유지
+            return  # Order not found, nothing to cancel
+
+        if order.status in (Order.STATUS_PENDING, Order.STATUS_CONFIRMED):
+            order.status = Order.STATUS_CANCELLED
+        else:
+            raise ValueError("주문 상태가 취소될 수 없습니다.")
 
     def apply_discount(self, order_id, discount_percent):
         order = self.get_order(order_id)
         if not order:
-            raise ValueError(f"주문을 찾을 수 없습니다.")
+            raise ValueError("주문을 찾을 수 없습니다.")
         order.discount_percent = discount_percent
         order.total = order.calculate_total()
 
     def get_order_total(self, order_id):
         order = self.get_order(order_id)
         if not order:
-            raise ValueError(f"주문을 찾을 수 없습니다.")
+            raise ValueError("주문을 찾을 수 없습니다.")
         return order.total
 
     def confirm_order(self, order_id):
         order = self.get_order(order_id)
         if not order:
-            raise ValueError(f"주문을 찾을 수 없습니다.")
+            raise ValueError("주문을 찾을 수 없습니다.")
         order.status = Order.STATUS_CONFIRMED
 
     def ship_order(self, order_id):
         order = self.get_order(order_id)
         if not order:
-            raise ValueError(f"주문을 찾을 수 없습니다.")
+            raise ValueError("주문을 찾을 수 없습니다.")
         order.status = Order.STATUS_SHIPPED
 
-    def process_payment(self, order_id, amount, method):
+    def process_payment(self, order_id):
         order = self.get_order(order_id)
         if not order:
-            raise ValueError(f"주문을 찾을 수 없습니다.")
-        if order.total != amount:
-            raise ValueError(f"결제 금액이 주문 총액과 일치하지 않습니다.")
-
-        payment = Payment(self.next_payment_id, order_id, amount, method)
+            raise ValueError("주문을 찾을 수 없습니다.")
+        # Payment processing logic here
+        payment_id = self.next_payment_id
         self.next_payment_id += 1
-        self.payments[payment.payment_id] = payment
+        payment = Payment(payment_id, order.order_id, order.total, "Credit Card")
+        self.payments[payment_id] = payment
         return payment
 
     def get_payment(self, order_id):
@@ -168,50 +161,57 @@ class OrderManager:
     def refund_payment(self, order_id):
         payment = self.get_payment(order_id)
         if not payment:
-            raise ValueError(f"결제를 찾을 수 없습니다.")
+            raise ValueError("결제를 찾을 수 없습니다.")
+
         if payment.refunded:
-            raise ValueError(f"이미 환불된 결제입니다.")
+            raise ValueError("이미 환불된 결제입니다.")
 
         payment.refunded = True
         order = self.get_order(order_id)
-        if not order:
-            raise ValueError(f"주문을 찾을 수 없습니다.")
         order.status = Order.STATUS_REFUNDED
 
     def get_order_history(self):
-        return list(self.orders.values())
+        """
+        모든 주문 이력을 반환합니다 (CANCELLED 주문 포함).
+        주문 생성 시각(created_at) 기준으로 정렬합니다.
+        """
+        return sorted(self.orders.values(), key=lambda order: order.created_at)
+
+    def get_orders_by_status(self, status: str):
+        """
+        지정된 상태의 주문만 반환합니다.
+        """
+        return [order for order in self.orders.values() if order.status == status]
 
     def get_orders_by_customer(self, customer_id):
-        customer_orders = []
-        for order_id, order in self.orders.items():
-            if order.customer_id == customer_id:
-                customer_orders.append(order)
-        return customer_orders
-
-    def get_orders_by_status(self, status):
-        orders_by_status = []
-        for order_id, order in self.orders.items():
-            if order.status == status:
-                orders_by_status.append(order)
-        return orders_by_status
+        """
+        특정 고객의 모든 주문을 반환합니다.
+        """
+        return [order for order in self.orders.values() if order.customer_id == customer_id]
 
 
-# Example Usage
-inventory = Inventory()
-inventory.add_item("Webcam", 50.00, 10)
-inventory.add_item("Microphone", 100.00, 5)
-inventory.add_item("Keyboard", 75.00, 8)
-inventory.add_item("Mouse", 25.00, 12)
+# Example Usage (with new features)
+if __name__ == '__main__':
+    inventory = Inventory()
+    inventory.add_item("Laptop", 1200, 5)
+    inventory.add_item("Mouse", 25, 10)
+    inventory.add_item("Keyboard", 75, 8)
 
-order_manager = OrderManager(inventory)
+    order_manager = OrderManager(inventory)
 
-# Add a customer
-customer1 = order_manager.add_customer("Alice Smith", "alice.smith@example.com")
-customer2 = order_manager.add_customer("Bob Johnson", "bob.johnson@example.com")
+    # Add a customer
+    order_manager.add_customer(1, "John Doe", "john.doe@example.com")
+    order_manager.add_customer(2, "Jane Smith", "jane.smith@example.com")
 
-# Create an order for customer1
-items = [
-    Item("Webcam", 50.00, 1, 0),
-    Item("Microphone", 100.00, 1, 0),
-]
-order1 = order_manager.add_order(items,
+    try:
+        # Create an order for customer 1
+        items = [
+            Item("Laptop", 1200, 1, 0),
+            Item("Mouse", 25, 2, 0),
+            Item("Keyboard", 75, 1, 0)
+        ]
+        order_manager.add_order(1, items, inventory, 1)
+
+        # Create another order for customer 2
+        items2 = [
+            Item("Laptop", 1200, 1,

@@ -1,36 +1,32 @@
-from dataclasses import dataclass
-from typing import List, Optional
-
-
-@dataclass
 class Item:
     """
-    품목 정보를 나타내는 클래스입니다.
+    주문 상품 정보를 나타내는 클래스입니다.
 
     Args:
-        name (str): 품목 이름
-        price (float): 품목 가격
-        quantity (int): 품목 수량
+        name (str): 상품 이름
+        price (float): 상품 가격
+        quantity (int): 상품 수량
     """
-    name: str
-    price: float
-    quantity: int
+    def __init__(self, name: str, price: float, quantity: int):
+        self.name = name
+        self.price = price
+        self.quantity = quantity
 
 
 class Order:
-    def __init__(self, order_id: int, items: List[Item]):
+    def __init__(self, order_id: int, items: list[Item]):
         """
         주문 정보를 나타내는 클래스입니다.
 
         Args:
-            order_id (int): 주문 ID
-            items (List[Item]): 주문 품목 목록
+            order_id (int): 주문 ID (고유 식별자)
+            items (list[Item]): 주문 상품 목록
         """
         self.order_id = order_id
         self.items = items
-        self.total = self.calculate_total()
+        self.total = self._calculate_total()
 
-    def calculate_total(self) -> float:
+    def _calculate_total(self) -> float:
         """
         주문 총액을 계산합니다.
 
@@ -42,88 +38,91 @@ class Order:
 
 class OrderManager:
     """
-    주문 목록을 관리하는 클래스입니다.
+    주문 정보를 저장하고 관리하는 클래스입니다.
     """
 
     def __init__(self):
         """
         OrderManager 객체를 초기화합니다.
         """
-        self.orders: dict[int, Order] = {}  # order_id를 키로 사용하는 dictionary
+        self.orders: dict[int, Order] = {}
 
-    def add_order(self, order_id: int, items: List[Item]) -> None:
+    def add_order(self, order_id: int, items: list[Item]) -> None:
         """
-        새로운 주문을 추가합니다.
+        새로운 주문 정보를 시스템에 추가합니다.
 
         Args:
             order_id (int): 주문 ID
-            items (List[Item]): 주문 품목 목록
+            items (list[Item]): 주문 상품 목록
 
         Raises:
-            ValueError: order_id가 이미 존재하는 경우
+            ValueError: order_id가 이미 존재하면
         """
         if order_id in self.orders:
-            raise ValueError(f"Order ID {order_id} already exists")
+            raise ValueError(f"Order ID {order_id} already exists.")
         self.orders[order_id] = Order(order_id, items)
 
-    def get_order(self, order_id: int) -> Optional[Order]:
+    def get_order(self, order_id: int) -> Order | None:
         """
-        주문 ID에 해당하는 주문 정보를 조회합니다.
+        특정 주문 ID를 기반으로 주문 정보를 조회합니다.
 
         Args:
             order_id (int): 주문 ID
 
         Returns:
-            Optional[Order]: 주문 정보. 주문이 존재하지 않으면 None을 반환합니다.
+            Order: 주문이 존재하는 경우 해당 Order 객체, 주문이 존재하지 않는 경우 None
         """
         return self.orders.get(order_id)
 
     def cancel_order(self, order_id: int) -> None:
         """
-        주문 ID에 해당하는 주문을 취소합니다.
+        특정 주문 ID를 기반으로 주문을 시스템에서 삭제합니다.
 
         Args:
             order_id (int): 주문 ID
+
+        Raises:
+            KeyError: 주문이 존재하지 않는 경우
         """
         if order_id not in self.orders:
-            print(f"Error: Order ID {order_id} not found.")
-            return
+            raise KeyError(f"Order ID {order_id} not found.")
         del self.orders[order_id]
 
     def list_orders(self) -> list[Order]:
         """
-        시스템에 저장된 모든 주문 정보를 목록으로 반환합니다.
+        시스템에 저장된 모든 주문 정보를 목록 형태로 조회합니다.
 
         Returns:
-            list[Order]: 주문 목록
+            list[Order]: 모든 주문 목록
         """
         return list(self.orders.values())
 
 
-# 사용 예시
+# 사용 예제
 order_manager = OrderManager()
 
-# 주문 추가
 try:
-    order_manager.add_order(1, [Item("item1", 10.0, 2), Item("item2", 20.0, 1)])
-    order_manager.add_order(2, [Item("item3", 5.0, 3)])
-except ValueError as e:
-    print(e)
+    order_manager.add_order(1, [Item("item1", 10.0, 2), Item("item2", 5.0, 3)])
+    order_manager.add_order(2, [Item("item3", 20.0, 1)])
 
-# 주문 조회
-order = order_manager.get_order(1)
-if order:
-    print(f"Order 1: {order.order_id}, Items: {order.items}, Total: {order.total}")
-else:
-    print("Order not found.")
+    order1 = order_manager.get_order(1)
+    print(f"Order 1: {order1.order_id}, Items: {[item.name for item in order1.items]}, Total: {order1.total}")
 
-# 주문 목록 확인
-orders = order_manager.list_orders()
-print("All Orders:", [order.order_id for order in orders])
+    order_manager.cancel_order(1)
 
-# 주문 취소
-order_manager.cancel_order(1)
+    orders = order_manager.list_orders()
+    print(f"Remaining Orders: {[order.order_id for order in orders]}")
 
-# 주문 목록 확인 (취소 후)
-orders = order_manager.list_orders()
-print("All Orders after cancellation:", [order.order_id for order in orders])
+    # 예외 처리 테스트
+    try:
+        order_manager.add_order(1, [Item("item4", 10.0, 1)])  # 중복 ID
+    except ValueError as e:
+        print(f"Error: {e}")
+
+    try:
+        order_manager.cancel_order(3)  # 존재하지 않는 ID
+    except KeyError as e:
+        print(f"Error: {e}")
+
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")

@@ -1,224 +1,234 @@
-from dataclasses import dataclass
-from typing import List, Optional
-
-
-@dataclass
 class Item:
     """
-    상품 정보를 나타내는 클래스입니다.
+    주문 상품 정보를 나타내는 클래스입니다.
 
-    Attributes:
-        name (str): 상품 이름.
-        price (float): 상품 가격.
-        quantity (int): 상품 수량.
+    Args:
+        name (str): 상품 이름
+        price (float): 상품 가격
+        quantity (int): 상품 수량
     """
-    name: str
-    price: float
-    quantity: int
+    def __init__(self, name: str, price: float, quantity: int):
+        self.name = name
+        self.price = price
+        self.quantity = quantity
 
 
 class Order:
-    def __init__(self, order_id: int, items: List[Item], discount_percent: float = 0.0, status: str = "PENDING"):
-        """
-        주문 정보를 나타내는 클래스입니다.
+    """
+    주문 정보를 나타내는 클래스입니다.
 
-        Args:
-            order_id (int): 주문 ID.
-            items (List[Item]): 주문에 포함된 상품 목록.
-            discount_percent (float): 할인율 (0.0 ~ 1.0). 기본값은 0.0입니다.
-            status (str): 주문 상태. 기본값은 "PENDING"입니다.
-        """
+    Args:
+        order_id (int): 주문 ID (고유 식별자)
+        items (list[Item]): 주문 상품 목록
+    """
+    STATUS_PENDING = "PENDING"
+    STATUS_CONFIRMED = "CONFIRMED"
+    STATUS_SHIPPED = "SHIPPED"
+    STATUS_CANCELLED = "CANCELLED"
+
+    def __init__(self, order_id: int, items: list[Item]):
         self.order_id = order_id
         self.items = items
-        self.discount_percent = discount_percent
-        self.status = status
-        self.total = self.calculate_total()
+        self.discount_percent = 0.0
+        self.status = Order.STATUS_PENDING
+        self.total = self._calculate_total()
 
-    def calculate_total(self) -> float:
+    def _calculate_total(self) -> float:
         """
         주문 총액을 계산합니다.
 
         Returns:
-            float: 주문 총액.
+            float: 주문 총액
         """
-        subtotal = sum(item.price * item.quantity for item in self.items)
-        return subtotal * (1 - self.discount_percent)
+        total = sum(item.price * item.quantity for item in self.items)
+        return total * (1 - self.discount_percent)
 
 
 class OrderManager:
     """
-    주문 관리 기능을 제공하는 클래스입니다.
+    주문 정보를 저장하고 관리하는 클래스입니다.
     """
+
     def __init__(self):
         """
-        주문 관리자를 초기화합니다.
+        OrderManager 객체를 초기화합니다.
         """
         self.orders: dict[int, Order] = {}
 
-    def add_order(self, order_id: int, items: List[Item]) -> None:
+    def add_order(self, order_id: int, items: list[Item]) -> None:
         """
-        새로운 주문을 추가합니다.
+        새로운 주문 정보를 시스템에 추가합니다.
 
         Args:
-            order_id (int): 주문 ID.
-            items (List[Item]): 주문에 포함된 상품 목록.
+            order_id (int): 주문 ID
+            items (list[Item]): 주문 상품 목록
 
         Raises:
-            ValueError: 중복된 주문 ID가 사용된 경우.
+            ValueError: order_id가 이미 존재하면
         """
         if order_id in self.orders:
-            raise ValueError("Duplicate order ID.")
+            raise ValueError(f"Order ID {order_id} already exists.")
         self.orders[order_id] = Order(order_id, items)
 
-    def get_order(self, order_id: int) -> Optional[Order]:
+    def get_order(self, order_id: int) -> Order | None:
         """
-        주문 ID를 기반으로 주문 정보를 조회합니다.
+        특정 주문 ID를 기반으로 주문 정보를 조회합니다.
 
         Args:
-            order_id (int): 조회할 주문 ID.
+            order_id (int): 주문 ID
 
         Returns:
-            Optional[Order]: 주문 정보. 주문이 없으면 None을 반환합니다.
-
-        Raises:
-            KeyError: 주문이 존재하지 않을 경우 발생하지 않음.  None 반환.
+            Order: 주문이 존재하는 경우 해당 Order 객체, 주문이 존재하지 않는 경우 None
         """
         return self.orders.get(order_id)
 
     def cancel_order(self, order_id: int) -> None:
         """
-        주문 ID를 기반으로 주문을 취소합니다.
+        특정 주문 ID를 기반으로 주문을 시스템에서 삭제합니다.
 
         Args:
-            order_id (int): 취소할 주문 ID.
+            order_id (int): 주문 ID
 
         Raises:
-            KeyError: 주문이 존재하지 않을 경우.
-            ValueError: 주문이 배송 중인 경우.
+            KeyError: 주문이 존재하지 않는 경우
+            ValueError: 주문이 이미 배송 중인 경우
         """
         if order_id not in self.orders:
-            raise KeyError(f"Order with ID {order_id} not found.")
+            raise KeyError(f"Order ID {order_id} not found.")
         order = self.orders[order_id]
-        if order.status == "SHIPPED":
+        if order.status == Order.STATUS_SHIPPED:
             raise ValueError("배송 중인 주문은 취소할 수 없습니다")
-        order.status = "CANCELLED"
-
-    def list_orders(self) -> list[Order]:
-        """
-        시스템에 저장된 모든 주문 목록을 조회합니다.
-
-        Returns:
-            list[Order]: 주문 목록.
-        """
-        return list(self.orders.values())
-
-    def apply_discount(self, order_id: int, discount_percent: float) -> None:
-        """
-        주문에 할인율을 적용합니다.
-
-        Args:
-            order_id (int): 할인율을 적용할 주문 ID.
-            discount_percent (float): 할인율 (0.0 ~ 1.0).
-
-        Raises:
-            KeyError: 주문이 존재하지 않을 경우.
-            ValueError: 할인율이 범위를 벗어난 경우.
-        """
-        if order_id not in self.orders:
-            raise KeyError(f"Order with ID {order_id} not found.")
-        if not 0.0 <= discount_percent <= 1.0:
-            raise ValueError("Discount percent must be between 0.0 and 1.0.")
-        order = self.orders[order_id]
-        order.discount_percent = discount_percent
-        order.total = order.calculate_total()
-
-    def get_order_total(self, order_id: int) -> float:
-        """
-        주문 ID를 기반으로 주문의 최종 총액을 조회합니다.
-
-        Args:
-            order_id (int): 조회할 주문 ID.
-
-        Returns:
-            float: 주문의 최종 총액.
-
-        Raises:
-            KeyError: 주문이 존재하지 않을 경우.
-        """
-        if order_id not in self.orders:
-            raise KeyError(f"Order with ID {order_id} not found.")
-        return self.orders[order_id].total
+        order.status = Order.STATUS_CANCELLED
 
     def confirm_order(self, order_id: int) -> None:
         """
-        주문의 상태를 PENDING에서 CONFIRMED로 변경합니다.
+        주문을 확인합니다.
 
         Args:
-            order_id (int): 상태를 변경할 주문 ID.
+            order_id (int): 주문 ID
 
         Raises:
-            KeyError: 주문이 존재하지 않을 경우.
-            ValueError: 주문 상태가 PENDING가 아닐 경우.
+            KeyError: 주문이 존재하지 않는 경우
+            ValueError: 주문 상태가 PENDING가 아니거나 이미 CONFIRMED/SHIPPED/CANCELLED인 경우
         """
         if order_id not in self.orders:
-            raise KeyError(f"Order with ID {order_id} not found.")
+            raise KeyError(f"Order ID {order_id} not found.")
         order = self.orders[order_id]
-        if order.status != "PENDING":
-            raise ValueError(f"주문 상태가 PENDING가 아닙니다. 현재 상태: {order.status}")
-        order.status = "CONFIRMED"
+        if order.status != Order.STATUS_PENDING:
+            raise ValueError("주문 상태가 PENDING가 아니면 확인할 수 없습니다.")
+        order.status = Order.STATUS_CONFIRMED
+        order.total = order._calculate_total()
 
     def ship_order(self, order_id: int) -> None:
         """
-        주문의 상태를 CONFIRMED에서 SHIPPED로 변경합니다.
+        주문을 배송합니다.
 
         Args:
-            order_id (int): 상태를 변경할 주문 ID.
+            order_id (int): 주문 ID
 
         Raises:
-            KeyError: 주문이 존재하지 않을 경우.
-            ValueError: 주문 상태가 CONFIRMED가 아닐 경우.
+            KeyError: 주문이 존재하지 않는 경우
+            ValueError: 주문 상태가 CONFIRMED가 아니면
         """
         if order_id not in self.orders:
-            raise KeyError(f"Order with ID {order_id} not found.")
+            raise KeyError(f"Order ID {order_id} not found.")
         order = self.orders[order_id]
-        if order.status != "CONFIRMED":
-            raise ValueError(f"주문 상태가 CONFIRMED가 아닙니다. 현재 상태: {order.status}")
-        order.status = "SHIPPED"
+        if order.status != Order.STATUS_CONFIRMED:
+            raise ValueError("주문 상태가 CONFIRMED가 아니면 배송할 수 없습니다.")
+        order.status = Order.STATUS_SHIPPED
+
+    def list_orders(self) -> list[tuple[int, str, float]]:
+        """
+        시스템에 저장된 모든 주문 정보를 목록 형태로 조회합니다.
+
+        Returns:
+            list[tuple[int, str, float]]: 주문 ID, 상태, 총액 목록
+        """
+        return [(order.order_id, order.status, order.total) for order in self.orders.values()]
+
+    def apply_discount(self, order_id: int, discount_percent: float) -> None:
+        """
+        주문에 할인을 적용합니다.
+
+        Args:
+            order_id (int): 주문 ID
+            discount_percent (float): 할인 비율 (0.0 ~ 1.0)
+
+        Raises:
+            KeyError: 주문이 존재하지 않는 경우
+            ValueError: discount_percent가 범위를 벗어난 경우
+        """
+        if order_id not in self.orders:
+            raise KeyError(f"Order ID {order_id} not found.")
+        if not 0.0 <= discount_percent <= 1.0:
+            raise ValueError("Discount percent must be between 0.0 and 1.0")
+        self.orders[order_id].discount_percent = discount_percent
+        self.orders[order_id].total = self.orders[order_id]._calculate_total()
+
+    def get_order_total(self, order_id: int) -> float:
+        """
+        특정 주문 ID의 최종 총액을 반환합니다.
+
+        Args:
+            order_id (int): 주문 ID
+
+        Returns:
+            float: 주문의 최종 총액
+        """
+        order = self.get_order(order_id)
+        if order:
+            return order.total
+        else:
+            return 0.0
 
 
 # 사용 예제
 order_manager = OrderManager()
 
 try:
-    order_manager.add_order(1, [Item("item1", 10.0, 2), Item("item2", 20.0, 1)])
-    order_manager.add_order(2, [Item("item3", 5.0, 3)])
+    order_manager.add_order(1, [Item("item1", 10.0, 2), Item("item2", 5.0, 3)])
+    order_manager.add_order(2, [Item("item3", 20.0, 1)])
 
-    order = order_manager.get_order(1)
-    print(f"Order 1: {order.items}, Total: {order.total}, Status: {order.status}")
-
-    order_manager.confirm_order(1)
-    print(f"Order 1 Status: {order.status}")
+    order1 = order_manager.get_order(1)
+    print(f"Order 1: {order1.order_id}, Items: {[item.name for item in order1.items]}, Total: {order1.total}, Status: {order1.status}")
 
     order_manager.apply_discount(1, 0.1)
-    print(f"Order 1 with discount: {order.discount_percent}, Total: {order.total}, Status: {order.status}")
+    print(f"Order 1 discounted: {order1.total}")
 
-    total = order_manager.get_order_total(1)
-    print(f"Order 1 total: {total}")
+    print(f"Order 1 total: {order_manager.get_order_total(1)}")
+
+    order_manager.confirm_order(1)
+    print(f"Order 1 confirmed: {order1.status}")
 
     order_manager.ship_order(1)
-    print(f"Order 1 Status: {order.status}")
+    print(f"Order 1 shipped: {order1.status}")
 
-    # order_manager.cancel_order(1)  # This will raise a ValueError because the order is shipped
-    # order_manager.cancel_order(2)
-    # order_manager.cancel_order(1)
+    order_manager.cancel_order(2)
+    print(f"Order 2 cancelled: {order_manager.get_order(2).status}")
 
     orders = order_manager.list_orders()
-    print(f"Remaining orders: {[order.order_id for order in orders]}")
+    print(f"Remaining Orders: {orders}")
 
-    # 예외 발생 테스트
-    # order_manager.add_order(1, [Item("item4", 5.0, 1)]) # Duplicate order ID
-    # order_manager.apply_discount(1, 1.2) # Invalid discount percent
-except ValueError as e:
-    print(f"Error: {e}")
-except KeyError as e:
-    print(f"Error: {e}")
+    # 예외 처리 테스트
+    try:
+        order_manager.add_order(1, [Item("item4", 10.0, 1)])  # 중복 ID
+    except ValueError as e:
+        print(f"Error: {e}")
+
+    try:
+        order_manager.cancel_order(3)  # 존재하지 않는 ID
+    except KeyError as e:
+        print(f"Error: {e}")
+
+    try:
+        order_manager.apply_discount(1, 1.2)
+    except ValueError as e:
+        print(f"Error: {e}")
+
+    try:
+        order_manager.ship_order(1)
+    except ValueError as e:
+        print(f"Error: {e}")
+
+except Exception as e:
+    print(

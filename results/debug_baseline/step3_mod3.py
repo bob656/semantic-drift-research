@@ -21,11 +21,10 @@ class Order:
         self.total = self.calculate_total()
 
     def calculate_total(self):
-        total = 0
+        subtotal = 0
         for item in self.items:
-            total += item.price * item.quantity
-        total -= total * self.discount_percent
-        return total
+            subtotal += item.price * item.quantity
+        return subtotal * (1 - self.discount_percent)
 
     def __str__(self):
         return f"Order ID: {self.order_id}, Items: {self.items}, Discount: {self.discount_percent:.2f}, Total: {self.total:.2f}, Status: {self.status}"
@@ -56,7 +55,7 @@ class OrderManager:
         order = self.get_order(order_id)
         if order and order.status == Order.STATUS_PENDING:
             order.status = Order.STATUS_CONFIRMED
-            order.total = order.calculate_total()  # Recalculate total in case of discount changes
+            order.total = order.calculate_total()
 
     def ship_order(self, order_id):
         order = self.get_order(order_id)
@@ -97,7 +96,7 @@ if __name__ == "__main__":
     order_manager.add_order(3, [
         Item("Webcam", 50.00, 1),
         Item("Microphone", 100.00, 1)
-    ], discount_percent=0.1)  # Apply 10% discount initially
+    ])
 
     # Get an order
     order = order_manager.get_order(2)
@@ -112,19 +111,19 @@ if __name__ == "__main__":
         print(order)
 
     # Apply discount to order 1
-    order_manager.apply_discount(1, 0.2)  # Apply 20% discount
+    order_manager.apply_discount(1, 0.1)  # 10% discount
 
-    # List orders after discount application
-    print("\nOrders after discount application:")
+    # List orders after discount
+    print("\nOrders after discount:")
     for order in order_manager.list_orders():
         print(order)
 
-    # Get total for order 1
-    total = order_manager.get_order_total(1)
-    if total is not None:
-        print(f"\nTotal for Order 1: {total:.2f}")
+    # Get total for order 2
+    total = order_manager.get_order_total(2)
+    if total:
+        print(f"\nTotal for Order 2: {total:.2f}")
     else:
-        print("\nOrder 1 not found")
+        print("Order not found")
 
     # Confirm order 2
     order_manager.confirm_order(2)
@@ -136,19 +135,19 @@ if __name__ == "__main__":
     print("\nOrder 2 after shipping:")
     print(order_manager.get_order(2))
 
-    # Cancel order 3
+    # Cancel order 1
     try:
-        order_manager.cancel_order(3)
-        print("\nOrder 3 after cancellation:")
-        print(order_manager.get_order(3))
+        order_manager.cancel_order(1)
+        print("\nOrder 1 after cancellation:")
+        print(order_manager.get_order(1))
     except ValueError as e:
-        print(f"\nError cancelling order 3: {e}")
+        print(e)
 
     # Attempt to cancel a shipped order (should raise ValueError)
     try:
         order_manager.cancel_order(2)
     except ValueError as e:
-        print(f"\nError cancelling order 2: {e}")
+        print(f"\nCaught expected error: {e}")
 
     # List orders after cancellation
     print("\nOrders after cancellation:")

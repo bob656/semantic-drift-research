@@ -15,11 +15,10 @@ class Order:
         self.total = self.calculate_total()
 
     def calculate_total(self):
-        total = 0
+        subtotal = 0
         for item in self.items:
-            total += item.price * item.quantity
-        total -= total * self.discount_percent
-        return total
+            subtotal += item.price * item.quantity
+        return subtotal * (1 - self.discount_percent)
 
     def __str__(self):
         return f"Order ID: {self.order_id}, Items: {self.items}, Discount: {self.discount_percent:.2f}, Total: {self.total:.2f}"
@@ -74,7 +73,7 @@ if __name__ == "__main__":
     order_manager.add_order(3, [
         Item("Webcam", 50.00, 1),
         Item("Microphone", 100.00, 1)
-    ], discount_percent=0.1)  # Apply 10% discount initially
+    ])
 
     # Get an order
     order = order_manager.get_order(2)
@@ -89,22 +88,22 @@ if __name__ == "__main__":
         print(order)
 
     # Apply discount to order 1
-    order_manager.apply_discount(1, 0.2)  # Apply 20% discount
+    order_manager.apply_discount(1, 0.1)  # 10% discount
 
-    # List orders after discount application
-    print("\nOrders after discount application:")
+    # List orders after discount
+    print("\nOrders after discount:")
     for order in order_manager.list_orders():
         print(order)
 
-    # Get total for order 1
-    total = order_manager.get_order_total(1)
-    if total is not None:
-        print(f"\nTotal for Order 1: {total:.2f}")
+    # Get total for order 2
+    total = order_manager.get_order_total(2)
+    if total:
+        print(f"\nTotal for Order 2: {total:.2f}")
     else:
-        print("\nOrder 1 not found")
+        print("Order not found")
 
     # Cancel an order
-    order_manager.cancel_order(2)
+    order_manager.cancel_order(1)
 
     # List orders after cancellation
     print("\nOrders after cancellation:")

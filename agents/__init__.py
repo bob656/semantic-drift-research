@@ -2,5 +2,6 @@
 from .base_agent import BaseAgent
 from .baseline_agent import BaselineAgent
 from .statedoc_agent import StateDocAgent
+from .cot_agent import CoTDocAgent
 
-__all__ = ['BaseAgent', 'BaselineAgent', 'StateDocAgent']
+__all__ = ['BaseAgent', 'BaselineAgent', 'StateDocAgent', 'CoTDocAgent']

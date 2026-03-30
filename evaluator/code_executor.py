@@ -429,6 +429,8 @@ def _add(om, oid, items):
     import inspect as _inspect
     inv = Inventory()
     inv.add_item("apple", 10.0, 100)
+    # items를 튜플 리스트로도 준비 (일부 구현이 (name, quantity) 형태 기대)
+    _items_as_tuples = [(getattr(i, 'name', str(i)), getattr(i, 'quantity', 1)) for i in items]
     try:
         _params = list(_inspect.signature(om.add_order).parameters.keys())
         _use_explicit = bool(_params) and _params[0] in ("order_id", "id", "oid")
@@ -436,12 +438,16 @@ def _add(om, oid, items):
         _use_explicit = False
     if _use_explicit:
         for call in [lambda: om.add_order(oid, items, inv),
-                     lambda: om.add_order(oid, items)]:
+                     lambda: om.add_order(oid, items),
+                     lambda: om.add_order(oid, _items_as_tuples, inv),
+                     lambda: om.add_order(oid, _items_as_tuples)]:
             try: call(); return
             except (TypeError, AttributeError, ValueError): continue
     else:
         for call in [lambda: om.add_order(items, inv),
-                     lambda: om.add_order(items)]:
+                     lambda: om.add_order(items),
+                     lambda: om.add_order(_items_as_tuples, inv),
+                     lambda: om.add_order(_items_as_tuples)]:
             try: call(); return
             except (TypeError, AttributeError, ValueError): continue
 
@@ -504,6 +510,7 @@ def _add(om, oid, items):
     import inspect as _inspect
     inv = Inventory()
     inv.add_item("apple", 10.0, 100)
+    _items_as_tuples = [(getattr(i, 'name', str(i)), getattr(i, 'quantity', 1)) for i in items]
     try:
         _params = list(_inspect.signature(om.add_order).parameters.keys())
         _use_explicit = bool(_params) and _params[0] in ("order_id", "id", "oid")
@@ -511,12 +518,16 @@ def _add(om, oid, items):
         _use_explicit = False
     if _use_explicit:
         for call in [lambda: om.add_order(oid, items, inv),
-                     lambda: om.add_order(oid, items)]:
+                     lambda: om.add_order(oid, items),
+                     lambda: om.add_order(oid, _items_as_tuples, inv),
+                     lambda: om.add_order(oid, _items_as_tuples)]:
             try: call(); return
             except (TypeError, AttributeError, ValueError): continue
     else:
         for call in [lambda: om.add_order(items, inv),
-                     lambda: om.add_order(items)]:
+                     lambda: om.add_order(items),
+                     lambda: om.add_order(_items_as_tuples, inv),
+                     lambda: om.add_order(_items_as_tuples)]:
             try: call(); return
             except (TypeError, AttributeError, ValueError): continue
 
@@ -600,6 +611,7 @@ def _add_c(om, oid, items, cid):
     import inspect as _inspect
     inv = Inventory()
     inv.add_item("apple", 10.0, 100)
+    _items_as_tuples = [(getattr(i, 'name', str(i)), getattr(i, 'quantity', 1)) for i in items]
     try:
         _params = list(_inspect.signature(om.add_order).parameters.keys())
         _use_explicit = bool(_params) and _params[0] in ("order_id", "id", "oid")
@@ -607,20 +619,28 @@ def _add_c(om, oid, items, cid):
     except Exception:
         _use_explicit = False
         _has_customer = False
-    # 시그니처에 따라 최적 호출 순서 결정
+    # 시그니처에 따라 최적 호출 순서 결정 (Item 객체 우선, 튜플 폴백)
     if _use_explicit and _has_customer:
         candidates = [lambda: om.add_order(oid, items, inv, cid),
-                      lambda: om.add_order(oid, items, cid)]
+                      lambda: om.add_order(oid, items, cid),
+                      lambda: om.add_order(oid, _items_as_tuples, inv, cid),
+                      lambda: om.add_order(oid, _items_as_tuples, cid)]
     elif _use_explicit:
         candidates = [lambda: om.add_order(oid, items, cid),
                       lambda: om.add_order(oid, items, inv, cid),
-                      lambda: om.add_order(oid, items)]
+                      lambda: om.add_order(oid, items),
+                      lambda: om.add_order(oid, _items_as_tuples, cid),
+                      lambda: om.add_order(oid, _items_as_tuples)]
     elif _has_customer:
         candidates = [lambda: om.add_order(items, inv, cid),
-                      lambda: om.add_order(items, cid)]
+                      lambda: om.add_order(items, cid),
+                      lambda: om.add_order(_items_as_tuples, inv, cid),
+                      lambda: om.add_order(_items_as_tuples, cid)]
     else:
         candidates = [lambda: om.add_order(items, inv),
-                      lambda: om.add_order(items)]
+                      lambda: om.add_order(items),
+                      lambda: om.add_order(_items_as_tuples, inv),
+                      lambda: om.add_order(_items_as_tuples)]
     for call in candidates:
         try:
             call()
