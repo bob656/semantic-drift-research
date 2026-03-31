@@ -1,167 +1,189 @@
+from dataclasses import dataclass
+from typing import List, Dict, Optional
+import datetime
+
+@dataclass
 class Item:
-    def __init__(self, name, price, quantity):
-        self.name = name
-        self.price = price
-        self.quantity = quantity
+    name: str
+    price: float
+    quantity: int
+    stock: int  # 재고 수량 추가
+
 
 class Order:
-    def __init__(self, order_id, items):
+    def __init__(self, order_id: int, items: List[Item]):
         self.order_id = order_id
         self.items = items
-        self.discount_percent = 0.0
+        self.discount_percent: float = 0.0  # 할인율 필드 추가
         self.total = self.calculate_total()
-        self.status = "PENDING"
-        self.created_at = datetime.datetime.now()
+        self.status: str = "PENDING"  # 주문 상태 추가
+        self.created_at: datetime = datetime.datetime.now()  # 주문 생성 시각 추가
 
-    def calculate_total(self):
-        """
-        주문 항목의 총 가격을 계산합니다.
-        """
-        total = 0
+    def __repr__(self):
+        return f"Order(order_id={self.order_id}, items={self.items}, total={self.total}, status={self.status})"
+
+    def calculate_total(self) -> float:
+        total = 0.0
         for item in self.items:
             total += item.price * item.quantity
         return total * (1 - self.discount_percent)
 
-class Payment:
-    def __init__(self, payment_id, order_id, amount, method):
-        self.payment_id = payment_id
-        self.order_id = order_id
-        self.amount = amount
-        self.method = method
-        self.refunded = False  # Add refunded attribute
-
-class Inventory:
-    def __init__(self):
-        self.items = {}
-
-    def add_item(self, item_name, price, stock):
-        self.items[item_name] = {'price': price, 'stock': stock}
-
-    def get_stock(self, item_name):
-        return self.items.get(item_name, {}).get('stock', 0)
-
-    def reduce_stock(self, item_name, quantity):
-        if item_name not in self.items or self.items[item_name]['stock'] < quantity:
-            raise ValueError(f"재고 부족: {item_name}")
-        self.items[item_name]['stock'] -= quantity
 
 class OrderManager:
     def __init__(self):
-        self.orders = {}
-        self.payments = {}
-        self.next_payment_id = 1
+        self.orders: Dict[int, Order] = {}  # order_id를 키로 사용
+        self.payments: Dict[int, Payment] = {}  # payment_id를 키로 사용
 
-    def add_order(self, order_id, items):
+    def add_order(self, order_id: int, items: List[Item], inventory: 'Inventory') -> None:
+        """주문 추가. order_id 중복 검사 수행."""
         if order_id in self.orders:
-            raise ValueError(f"Order ID {order_id} already exists")
+            raise ValueError(f"Order ID {order_id} already exists.")
 
         for item in items:
-            # Assuming inventory is accessible here.  In a real system, this would be a dependency injection.
-            # inventory.reduce_stock(item.name, item.quantity)  # Removed as inventory is not accessible here
-            pass  # Placeholder for inventory reduction
+            if inventory.get_stock(item.name) < item.quantity:
+                raise ValueError(f"재고 부족: {item.name}")
+            inventory.reduce_stock(item.name, item.quantity)
 
-        order = Order(order_id, items)
-        self.orders[order_id] = order
+        self.orders[order_id] = Order(order_id, items)
 
-    def get_order(self, order_id):
+    def get_order(self, order_id: int) -> Optional[Order]:
+        """주문 ID에 해당하는 주문 조회. 주문이 없으면 None 반환."""
         return self.orders.get(order_id)
 
-    def confirm_order(self, order_id):
-        order = self.get_order(order_id)
-        if order and order.status == "PENDING":
-            order.status = "CONFIRMED"
+    def list_orders(self) -> List[Order]:
+        """모든 주문 목록 반환."""
+        return list(self.orders.values())
 
-    def ship_order(self, order_id):
-        order = self.get_order(order_id)
-        if order and order.status == "CONFIRMED":
-            order.status = "SHIPPED"
-
-    def cancel_order(self, order_id):
-        order = self.get_order(order_id)
-        if not order:
-            return
-
-        if order.status not in ("PENDING", "CONFIRMED"):
-            raise ValueError("배송 중인 주문은 취소할 수 없습니다")
-
-        order.status = "CANCELLED"
-
-    def list_orders(self):
-        return [(order_id, order) for order_id, order in self.orders.items()]
-
-    def apply_discount(self, order_id, discount_percent):
-        if order_id not in self.orders:
-            raise ValueError(f"Order ID {order_id} does not exist")
+    def apply_discount(self, order_id: int, discount_percent: float) -> None:
+        """주문에 할인율 적용."""
         if not 0.0 <= discount_percent <= 1.0:
             raise ValueError("Discount percent must be between 0.0 and 1.0")
+        order = self.get_order(order_id)
+        if order:
+            order.discount_percent = discount_percent
+            order.total = order.calculate_total()
 
-        order = self.orders[order_id]
-        order.discount_percent = discount_percent
-        order.total = order.calculate_total()
-
-    def get_order_total(self, order_id):
+    def get_order_total(self, order_id: int) -> float:
+        """주문 ID에 해당하는 주문의 최종 금액 반환."""
         order = self.get_order(order_id)
         if order:
             return order.total
         else:
             return 0.0
 
-    def process_payment(self, order_id, amount, method):
+    def confirm_order(self, order_id: int) -> None:
+        """주문 상태를 PENDING에서 CONFIRMED로 변경."""
+        order = self.get_order(order_id)
+        if order and order.status == "PENDING":
+            order.status = "CONFIRMED"
+
+    def ship_order(self, order_id: int) -> None:
+        """주문 상태를 CONFIRMED에서 SHIPPED로 변경."""
+        order = self.get_order(order_id)
+        if order and order.status == "CONFIRMED":
+            order.status = "SHIPPED"
+
+    def cancel_order(self, order_id: int) -> None:
+        """주문 상태를 CANCELLED로 변경. PENDING 또는 CONFIRMED 상태에서만 가능."""
         order = self.get_order(order_id)
         if not order:
-            raise ValueError(f"Order ID {order_id} does not exist")
+            return  # 주문이 없으면 아무것도 하지 않음
+        if order.status == "SHIPPED":
+            raise ValueError("배송 중인 주문은 취소할 수 없습니다")
+        if order.status in ("PENDING", "CONFIRMED"):
+            order.status = "CANCELLED"
 
-        if abs(amount - order.total) > 0.001:
-            raise ValueError(f"Payment amount {amount} does not match order total {order.total}")
+    def process_payment(self, order_id: int, amount: float, method: str) -> Payment:
+        """결제 처리."""
+        order = self.get_order(order_id)
+        if not order:
+            raise ValueError(f"Order with ID {order_id} not found.")
 
-        payment = Payment(self.next_payment_id, order_id, amount, method)
-        self.payments[payment.payment_id] = payment
-        self.next_payment_id += 1
+        if abs(amount - order.total) > 0.001:  # 부동 소수점 비교를 위한 오차 허용
+            raise ValueError(f"Payment amount {amount} does not match order total {order.total}.")
+
+        payment_id = len(self.payments) + 1
+        payment = Payment(payment_id, order_id, amount, method)
+        self.payments[payment_id] = payment
         order.status = "CONFIRMED"
         return payment
 
-    def get_payment(self, payment_id):
-        return self.payments.get(payment_id)
+    def get_payment(self, order_id: int) -> Optional[Payment]:
+        """해당 주문의 결제 정보 반환."""
+        for payment in self.payments.values():
+            if payment.order_id == order_id:
+                return payment
+        return None
 
-    def refund_payment(self, payment_id):
-        payment = self.get_payment(payment_id)
+    def get_order_history(self) -> List[Order]:
+        """모든 주문 이력 반환 (CANCELLED 주문 포함), 생성 시각 기준으로 정렬."""
+        return sorted(self.orders.values(), key=lambda order: order.created_at)
+
+    def get_orders_by_status(self, status: str) -> List[Order]:
+        """지정된 상태의 주문 목록 반환."""
+        return [order for order in self.orders.values() if order.status == status]
+
+    def refund_payment(self, order_id: int) -> None:
+        """결제 환불 처리."""
+        order = self.get_order(order_id)
+        if not order:
+            raise ValueError(f"Order with ID {order_id} not found.")
+
+        payment = self.get_payment(order_id)
         if not payment:
-            raise ValueError(f"Payment ID {payment_id} does not exist")
+            raise ValueError(f"Payment for order {order_id} not found.")
 
         if payment.refunded:
-            raise ValueError(f"Payment {payment_id} has already been refunded")
+            raise ValueError(f"Payment for order {order_id} is already refunded.")
 
         payment.refunded = True
-        order_id = payment.order_id
-        order = self.get_order(order_id)
-        if order:
-            order.status = "REFUNDED"  # Add REFUNDED status
+        order.status = "REFUNDED"
 
-    def get_refunded_orders(self):
+    def get_refunded_orders(self) -> List[Order]:
+        """refunded=True인 모든 주문 반환."""
         refunded_orders = []
-        for order_id, order in self.orders.items():
-            if order.status == "REFUNDED":
-                refunded_orders.append((order_id, order))
+        for order in self.orders.values():
+            payment = self.get_payment(order.order_id)
+            if payment and payment.refunded:
+                refunded_orders.append(order)
         return refunded_orders
 
-    def get_order_history(self):
-        return sorted([(order_id, order) for order_id, order in self.orders.items()],
-                      key=lambda item: item[1].created_at, reverse=True)
 
-    def get_orders_by_status(self, status):
-        return [(order_id, order) for order_id, order in self.orders.items() if order.status == status]
+@dataclass
+class Payment:
+    payment_id: int
+    order_id: int
+    amount: float
+    method: str
+    refunded: bool = False  # 추가된 refunded 필드
 
-import datetime
 
-# Example Usage (Illustrative -  replace with your actual setup)
-order_manager = OrderManager()
-item1 = Item("Product A", 10.0, 5)
-item2 = Item("Product B", 20.0, 2)
+class Inventory:
+    def get_stock(self, item_name):
+        return 0
 
-order_manager.add_order(1, [item1, item2])
-payment = order_manager.process_payment(1, 30.0, "Credit Card")
 
-order_manager.refund_payment(payment.payment_id)
+# 수정된 코드 테스트
+if __name__ == '__main__':
+    inventory = Inventory()
+    order_manager = OrderManager()
 
-refunded_orders = order_manager.get_refunded_orders()
-print(f"Refunded Orders: {refunded_orders}")
+    try:
+        order_manager.add_order(1, [Item("item1", 10.0, 1, 0)], inventory)
+        order_manager.process_payment(1, 10.0, "credit")
+    except ValueError as e:
+        print(f"Error: {e}")
+
+    try:
+        order_manager.process_payment(1, 10.0, "credit")
+    except ValueError as e:
+        print(f"Error: {e}")
+
+    try:
+        order_manager.refund_payment(1)
+    except ValueError as e:
+        print(f"Error: {e}")
+
+    print("Refunded Orders:")
+    for order in order_manager.get_refunded_orders():
+        print(order)

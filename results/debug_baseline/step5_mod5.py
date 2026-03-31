@@ -15,21 +15,22 @@ class Order:
     STATUS_SHIPPED = "SHIPPED"
     STATUS_CANCELLED = "CANCELLED"
 
-    def __init__(self, order_id, items, discount_percent=0.0, status=STATUS_PENDING):
+    def __init__(self, order_id, items, status=STATUS_PENDING):
         self.order_id = order_id
         self.items = items
-        self.discount_percent = discount_percent
         self.status = status
+        self.discount_percent = 0.0
         self.total = self.calculate_total()
 
     def calculate_total(self):
-        subtotal = 0
+        total = 0
         for item in self.items:
-            subtotal += item.price * item.quantity
-        return subtotal * (1 - self.discount_percent)
+            total += item.price * item.quantity
+        total -= total * self.discount_percent
+        return total
 
     def __str__(self):
-        return f"Order ID: {self.order_id}, Items: {self.items}, Discount: {self.discount_percent:.2f}, Total: {self.total:.2f}, Status: {self.status}"
+        return f"Order ID: {self.order_id}, Items: {self.items}, Status: {self.status}, Discount: {self.discount_percent:.2f}, Total: {self.total:.2f}"
 
 
 class Payment:
@@ -54,7 +55,7 @@ class Inventory:
     def reduce_stock(self, item_name, quantity):
         item = self.items.get(item_name)
         if not item:
-            raise ValueError(f"재고에 {item_name}이(가) 없습니다.")
+            raise ValueError(f"Item not found: {item_name}")
         if item.stock < quantity:
             raise ValueError(f"재고 부족: {item_name}")
         item.stock -= quantity
@@ -72,10 +73,12 @@ class OrderManager:
             for item in items:
                 inventory.reduce_stock(item.name, item.quantity)
         except ValueError as e:
-            raise e  # Re-raise the stock-related ValueError
+            print(f"Error adding order: {e}")
+            return None
 
         order = Order(order_id, items)
         self.orders[order_id] = order
+        return order
 
     def get_order(self, order_id):
         return self.orders.get(order_id)
@@ -83,33 +86,27 @@ class OrderManager:
     def cancel_order(self, order_id):
         order = self.get_order(order_id)
         if not order:
-            return  # Order not found, nothing to cancel
+            print(f"Error: Order with ID {order_id} not found.")
+            return
 
-        if order.status in (Order.STATUS_PENDING, Order.STATUS_CONFIRMED):
+        if order.status == Order.STATUS_SHIPPED:
+            raise ValueError("배송 중인 주문은 취소할 수 없습니다")
+        elif order.status in (Order.STATUS_PENDING, Order.STATUS_CONFIRMED):
             order.status = Order.STATUS_CANCELLED
         else:
-            raise ValueError("배송 중인 주문은 취소할 수 없습니다")
-
-    def confirm_order(self, order_id):
-        order = self.get_order(order_id)
-        if order and order.status == Order.STATUS_PENDING:
-            order.status = Order.STATUS_CONFIRMED
-            order.total = order.calculate_total()
-
-    def ship_order(self, order_id):
-        order = self.get_order(order_id)
-        if order and order.status == Order.STATUS_CONFIRMED:
-            order.status = Order.STATUS_SHIPPED
+            print(f"Error: Cannot cancel order {order_id} with status {order.status}")
 
     def list_orders(self):
         return list(self.orders.values())
 
     def apply_discount(self, order_id, discount_percent):
-        if 0.0 <= discount_percent <= 1.0:
-            order = self.get_order(order_id)
-            if order:
+        order = self.get_order(order_id)
+        if order:
+            if 0.0 <= discount_percent <= 1.0:
                 order.discount_percent = discount_percent
                 order.total = order.calculate_total()
+            else:
+                print("Error: Discount percent must be between 0.0 and 1.0")
 
     def get_order_total(self, order_id):
         order = self.get_order(order_id)
@@ -118,85 +115,111 @@ class OrderManager:
         else:
             return None
 
+    def confirm_order(self, order_id):
+        order = self.get_order(order_id)
+        if order and order.status == Order.STATUS_PENDING:
+            order.status = Order.STATUS_CONFIRMED
+            order.total = order.calculate_total()
+        else:
+            print(f"Error: Cannot confirm order {order_id} with status {order.status if order else 'not found'}")
+
+    def ship_order(self, order_id):
+        order = self.get_order(order_id)
+        if order and order.status == Order.STATUS_CONFIRMED:
+            order.status = Order.STATUS_SHIPPED
+        else:
+            print(f"Error: Cannot ship order {order_id} with status {order.status if order else 'not found'}")
+
     def process_payment(self, order_id, amount, method):
         order = self.get_order(order_id)
         if not order:
-            raise ValueError("주문이 존재하지 않습니다.")
+            print(f"Error: Order with ID {order_id} not found.")
+            return None
 
-        if abs(amount - order.total) > 0.01:  # Allow for small floating-point differences
-            raise ValueError(f"결제 금액이 주문 총액과 일치하지 않습니다. 주문 총액: {order.total:.2f}, 결제 금액: {amount:.2f}")
+        if abs(amount - order.total) > 0.01:  # Allow for small floating-point errors
+            raise ValueError(f"Payment amount does not match order total. Expected: {order.total:.2f}, Received: {amount:.2f}")
 
-        payment_id = self.next_payment_id
+        payment = Payment(self.next_payment_id, order_id, amount, method)
         self.next_payment_id += 1
-        payment = Payment(payment_id, order_id, amount, method)
-        self.payments[payment_id] = payment
-        order.status = Order.STATUS_CONFIRMED  # Update order status to confirmed after payment
+        self.payments[order_id] = payment
         return payment
 
     def get_payment(self, order_id):
-        for payment_id, payment in self.payments.items():
-            if payment.order_id == order_id:
-                return payment
-        return None
+        return self.payments.get(order_id)
 
 
 # Example Usage
-inventory = Inventory()
-inventory.add_item("Laptop", 1200, 5)
-inventory.add_item("Mouse", 25, 10)
-inventory.add_item("Keyboard", 75, 8)
+if __name__ == '__main__':
+    inventory = Inventory()
+    inventory.add_item("Laptop", 1200.00, 5)
+    inventory.add_item("Mouse", 25.00, 10)
+    inventory.add_item("Keyboard", 75.00, 7)
 
-order_manager = OrderManager(inventory)
+    order_manager = OrderManager(inventory)
 
-try:
     # Create an order
     items = [
-        Item("Laptop", 1200, 1, 0),
-        Item("Mouse", 25, 2, 0),
-        Item("Keyboard", 75, 1, 0)
+        Item("Laptop", 1200.00, 1, 0),
+        Item("Mouse", 25.00, 1, 0),
+        Item("Keyboard", 75.00, 1, 0)
     ]
-    order_manager.add_order(1, items, inventory)
+    order = order_manager.add_order(1, items, inventory)
 
-    # List orders
-    print("\nOrders:")
+    if order:
+        print(f"Order created: {order}")
+
+    # List all orders
+    print("\nAll Orders:")
     for order in order_manager.list_orders():
         print(order)
 
-    # Apply discount
-    order_manager.apply_discount(1, 0.1)
+    # Apply discount to order 1
+    order_manager.apply_discount(1, 0.1)  # 10% discount
 
     # List orders after discount
     print("\nOrders after discount:")
     for order in order_manager.list_orders():
         print(order)
 
-    # Get total
+    # Get total for order 2
     total = order_manager.get_order_total(1)
-    print(f"\nTotal for Order 1: {total:.2f}")
+    if total:
+        print(f"\nTotal for Order 1: {total:.2f}")
 
-    # Confirm order
+    # Confirm order 2
     order_manager.confirm_order(1)
-    print("\nOrder 1 after confirmation:")
-    print(order_manager.get_order(1))
 
-    # Ship order
+    # Process payment for order 1
+    try:
+        payment = order_manager.process_payment(1, 1225.00, "Credit Card")
+        if payment:
+            print(f"\nPayment processed: {payment}")
+    except ValueError as e:
+        print(f"\nError processing payment: {e}")
+
+    # Ship order 2
     order_manager.ship_order(1)
-    print("\nOrder 1 after shipping:")
-    print(order_manager.get_order(1))
 
-    # Cancel order
-    order_manager.cancel_order(1)
-    print("\nOrder 1 after cancellation:")
-    print(order_manager.get_order(1))
+    # Cancel order 1
+    try:
+        order_manager.cancel_order(1)
+    except ValueError as e:
+        print(f"\nError cancelling order 1: {e}")
 
-    # Process payment
-    payment = order_manager.process_payment(1, order_manager.get_order(1).total, "Credit Card")
-    print(f"\nPayment processed: {payment}")
+    # List orders after cancellation
+    print("\nOrders after cancellation:")
+    for order in order_manager.list_orders():
+        print(order)
 
-    # Get payment details
+    # Attempt to cancel a shipped order (should raise ValueError)
+    order_manager.add_order(2, items, inventory)
+
+    try:
+        order_manager.cancel_order(2)
+    except ValueError as e:
+        print(f"\nError cancelling order 2: {e}")
+
+    # Get payment for order 1
     payment = order_manager.get_payment(1)
     if payment:
-        print(f"\nPayment details for order 1: {payment}")
-
-except ValueError as e:
-    print(f"\nError: {e}")
+        print(f

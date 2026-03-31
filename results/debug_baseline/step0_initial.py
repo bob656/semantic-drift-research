@@ -40,8 +40,6 @@ if __name__ == "__main__":
     order = order_manager.get_order(2)
     if order:
         print(order)
-    else:
-        print("Order not found")
 
     # List all orders
     print("\nAll Orders:")

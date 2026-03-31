@@ -47,25 +47,14 @@ if __name__ == "__main__":
     order_manager = OrderManager()
 
     # Add orders
-    order_manager.add_order(1, [
-        Item("Laptop", 1200.00, 1),
-        Item("Mouse", 25.00, 1)
-    ])
-    order_manager.add_order(2, [
-        Item("Keyboard", 75.00, 1),
-        Item("Monitor", 275.00, 1)
-    ])
-    order_manager.add_order(3, [
-        Item("Webcam", 50.00, 1),
-        Item("Microphone", 100.00, 1)
-    ])
+    order_manager.add_order(1, [Item("Laptop", 1200.00, 1), Item("Mouse", 25.00, 1)])
+    order_manager.add_order(2, [Item("Keyboard", 75.00, 1), Item("Monitor", 275.00, 1)])
+    order_manager.add_order(3, [Item("Webcam", 50.00, 1), Item("Microphone", 100.00, 1)])
 
     # Get an order
     order = order_manager.get_order(2)
     if order:
         print(order)
-    else:
-        print("Order not found")
 
     # List all orders
     print("\nAll Orders:")
