@@ -1,179 +1,232 @@
-from dataclasses import dataclass
-from typing import List, Dict, Optional
-
-@dataclass
 class Item:
-    name: str
-    price: float
-    quantity: int
+    """아이템 클래스"""
+
+    def __init__(self, name, price, quantity):
+        """
+        아이템 객체를 초기화합니다.
+
+        Args:
+            name (str): 아이템 이름.
+            price (float): 아이템 가격.
+            quantity (int): 아이템 수량.
+        """
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+
+    def __repr__(self):
+        """아이템 객체의 문자열 표현을 반환합니다."""
+        return f"Item(name={self.name}, price={self.price}, quantity={self.quantity})"
 
 
 class Order:
-    def __init__(self, order_id: int, items: List[Item]):
+    """주문 클래스"""
+
+    def __init__(self, order_id, items, total, discount_percent=0.0, status="PENDING"):
+        """
+        주문 객체를 초기화합니다.
+
+        Args:
+            order_id (int): 주문 ID.
+            items (list of Item): 주문 항목 목록.
+            total (float): 주문 총액.
+            discount_percent (float): 할인율 (0.0~1.0).
+            status (str): 주문 상태.
+        """
         self.order_id = order_id
         self.items = items
-        self.discount_percent: float = 0.0  # 할인율 필드 추가
-        self.total = self.calculate_total()
-        self.status: str = "PENDING"  # 주문 상태 추가
+        self.total = total
+        self.discount_percent = discount_percent
+        self.status = status
 
     def __repr__(self):
-        return f"Order(order_id={self.order_id}, items={self.items}, total={self.total}, status={self.status})"
+        """주문 객체의 문자열 표현을 반환합니다."""
+        return (
+            f"Order(order_id={self.order_id}, items={self.items}, total={self.total}, discount_percent={self.discount_percent}, status={self.status})"
+        )
 
-    def calculate_total(self) -> float:
-        total = 0.0
-        for item in self.items:
-            total += item.price * item.quantity
-        return total * (1 - self.discount_percent)
+
+class Payment:
+    """결제 클래스"""
+
+    def __init__(self, payment_id, order_id, amount, method):
+        """
+        결제 객체를 초기화합니다.
+
+        Args:
+            payment_id (int): 결제 ID.
+            order_id (int): 주문 ID.
+            amount (float): 결제 금액.
+            method (str): 결제 방법.
+        """
+        self.payment_id = payment_id
+        self.order_id = order_id
+        self.amount = amount
+        self.method = method
+
+    def __repr__(self):
+        """결제 객체의 문자열 표현을 반환합니다."""
+        return f"Payment(payment_id={self.payment_id}, order_id={self.order_id}, amount={self.amount}, method={self.method})"
 
 
 class OrderManager:
+    """주문 관리 클래스"""
+
     def __init__(self):
-        self.orders: Dict[int, Order] = {}  # order_id를 키로 사용
-        self.payments: Dict[int, Payment] = {}  # payment_id를 키로 사용
+        """주문 관리 객체를 초기화합니다."""
+        self.orders = {}  # 주문 ID를 키로, 주문 객체를 값으로 하는 딕셔너리
+        self.payments = {} # 결제 ID를 키로, 결제 객체를 값으로 하는 딕셔너리
 
-    def add_order(self, order_id: int, items: List[Item]) -> None:
-        """주문 추가. order_id 중복 검사 수행."""
+    def add_order(self, order_id, items, total):
+        """
+        주문을 추가합니다.
+
+        Args:
+            order_id (int): 주문 ID.
+            items (list of Item): 주문 항목 목록.
+            total (float): 주문 총액.
+        """
         if order_id in self.orders:
-            raise ValueError(f"Order ID {order_id} already exists.")
-        self.orders[order_id] = Order(order_id, items)
+            print(f"오류: 주문 ID {order_id}가 이미 존재합니다.")
+            return
 
-    def get_order(self, order_id: int) -> Optional[Order]:
-        """주문 ID에 해당하는 주문 조회. 주문이 없으면 None 반환."""
-        return self.orders.get(order_id)
+        # total을 계산된 값으로 대체
+        calculated_total = sum(item.price * item.quantity for item in items)
+        new_order = Order(order_id, items, calculated_total)
+        self.orders[order_id] = new_order
+        print(f"주문 {order_id}가 추가되었습니다.")
 
-    def list_orders(self) -> List[Order]:
-        """모든 주문 목록 반환."""
-        return list(self.orders.values())
+    def get_order(self, order_id):
+        """
+        주문 ID를 기준으로 주문을 조회합니다.
 
-    def apply_discount(self, order_id: int, discount_percent: float) -> None:
-        """주문에 할인율 적용."""
-        if not 0.0 <= discount_percent <= 1.0:
-            raise ValueError("Discount percent must be between 0.0 and 1.0")
+        Args:
+            order_id (int): 주문 ID.
+
+        Returns:
+            Order: 주문 객체. 주문이 없으면 None을 반환합니다.
+        """
+        if order_id in self.orders:
+            return self.orders[order_id]
+        else:
+            print(f"주문 ID {order_id}를 찾을 수 없습니다.")
+            return None
+
+    def cancel_order(self, order_id):
+        """
+        주문 ID를 기준으로 주문을 취소합니다.
+
+        Args:
+            order_id (int): 주문 ID.
+        """
+        order = self.get_order(order_id)
+        if order:
+            if order.status in ("PENDING", "CONFIRMED"):
+                order.status = "CANCELLED"
+                print(f"주문 {order_id}가 취소되었습니다.")
+            elif order.status == "SHIPPED":
+                raise ValueError("배송 중인 주문은 취소할 수 없습니다")
+            else:
+                print(f"주문 {order_id}는 이미 {order.status} 상태입니다.")
+        else:
+            print(f"주문 ID {order_id}를 찾을 수 없습니다.")
+
+    def list_orders(self):
+        """
+        모든 주문 목록을 반환합니다.
+
+        Returns:
+            list of Order: 주문 객체 목록.
+        """
+        if not self.orders:
+            print("주문이 없습니다.")
+            return []
+        else:
+            return list(self.orders.values())
+
+    def apply_discount(self, order_id, discount_percent):
+        """
+        주문에 할인율을 적용합니다.
+        """
         order = self.get_order(order_id)
         if order:
             order.discount_percent = discount_percent
-            order.total = order.calculate_total()
+            order.total = order.total * (1 - discount_percent)
+            print(f"주문 {order_id}에 {discount_percent * 100}% 할인이 적용되었습니다.")
+        else:
+            print(f"주문 ID {order_id}를 찾을 수 없습니다.")
 
-    def get_order_total(self, order_id: int) -> float:
-        """주문 ID에 해당하는 주문의 최종 금액 반환."""
+    def get_order_total(self, order_id):
+        """
+        주문의 총액을 반환합니다.
+
+        Args:
+            order_id (int): 주문 ID.
+
+        Returns:
+            float: 주문 총액. 주문이 없으면 None을 반환합니다.
+        """
         order = self.get_order(order_id)
         if order:
             return order.total
         else:
-            return 0.0
+            return None
 
-    def confirm_order(self, order_id: int) -> None:
-        """주문 상태를 PENDING에서 CONFIRMED로 변경."""
+    def confirm_order(self, order_id):
+        """
+        주문 상태를 PENDING에서 CONFIRMED로 변경합니다.
+        """
         order = self.get_order(order_id)
         if order and order.status == "PENDING":
             order.status = "CONFIRMED"
+            print(f"주문 {order_id}가 확인되었습니다.")
+        elif order:
+            print(f"주문 {order_id}는 이미 {order.status} 상태입니다.")
+        else:
+            print(f"주문 ID {order_id}를 찾을 수 없습니다.")
 
-    def ship_order(self, order_id: int) -> None:
-        """주문 상태를 CONFIRMED에서 SHIPPED로 변경."""
+    def ship_order(self, order_id):
+        """
+        주문 상태를 CONFIRMED에서 SHIPPED로 변경합니다.
+        """
         order = self.get_order(order_id)
         if order and order.status == "CONFIRMED":
             order.status = "SHIPPED"
+            print(f"주문 {order_id}가 배송되었습니다.")
+        elif order:
+            print(f"주문 {order_id}는 이미 {order.status} 상태입니다.")
+        else:
+            print(f"주문 ID {order_id}를 찾을 수 없습니다.")
 
-    def cancel_order(self, order_id: int) -> None:
-        """주문 상태를 CANCELLED로 변경. PENDING 또는 CONFIRMED 상태에서만 가능."""
+    def process_payment(self, order_id, amount, method):
+        """
+        결제를 처리합니다.
+
+        Args:
+            order_id (int): 주문 ID.
+            amount (float): 결제 금액.
+            method (str): 결제 방법.
+
+        Returns:
+            Payment: 결제 객체.
+        """
         order = self.get_order(order_id)
         if not order:
-            return  # 주문이 없으면 아무것도 하지 않음
-        if order.status == "SHIPPED":
-            raise ValueError("배송 중인 주문은 취소할 수 없습니다")
-        if order.status in ("PENDING", "CONFIRMED"):
-            order.status = "CANCELLED"
+            raise ValueError(f"주문 ID {order_id}를 찾을 수 없습니다.")
 
-    def process_payment(self, order_id: int, amount: float, method: str) -> Payment:
-        """결제 처리."""
-        order = self.get_order(order_id)
-        if not order:
-            raise ValueError(f"Order with ID {order_id} not found.")
-
-        if abs(amount - order.total) > 0.001:  # 부동 소수점 비교를 위한 오차 허용
-            raise ValueError(f"Payment amount {amount} does not match order total {order.total}.")
+        if order.total != amount:
+            raise ValueError(f"결제 금액이 주문 총액과 일치하지 않습니다. 주문 총액: {order.total}, 결제 금액: {amount}")
 
         payment_id = len(self.payments) + 1
         payment = Payment(payment_id, order_id, amount, method)
         self.payments[payment_id] = payment
         order.status = "CONFIRMED"
+        print(f"주문 {order_id} 결제가 성공적으로 처리되었습니다. 결제 방법: {method}")
         return payment
 
-    def get_payment(self, order_id: int) -> Optional[Payment]:
-        """해당 주문의 결제 정보 반환."""
-        for payment in self.payments.values():
-            if payment.order_id == order_id:
-                return payment
-        return None
+    def get_payment(self, order_id):
+        """
+        해당 주문의 결제 정보를 반환합니다.
 
-
-@dataclass
-class Payment:
-    payment_id: int
-    order_id: int
-    amount: float
-    method: str
-
-
-# 사용 예제
-if __name__ == "__main__":
-    # OrderManager 인스턴스 생성
-    order_manager = OrderManager()
-
-    # 주문 추가
-    try:
-        order_manager.add_order(1, [Item("item1", 10.0, 2), Item("item2", 20.0, 1)])
-        order_manager.add_order(2, [Item("item3", 5.0, 10)])
-    except ValueError as e:
-        print(f"Error adding order: {e}")
-        exit()
-
-    # 주문 조회
-    order = order_manager.get_order(1)
-    if order:
-        print(f"Order ID: {order.order_id}, Items: {order.items}, Total: {order.total}, Status: {order.status}")
-
-    # 주문 목록 확인
-    orders = order_manager.list_orders()
-    for order in orders:
-        print(f"Order ID: {order.order_id}, Total: {order.total}, Status: {order.status}")
-
-    # 주문 확정
-    order_manager.confirm_order(1)
-    order = order_manager.get_order(1)
-    if order:
-        print(f"Order ID: {order.order_id}, Status: {order.status}")
-
-    # 배송
-    order_manager.ship_order(1)
-    order = order_manager.get_order(1)
-    if order:
-        print(f"Order ID: {order.order_id}, Status: {order.status}")
-
-    # 취소 시도
-    try:
-        order_manager.cancel_order(2)
-    except ValueError as e:
-        print(f"Error cancelling order: {e}")
-
-    order = order_manager.get_order(2)
-    if order:
-        print(f"Order ID: {order.order_id}, Status: {order.status}")
-
-    # 배송 중인 주문 취소 시도
-    try:
-        order_manager.cancel_order(1)
-    except ValueError as e:
-        print(f"Error cancelling order: {e}")
-
-    # 결제 처리
-    try:
-        payment = order_manager.process_payment(1, order_manager.get_order(1).total, "credit_card")
-        print(f"Payment ID: {payment.payment_id}, Order ID: {payment.order_id}, Amount: {payment.amount}, Method: {payment.method}")
-    except ValueError as e:
-        print(f"Error processing payment: {e}")
-
-    # 결제 정보 조회
-    payment = order_manager.get_payment(1)
-    if payment:
-        print(f"Payment ID: {payment.payment_id}, Order ID: {payment.order_id}, Amount: {payment.amount}, Method: {payment.method}")
+        Args:
+            order_id (int): 주문

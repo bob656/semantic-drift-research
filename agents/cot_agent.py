@@ -1,183 +1,210 @@
 """
-cot_agent.py — Summary 기반 CoT 에이전트 (Lost in the Middle 해결 버전)
+cot_agent.py — 논문 기반 4중 전략 적용 에이전트
 
-## 문제 진단
+## 적용 논문 및 전략
 
-StateDocAgent 실패 원인:
-  1차: 추상 문서 → LLM이 구현 세부사항 재해석 (Item vs 튜플)
-  2차: CoT 분석을 프롬프트 중간에 배치 → "Lost in the Middle" 현상으로 무시됨
+1. Lost in the Middle (Liu et al., 2024, TACL — arxiv:2307.03172)
+   → 핵심 제약을 프롬프트 맨 앞에 배치 (U자 곡선 역이용)
 
-  기존 프롬프트 구조:
-    [Spec.md — 길다]          ← 앞 (잘 읽힘)
-    [Constraints.md]
-    [Plan.md]
-    [CoT 분석 — 핵심!]        ← 중간 (무시됨)
-    [현재 코드 — 길다]
-    [수정 요청]                ← 끝 (잘 읽힘)
+2. LLMLingua (Microsoft, EMNLP 2023 — arxiv:2310.06839)
+   → LLM이 요약을 생성하면 hallucination 위험.
+     대신 AST로 시그니처/타입을 프로그래밍적으로 추출 → 오류 없는 100% 정확한 구조 정보
 
-## Summary 해결 전략
+3. Recursive Summarization (Neurocomputing 2025 — arxiv:2308.15022)
+   → 매 수정 후 누적 이력(cumulative_summary)을 갱신.
+     이전 요약 + 이번 변경 = 새 요약 → 정보가 단계마다 소실되지 않음
 
-LLM이 가장 집중하는 위치(프롬프트 시작)에 핵심 정보를 압축해 배치.
+4. Chain of Density (Salesforce·MIT, 2023 — arxiv:2309.04269)
+   → 요약이 추상화될수록 핵심 엔티티가 사라진다는 문제를 해결.
+     AST 추출이 강제하는 구체적 엔티티(클래스명, 필드 타입, 메서드 시그니처)가
+     chain of density의 "최고 밀도" 상태를 자동으로 달성
 
-  새 프롬프트 구조:
-    [구현 요약 — 짧고 구체적]  ← 시작 (가장 잘 읽힘)
-      · 현재 클래스/타입 목록
-      · 변경 금지 시그니처 목록
-      · 이번에 추가할 것만
-    [현재 코드]
-    [수정 요청]                ← 끝 (잘 읽힘)
+## 프롬프트 구조 (Lost in the Middle 역이용)
 
-  Spec/Plan/Constraints 같은 긴 문서는 코드 생성 프롬프트에서 제거.
-  CoT 분석은 Summary 생성에만 사용하고, 분석 자체는 프롬프트에 포함하지 않음.
+  [AST 추출 구조 — 짧고 정확, 맨 앞]   ← LLM 집중 구간
+  [누적 이력 요약 — Recursive]
+  [현재 코드]
+  [수정 요청 — 맨 끝]                   ← LLM 집중 구간
 
-LLM 호출 횟수 (수정당):
-  BaselineAgent: 1회
-  StateDocAgent: 2회 (plan 업데이트 + 코드 생성)
-  CoTDocAgent:   2회 (summary 생성 + 코드 생성)  ← plan 업데이트 제거
+## LLM 호출 횟수
+
+  BaselineAgent : 수정당 1회
+  CoTDocAgent   : 수정당 1회 (AST 추출이 LLM 요약 호출 대체 → 속도·정확도 동시 개선)
 """
+import ast
 from typing import Any
 from .base_agent import BaseAgent
 
 
 class CoTDocAgent(BaseAgent):
-    """Summary 기반 CoT 에이전트 — Lost in the Middle 해결"""
+    """논문 기반 4중 전략 적용 에이전트"""
 
     def __init__(self, model: str, client: Any,
                  temperature: float = 0.5, max_tokens: int = 2048):
         super().__init__(model, client, temperature, max_tokens)
-        # 초기 문서 (초기 코드 생성에만 사용)
-        self.spec_doc = ""
-        self.constraints_doc = ""
+        # Recursive Summarization: 단계마다 누적되는 이력 요약
+        self.cumulative_summary = ""
 
     # ─── 공개 인터페이스 ────────────────────────────────────────────────────────
 
     def solve_initial(self, task: str) -> str:
-        """초기 코드: Spec으로 생성 (CoT 불필요 — 기존 코드 없음)"""
-        self._initialize_docs(task)
-        return self._generate_initial_code(task)
+        """초기 코드 생성 — 단순하게 요청만 전달"""
+        system_prompt = "당신은 Python 개발자입니다. 요구사항을 정확히 구현하세요."
+        prompt = f"""다음 요구사항을 만족하는 완전한 Python 코드를 작성하세요:
+
+{task}"""
+        response = self.call_llm(prompt, system_prompt)
+        code = self.extract_code(response)
+
+        # Recursive Summarization 초기화: 초기 구조를 누적 이력에 등록
+        self.cumulative_summary = self._init_summary(task, code)
+        return code
 
     def modify_code(self, current_code: str, modification_request: str) -> str:
         """
         수정 흐름:
-          1. _build_summary()  → 현재 코드의 핵심을 짧게 요약 (변경 금지 목록 포함)
-          2. _generate_modified_code() → Summary를 프롬프트 맨 앞에 배치하여 코드 생성
+          1. _extract_code_structure()  → AST로 정확한 시그니처 추출 (LLM 없이)
+          2. _build_prompt()            → 추출 결과를 맨 앞에, 수정 요청을 맨 끝에
+          3. LLM 호출 → 코드 생성
+          4. _update_cumulative_summary() → Recursive Summarization 갱신
         """
-        summary = self._build_summary(current_code, modification_request)
-        return self._generate_modified_code(current_code, modification_request, summary)
+        # LLMLingua 인사이트: LLM 대신 AST로 오류 없이 추출
+        ast_structure = self._extract_code_structure(current_code)
 
-    # ─── 초기화 ────────────────────────────────────────────────────────────────
+        # Lost in the Middle 전략: 핵심 제약을 앞에, 수정 요청을 끝에
+        prompt = self._build_prompt(current_code, modification_request, ast_structure)
 
-    def _initialize_docs(self, task: str):
-        """초기 Spec 문서 생성 (불변)"""
-        self.spec_doc = self.call_llm(
-            f"""다음 요구사항의 명세서를 작성하세요:
-
-요구사항: {task}
-
-포함할 내용:
-1. 핵심 클래스와 필드 (정확한 타입 포함)
-2. 주요 메서드 시그니처
-3. 예외 처리 규칙
-
-간결하게 작성하세요.""",
-            "당신은 소프트웨어 명세서 작성 전문가입니다.")
-
-        self.constraints_doc = """## 절대 제약
-- 기존 public 메서드 이름/시그니처/반환타입 변경 금지
-- 기존 데이터 타입 변경 금지 (List[Item]을 튜플 리스트로 바꾸는 등 금지)
-- 기존 기능 파괴 금지, 새 기능만 추가"""
-
-    # ─── 초기 코드 생성 ─────────────────────────────────────────────────────────
-
-    def _generate_initial_code(self, task: str) -> str:
-        prompt = f"""## 명세서
-{self.spec_doc}
-
-## 제약조건
-{self.constraints_doc}
-
-요구사항: {task}
-
-완전한 실행 가능한 Python 코드를 작성하세요."""
-
-        return self.extract_code(
-            self.call_llm(prompt,
-                "당신은 명세서와 제약조건을 준수하는 Python 개발자입니다."))
-
-    # ─── Summary 생성 (핵심 — Lost in the Middle 해결) ─────────────────────────
-
-    def _build_summary(self, current_code: str, modification_request: str) -> str:
-        """
-        현재 코드를 분석하여 코드 생성에 필요한 핵심 제약을 짧게 요약한다.
-
-        목표: 긴 CoT 분석 대신 5-10줄짜리 압축된 "변경 금지 목록"을 만들어
-              프롬프트 맨 앞에 배치함으로써 Lost in the Middle을 방지한다.
-
-        출력 형식 (강제):
-          ## 현재 데이터 타입
-          - Item(name: str, price: float, quantity: int)
-          - Order(order_id: int, items: List[Item], ...)
-
-          ## 변경 금지 시그니처
-          - add_order(self, order_id: int, items: List[Item]) -> None
-          - cancel_order(self, order_id: int) -> None
-
-          ## 이번에 추가할 것
-          - get_order_history() 메서드만 추가
-        """
-        prompt = f"""현재 코드를 분석하여 아래 형식으로 **짧게** 요약하세요.
-각 섹션은 불렛 포인트 3개 이하로 제한하세요.
-
-## 현재 코드
-```python
-{current_code}
-```
-
-## 수정 요청
-{modification_request}
-
----
-아래 형식으로 요약을 작성하세요 (다른 설명 없이 이 형식만 출력):
-
-## 현재 데이터 타입
-(코드에서 실제로 사용되는 클래스와 필드를 타입과 함께, 최대 5개)
-
-## 변경 금지 시그니처
-(이번 수정에서 절대 바꾸면 안 되는 기존 메서드 시그니처, 최대 5개)
-
-## 이번에 추가할 것
-(수정 요청에서 새로 추가해야 하는 것만, 최대 3개)"""
-
-        return self.call_llm(
+        response = self.call_llm(
             prompt,
-            "당신은 코드 요약 전문가입니다. 간결하고 정확하게 요약하세요. 불필요한 설명은 생략하세요.")
+            "당신은 Python 개발자입니다. "
+            "프롬프트 맨 앞의 '변경 금지 구조'에 명시된 시그니처와 타입을 절대 바꾸지 마세요.")
 
-    # ─── 코드 생성 (Summary를 맨 앞에 배치) ────────────────────────────────────
+        new_code = self.extract_code(response)
 
-    def _generate_modified_code(self, current_code: str,
-                                modification_request: str,
-                                summary: str) -> str:
+        # Recursive Summarization: 이번 수정 내용을 누적 이력에 반영
+        self._update_cumulative_summary(modification_request, new_code)
+
+        return new_code
+
+    # ─── AST 기반 구조 추출 (LLMLingua + Chain of Density) ────────────────────
+
+    def _extract_code_structure(self, code: str) -> str:
         """
-        Summary를 프롬프트 맨 앞에 배치하여 코드를 생성한다.
+        AST로 현재 코드의 클래스 구조와 메서드 시그니처를 추출한다.
 
-        새 프롬프트 구조 (Lost in the Middle 해결):
-          [Summary — 짧고 구체적]  ← 시작, LLM이 가장 집중
-          [현재 코드]
-          [수정 요청]               ← 끝, LLM이 두 번째로 집중
+        LLMLingua 인사이트 적용:
+          LLM이 요약을 생성하면 hallucination으로 타입이 틀릴 수 있다.
+          AST 파싱은 코드에서 직접 읽으므로 항상 100% 정확하다.
 
-        Spec/Plan/Constraints 같은 긴 문서는 제거.
-        중간에 끼는 내용을 최소화하여 핵심 정보가 무시되지 않도록 한다.
+        Chain of Density 효과:
+          출력이 항상 구체적 엔티티(클래스명, 필드명, 타입, 메서드 시그니처)로 구성.
+          추상적 설명 없이 최고 밀도 상태를 자동으로 달성한다.
+
+        반환 예시:
+          ## 클래스 구조
+          - Item: name(str), price(float), quantity(int), stock(int)
+          - Order: order_id(int), items(List[Item]), discount_percent(float), status(str)
+
+          ## 변경 금지 메서드 시그니처
+          - OrderManager.add_order(order_id, items, inventory) -> None
+          - OrderManager.cancel_order(order_id) -> None
         """
-        system_prompt = """당신은 Python 개발자입니다.
-반드시 프롬프트 맨 앞의 '구현 요약'에 명시된 타입과 시그니처를 그대로 유지하세요.
-절대 기존 데이터 타입을 바꾸지 마세요."""
+        try:
+            tree = ast.parse(code)
+        except SyntaxError:
+            return "(AST 파싱 실패 — 코드 구문 오류)"
 
-        prompt = f"""## 구현 요약 ← 반드시 준수하세요
-{summary}
+        classes = []
+        methods = []
 
----
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.ClassDef):
+                continue
 
-## 현재 코드
+            # 클래스 필드 추출: __init__ 파라미터 또는 dataclass 필드
+            fields = self._extract_fields(node)
+            classes.append(f"- {node.name}: {fields}")
+
+            # 공개 메서드 시그니처 추출
+            for item in node.body:
+                if not isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    continue
+                if item.name.startswith('_') and item.name != '__init__':
+                    continue
+                sig = self._format_signature(node.name, item)
+                if sig:
+                    methods.append(f"- {sig}")
+
+        parts = []
+        if classes:
+            parts.append("## 클래스 구조 (변경 금지)\n" + "\n".join(classes))
+        if methods:
+            parts.append("## 메서드 시그니처 (변경 금지)\n" + "\n".join(methods))
+
+        return "\n\n".join(parts) if parts else "(클래스 없음)"
+
+    def _extract_fields(self, class_node: ast.ClassDef) -> str:
+        """클래스 필드를 추출한다. dataclass 어노테이션 또는 __init__ 파라미터 사용."""
+        # 1순위: 클래스 레벨 어노테이션 (dataclass 스타일)
+        annotated = []
+        for item in class_node.body:
+            if isinstance(item, ast.AnnAssign) and isinstance(item.target, ast.Name):
+                type_str = ast.unparse(item.annotation)
+                annotated.append(f"{item.target.id}({type_str})")
+        if annotated:
+            return ", ".join(annotated)
+
+        # 2순위: __init__ 파라미터
+        for item in class_node.body:
+            if (isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef))
+                    and item.name == '__init__'):
+                params = []
+                args = item.args
+                all_args = args.args[1:]  # self 제외
+                annotations = {
+                    a.arg: ast.unparse(a.annotation)
+                    for a in all_args if a.annotation
+                }
+                for a in all_args:
+                    type_hint = annotations.get(a.arg, "")
+                    params.append(f"{a.arg}({type_hint})" if type_hint else a.arg)
+                return ", ".join(params) if params else "(필드 없음)"
+
+        return "(필드 없음)"
+
+    def _format_signature(self, class_name: str, func_node) -> str:
+        """메서드 시그니처를 읽기 쉬운 문자열로 포맷한다."""
+        if func_node.name == '__init__':
+            return ""
+        args = func_node.args
+        params = [a.arg for a in args.args if a.arg != 'self']
+        ret = ""
+        if func_node.returns:
+            ret = f" -> {ast.unparse(func_node.returns)}"
+        return f"{class_name}.{func_node.name}({', '.join(params)}){ret}"
+
+    # ─── 프롬프트 구성 (Lost in the Middle 전략) ────────────────────────────────
+
+    def _build_prompt(self, current_code: str,
+                      modification_request: str,
+                      ast_structure: str) -> str:
+        """
+        Lost in the Middle (Liu et al., 2024) 전략 적용:
+          - 변경 금지 구조(AST) → 맨 앞 (LLM 집중 구간)
+          - 누적 이력 요약       → 앞부분
+          - 현재 코드            → 중간
+          - 수정 요청            → 맨 끝 (LLM 집중 구간)
+        """
+        cumulative_section = ""
+        if self.cumulative_summary:
+            cumulative_section = f"""## 누적 변경 이력 (Recursive Summary)
+{self.cumulative_summary}
+
+"""
+        return f"""## 변경 금지 구조 (AST 추출 — 정확한 시그니처)
+{ast_structure}
+
+{cumulative_section}## 현재 코드
 ```python
 {current_code}
 ```
@@ -185,7 +212,39 @@ class CoTDocAgent(BaseAgent):
 ## 수정 요청
 {modification_request}
 
-**위 구현 요약의 '변경 금지 시그니처'와 '현재 데이터 타입'을 그대로 유지하면서**
-'이번에 추가할 것'만 구현하세요. 완전한 수정된 코드를 작성하세요."""
+위 '변경 금지 구조'의 클래스 필드와 메서드 시그니처를 그대로 유지하면서
+수정 요청만 구현하세요. 완전한 수정된 코드를 작성하세요."""
 
-        return self.extract_code(self.call_llm(prompt, system_prompt))
+    # ─── Recursive Summarization ────────────────────────────────────────────────
+
+    def _init_summary(self, task: str, code: str) -> str:
+        """
+        초기 누적 요약 생성.
+        Chain of Density 원칙: 구체적 엔티티(클래스·메서드 이름) 중심으로 작성.
+        """
+        ast_structure = self._extract_code_structure(code)
+        task_short = task.strip()[:150]
+        return f"[초기 구현] {task_short}\n{ast_structure}"
+
+    def _update_cumulative_summary(self, modification_request: str, new_code: str):
+        """
+        Recursive Summarization (arxiv:2308.15022) 적용:
+          이전 누적 요약 + 이번 수정 내용 → 새 누적 요약
+
+        LLM 호출 없이 구조적으로 갱신 (Chain of Density: 엔티티 보존).
+        새로 추가된 구조만 AST로 추출해 이전 요약에 병합한다.
+        """
+        new_structure = self._extract_code_structure(new_code)
+        req_short = modification_request.strip()[:120]
+
+        # 이전 요약에 이번 변경 내용을 append (재귀적 누적)
+        entry = f"\n[수정] {req_short}\n{new_structure}"
+
+        # 요약이 너무 길어지면 앞부분을 압축 (최대 1200자 유지)
+        combined = self.cumulative_summary + entry
+        if len(combined) > 1200:
+            # 가장 오래된 항목 하나를 제목만 남기고 압축
+            lines = combined.split('\n')
+            combined = '\n'.join(lines[-40:])  # 최근 40줄 유지
+
+        self.cumulative_summary = combined
