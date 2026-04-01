@@ -27,29 +27,29 @@ class OrderManager:
         return list(self.orders.values())
 
 
-# Example Usage
-if __name__ == "__main__":
-    order_manager = OrderManager()
+# 사용 예제
+order_manager = OrderManager()
 
-    # Add orders
-    order_manager.add_order(1, ["Laptop", "Mouse"], 1200.00)
-    order_manager.add_order(2, ["Keyboard", "Monitor"], 350.00)
-    order_manager.add_order(3, ["Webcam", "Microphone"], 150.00)
+# 주문 추가
+order_manager.add_order(1, ["item1", "item2"], 100.0)
+order_manager.add_order(2, ["item3"], 50.0)
 
-    # Get an order
-    order = order_manager.get_order(2)
-    if order:
-        print(order)
+# 주문 조회
+order1 = order_manager.get_order(1)
+if order1:
+    print(order1)
+else:
+    print("Order not found")
 
-    # List all orders
-    print("\nAll Orders:")
-    for order in order_manager.list_orders():
-        print(order)
+# 주문 목록
+all_orders = order_manager.list_orders()
+for order in all_orders:
+    print(order)
 
-    # Cancel an order
-    order_manager.cancel_order(1)
+# 주문 취소
+order_manager.cancel_order(1)
 
-    # List orders after cancellation
-    print("\nOrders after cancellation:")
-    for order in order_manager.list_orders():
-        print(order)
+# 주문 목록 (취소 후)
+all_orders = order_manager.list_orders()
+for order in all_orders:
+    print(order)

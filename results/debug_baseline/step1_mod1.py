@@ -14,7 +14,7 @@ class Order:
         self.total = self.calculate_total()
 
     def calculate_total(self):
-        total = 0
+        total = 0.0
         for item in self.items:
             total += item.price * item.quantity
         return total
@@ -42,29 +42,34 @@ class OrderManager:
         return list(self.orders.values())
 
 
-# Example Usage
-if __name__ == "__main__":
-    order_manager = OrderManager()
+# 사용 예제
+order_manager = OrderManager()
 
-    # Add orders
-    order_manager.add_order(1, [Item("Laptop", 1200.00, 1), Item("Mouse", 25.00, 1)])
-    order_manager.add_order(2, [Item("Keyboard", 75.00, 1), Item("Monitor", 275.00, 1)])
-    order_manager.add_order(3, [Item("Webcam", 50.00, 1), Item("Microphone", 100.00, 1)])
+# 아이템 생성
+item1 = Item("item1", 10.0, 2)
+item2 = Item("item2", 20.0, 1)
+item3 = Item("item3", 5.0, 5)
 
-    # Get an order
-    order = order_manager.get_order(2)
-    if order:
-        print(order)
+# 주문 추가
+order_manager.add_order(1, [item1, item2])
+order_manager.add_order(2, [item3])
 
-    # List all orders
-    print("\nAll Orders:")
-    for order in order_manager.list_orders():
-        print(order)
+# 주문 조회
+order1 = order_manager.get_order(1)
+if order1:
+    print(order1)
+else:
+    print("Order not found")
 
-    # Cancel an order
-    order_manager.cancel_order(1)
+# 주문 목록
+all_orders = order_manager.list_orders()
+for order in all_orders:
+    print(order)
 
-    # List orders after cancellation
-    print("\nOrders after cancellation:")
-    for order in order_manager.list_orders():
-        print(order)
+# 주문 취소
+order_manager.cancel_order(1)
+
+# 주문 목록 (취소 후)
+all_orders = order_manager.list_orders()
+for order in all_orders:
+    print(order)

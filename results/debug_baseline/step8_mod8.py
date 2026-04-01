@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Dict
 import datetime
 
 @dataclass
@@ -7,7 +7,16 @@ class Item:
     name: str
     price: float
     quantity: int
-    stock: int  # 재고 수량
+    stock: int  # Added stock attribute
+
+
+@dataclass
+class Payment:
+    payment_id: int
+    order_id: int
+    amount: float
+    method: str
+    refunded: bool = False  # Added refunded attribute
 
 
 class Order:
@@ -15,8 +24,7 @@ class Order:
     STATUS_CONFIRMED = "CONFIRMED"
     STATUS_SHIPPED = "SHIPPED"
     STATUS_CANCELLED = "CANCELLED"
-    STATUS_PAID = "PAID"
-    STATUS_REFUNDED = "REFUNDED"
+    STATUS_REFUNDED = "REFUNDED"  # Added REFUNDED status
 
     def __init__(self, order_id, items, discount_percent=0.0, status=STATUS_PENDING, customer_id=None):
         self.order_id = order_id
@@ -24,27 +32,15 @@ class Order:
         self.discount_percent = discount_percent
         self.status = status
         self.total = self.calculate_total()
-        self.created_at = datetime.datetime.now()
+        self.created_at = datetime.datetime.now()  # Added created_at
         self.customer_id = customer_id
-
-    def calculate_total(self):
-        total = 0
-        for item in self.items:
-            total += item.price * item.quantity
-        total -= total * self.discount_percent
-        return total
 
     def __str__(self):
         return f"Order ID: {self.order_id}, Items: {self.items}, Total: {self.total:.2f}, Discount: {self.discount_percent:.2f}, Status: {self.status}, Created At: {self.created_at}, Customer ID: {self.customer_id}"
 
-
-class Payment:
-    def __init__(self, payment_id, order_id, amount, method):
-        self.payment_id = payment_id
-        self.order_id = order_id
-        self.amount = amount
-        self.method = method
-        self.refunded = False  # Added refunded flag
+    def calculate_total(self):
+        subtotal = sum(item.price * item.quantity for item in self.items)
+        return subtotal * (1 - self.discount_percent)
 
 
 class Inventory:
@@ -52,19 +48,15 @@ class Inventory:
         self.items = {}
 
     def add_item(self, item_name, price, stock):
-        self.items[item_name] = Item(item_name, price, 0, stock)
+        self.items[item_name] = {"price": price, "stock": stock}
 
     def get_stock(self, item_name):
-        item = self.items.get(item_name)
-        return item.stock if item else 0
+        return self.items.get(item_name, {}).get("stock", 0)
 
     def reduce_stock(self, item_name, quantity):
-        item = self.items.get(item_name)
-        if not item:
-            raise ValueError(f"재고에 {item_name}이(가) 없습니다.")
-        if item.stock < quantity:
+        if item_name not in self.items or self.items[item_name]["stock"] < quantity:
             raise ValueError(f"재고 부족: {item_name}")
-        item.stock -= quantity
+        self.items[item_name]["stock"] -= quantity
 
 
 class Customer:
@@ -78,149 +70,153 @@ class Customer:
 
 
 class OrderManager:
-    def __init__(self, inventory):
+    def __init__(self, inventory: Inventory):
         self.orders = {}
         self.payments = {}
-        self.customers = {}
-        self.next_order_id = 1
         self.next_payment_id = 1
-        self.next_customer_id = 1
         self.inventory = inventory
+        self.customers: Dict[int, Customer] = {}  # Dictionary to store customers
 
-    def add_customer(self, name, email):
-        customer_id = self.next_customer_id
-        self.next_customer_id += 1
-        customer = Customer(customer_id, name, email)
-        self.customers[customer_id] = customer
-        return customer
+    def add_customer(self, customer_id, name, email):
+        if customer_id in self.customers:
+            raise ValueError(f"Customer with ID {customer_id} already exists.")
+        self.customers[customer_id] = Customer(customer_id, name, email)
 
     def get_customer(self, customer_id):
         return self.customers.get(customer_id)
 
-    def add_order(self, items, inventory: Inventory, customer_id):
-        if not self.get_customer(customer_id):
-            raise ValueError(f"고객 ID {customer_id}가 등록되지 않았습니다.")
+    def get_orders_by_customer(self, customer_id):
+        return [order for order in self.orders.values() if order.customer_id == customer_id]
 
-        order_id = self.next_order_id
-        self.next_order_id += 1
-        order = Order(order_id, items)
+    def add_order(self, order_id, items: List[Item], inventory: Inventory, customer_id: int):
+        customer = self.get_customer(customer_id)
+        if not customer:
+            raise ValueError(f"Customer with ID {customer_id} not found.")
 
-        for item in items:
-            try:
+        try:
+            for item in items:
                 inventory.reduce_stock(item.name, item.quantity)
-            except ValueError as e:
-                # Rollback: 주문 생성 실패 시 재고 복구
-                for ordered_item in items:
-                    try:
-                        inventory.add_item(ordered_item.name, ordered_item.price, ordered_item.quantity)
-                    except:
-                        pass
-                raise e
+        except ValueError as e:
+            raise e  # Re-raise the ValueError from Inventory
 
+        order = Order(order_id, items, customer_id=customer_id)
         self.orders[order_id] = order
-        order.customer_id = customer_id
-        return order
 
     def get_order(self, order_id):
         return self.orders.get(order_id)
 
     def cancel_order(self, order_id):
         order = self.get_order(order_id)
-        if order:
-            order.status = "CANCELLED"
+        if not order:
+            print(f"Order with ID {order_id} not found.")
+            return
+
+        if order.status == Order.STATUS_SHIPPED:
+            raise ValueError("Cannot cancel shipped orders.")
+
+        order.status = Order.STATUS_CANCELLED
 
     def apply_discount(self, order_id, discount_percent):
         order = self.get_order(order_id)
-        if order:
-            order.discount_percent = discount_percent
-            order.total = order.calculate_total()
+        if not order:
+            print(f"Order with ID {order_id} not found.")
+            return
+
+        order.discount_percent = discount_percent
+        order.total = order.calculate_total()
 
     def get_order_total(self, order_id):
         order = self.get_order(order_id)
-        if order:
-            return order.total
-        return None
+        if not order:
+            print(f"Order with ID {order_id} not found.")
+            return None
+        return order.total
 
     def confirm_order(self, order_id):
         order = self.get_order(order_id)
-        if order:
-            order.status = "CONFIRMED"
+        if not order:
+            print(f"Order with ID {order_id} not found.")
+            return
+
+        order.status = Order.STATUS_CONFIRMED
 
     def ship_order(self, order_id):
         order = self.get_order(order_id)
-        if order:
-            order.status = "SHIPPED"
+        if not order:
+            print(f"Order with ID {order_id} not found.")
+            return
 
-    def process_payment(self, order_id, amount, method):
-        """
-        Processes a payment for the given order ID.
-        Raises ValueError if the order has already been paid for.
-        """
+        order.status = Order.STATUS_SHIPPED
+
+    def process_payment(self, order_id, amount, payment_method):
         order = self.get_order(order_id)
         if not order:
             raise ValueError(f"Order with ID {order_id} not found.")
+        if order.status == Order.STATUS_REFUNDED:
+            raise ValueError(f"Cannot process payment for a refunded order.")
 
-        if order.status in (Order.STATUS_REFUNDED, Order.STATUS_CANCELLED):
-            raise ValueError(f"Cannot process payment for a cancelled or refunded order.")
+        if order.total != amount:
+            raise ValueError(f"Payment amount does not match order total.")
 
-        payment = Payment(self.next_payment_id, order_id, amount, method)
+        payment = {
+            "payment_id": self.next_payment_id,
+            "order_id": order_id,
+            "amount": amount,
+            "method": payment_method,
+            "refunded": False
+        }
+        self.payments[self.next_payment_id] = payment
         self.next_payment_id += 1
-        self.payments[payment.payment_id] = payment
-        order.status = Order.STATUS_PAID
         return payment
 
-    def get_payment(self, order_id):
-        for payment_id, payment in self.payments.items():
-            if payment.order_id == order_id:
-                return payment
-        return None
+    def get_payment(self, payment_id):
+        return self.payments.get(payment_id)
 
     def refund_payment(self, order_id):
-        payment = self.get_payment(order_id)
-        if payment:
-            payment.refunded = True
-            order = self.get_order(order_id)
-            order.status = Order.STATUS_REFUNDED
+        order = self.get_order(order_id)
+        if not order:
+            raise ValueError(f"Order with ID {order_id} not found.")
+        if order.status == Order.STATUS_REFUNDED:
+            raise ValueError(f"Payment for order {order_id} has already been refunded.")
 
-    def get_order_history(self):
-        """
-        Returns all orders, including cancelled orders, sorted by creation time.
-        """
-        return sorted(self.orders.values(), key=lambda order: order.created_at)
+        payment = None
+        for payment_id, p in self.payments.items():
+            if p["order_id"] == order_id:
+                payment = p
+                break
 
-    def get_orders_by_status(self, status: str):
-        """
-        Returns orders with the specified status.
-        """
-        return [order for order in self.orders.values() if order.status == status]
+        if not payment:
+            raise ValueError(f"No payment found for order {order_id}.")
+
+        payment["refunded"] = True
+        order.status = Order.STATUS_REFUNDED
 
     def get_refunded_orders(self):
-        """
-        Returns all orders that have been refunded.
-        """
-        return [order for order in self.orders.values() if order.status == Order.STATUS_REFUNDED]
+        refunded_orders = []
+        for order_id, order in self.orders.items():
+            payment = None
+            for payment_id, p in self.payments.items():
+                if p["order_id"] == order_id and p["refunded"]:
+                    payment = p
+                    break
+            if payment:
+                refunded_orders.append(order)
+        return refunded_orders
 
-    def get_orders_by_customer(self, customer_id):
-        """
-        Returns all orders for a specific customer.
-        """
-        return [order for order in self.orders.values() if order.customer_id == customer_id]
+    def get_order_history(self):
+        return list(self.orders.values())
+
+    def get_orders_by_status(self, status):
+        return [order for order in self.orders.values() if order.status == status]
 
 
 # Example Usage
 inventory = Inventory()
-inventory.add_item("Laptop", 1200, 5)
-inventory.add_item("Mouse", 25, 10)
-inventory.add_item("Keyboard", 75, 8)
+inventory.add_item("Laptop", 1200.00, 10)
+inventory.add_item("Mouse", 25.00, 50)
+inventory.add_item("Keyboard", 75.00, 30)
 
 order_manager = OrderManager(inventory)
 
 # Add a customer
-customer = order_manager.add_customer("John Doe", "john.doe@example.com")
-print(f"Customer added: {customer}")
-
-# Create an order for the customer
-items = [
-    Item("Laptop", 1200, 1, 0),
-    Item("Mouse", 25, 2, 0),
-    Item("Keyboard", 75, 1, 0)
+order_manager.add_customer(

@@ -1,16 +1,16 @@
 import datetime
 
 class Item:
-    """아이템 클래스"""
+    """주문 품목을 나타내는 클래스입니다."""
 
     def __init__(self, name, price, quantity, stock):
         """
-        아이템 객체를 초기화합니다.
+        품목 객체를 초기화합니다.
 
         Args:
-            name (str): 아이템 이름.
-            price (float): 아이템 가격.
-            quantity (int): 아이템 수량.
+            name (str): 품목 이름.
+            price (float): 품목 가격.
+            quantity (int): 품목 수량.
             stock (int): 현재 재고 수량.
         """
         self.name = name
@@ -19,12 +19,12 @@ class Item:
         self.stock = stock
 
     def __repr__(self):
-        """아이템 객체의 문자열 표현을 반환합니다."""
+        """품목 객체의 문자열 표현을 반환합니다."""
         return f"Item(name={self.name}, price={self.price}, quantity={self.quantity}, stock={self.stock})"
 
 
 class Order:
-    """주문 클래스"""
+    """주문을 나타내는 클래스입니다."""
 
     def __init__(self, order_id, items, total, discount_percent=0.0, status="PENDING", customer_id=None):
         """
@@ -32,10 +32,10 @@ class Order:
 
         Args:
             order_id (int): 주문 ID.
-            items (list of Item): 주문 항목 목록.
+            items (list of Item): 주문에 포함된 품목 목록.
             total (float): 주문 총액.
-            discount_percent (float): 할인율 (0.0~1.0).
-            status (str): 주문 상태.
+            discount_percent (float): 할인율 (0.0 ~ 1.0). 기본값은 0.0입니다.
+            status (str): 주문 상태. 기본값은 "PENDING"입니다.
             customer_id (int): 고객 ID.
         """
         self.order_id = order_id
@@ -43,18 +43,16 @@ class Order:
         self.total = total
         self.discount_percent = discount_percent
         self.status = status
-        self.created_at = datetime.datetime.now()  # 주문 생성 시각
+        self.created_at = datetime.datetime.now()
         self.customer_id = customer_id
 
     def __repr__(self):
         """주문 객체의 문자열 표현을 반환합니다."""
-        return (
-            f"Order(order_id={self.order_id}, items={self.items}, total={self.total}, discount_percent={self.discount_percent}, status={self.status}, created_at={self.created_at}, customer_id={self.customer_id})"
-        )
+        return f"Order(order_id={self.order_id}, items={self.items}, total={self.total}, discount_percent={self.discount_percent}, status={self.status}, created_at={self.created_at}, customer_id={self.customer_id})"
 
 
 class Payment:
-    """결제 클래스"""
+    """결제를 나타내는 클래스입니다."""
 
     def __init__(self, payment_id, order_id, amount, method):
         """
@@ -70,7 +68,7 @@ class Payment:
         self.order_id = order_id
         self.amount = amount
         self.method = method
-        self.refunded = False  # 새 필드: 환불 여부
+        self.refunded = False  # 새 필드
 
     def __repr__(self):
         """결제 객체의 문자열 표현을 반환합니다."""
@@ -78,68 +76,53 @@ class Payment:
 
 
 class Inventory:
-    """재고 관리 클래스"""
+    """재고를 관리하는 클래스입니다."""
 
     def __init__(self):
-        """재고 관리 객체를 초기화합니다."""
-        self.items = {}  # 아이템 이름 -> Item 객체
+        self.items = {}  # 품목 이름 -> Item 객체
 
     def add_item(self, item_name, price, stock):
-        """
-        새로운 아이템을 재고에 추가합니다.
-
-        Args:
-            item_name (str): 아이템 이름.
-            price (float): 아이템 가격.
-            stock (int): 초기 재고 수량.
-        """
+        """상품을 재고에 등록합니다."""
         if item_name in self.items:
-            print(f"오류: 이미 {item_name}이 재고에 있습니다.")
+            print(f"오류: 이미 {item_name}이(가) 재고에 있습니다.")
             return
-        item = Item(item_name, price, 1, stock)
+        item = Item(item_name, price, 0, stock)  # 수량은 0으로 초기화
         self.items[item_name] = item
-        print(f"{item_name}을(를) 재고에 추가했습니다.")
+        print(f"{item_name}을(를) 재고에 추가했습니다. 현재 재고: {stock}")
 
     def get_stock(self, item_name):
-        """
-        아이템의 현재 재고 수량을 반환합니다.
-
-        Args:
-            item_name (str): 아이템 이름.
-
-        Returns:
-            int: 현재 재고 수량. 아이템이 없으면 -1을 반환합니다.
-        """
+        """현재 재고 수량을 반환합니다."""
         if item_name in self.items:
             return self.items[item_name].stock
         else:
-            print(f"{item_name}을(를) 찾을 수 없습니다.")
-            return -1
+            print(f"{item_name}이(가) 재고에 없습니다.")
+            return None
 
     def reduce_stock(self, item_name, quantity):
-        """
-        아이템의 재고를 감소시킵니다.
-
-        Args:
-            item_name (str): 아이템 이름.
-            quantity (int): 감소시킬 수량.
-
-        Raises:
-            ValueError: 재고가 부족한 경우.
-        """
+        """재고를 차감합니다. 부족 시 ValueError를 발생시킵니다."""
         if item_name not in self.items:
-            raise ValueError(f"{item_name}을(를) 찾을 수 없습니다.")
+            print(f"{item_name}이(가) 재고에 없습니다.")
+            return
 
         if self.items[item_name].stock < quantity:
-            raise ValueError(f"{item_name}의 재고가 부족합니다.")
+            raise ValueError(f"재고 부족: {item_name}")
 
         self.items[item_name].stock -= quantity
-        print(f"{item_name}의 재고를 {quantity}만큼 감소시켰습니다.")
+        print(f"{item_name} 재고를 {quantity}만큼 차감했습니다. 현재 재고: {self.items[item_name].stock}")
 
 
 class Customer:
-    """고객 클래스"""
+    """고객을 나타내는 클래스입니다."""
+
     def __init__(self, customer_id, name, email):
+        """
+        고객 객체를 초기화합니다.
+
+        Args:
+            customer_id (int): 고객 ID.
+            name (str): 고객 이름.
+            email (str): 고객 이메일.
+        """
         self.customer_id = customer_id
         self.name = name
         self.email = email
@@ -150,70 +133,75 @@ class Customer:
 
 class OrderManager:
     def __init__(self):
-        self.orders = {}
         self.customers = {}
-        self.inventory = Inventory()
+        self.orders = {}
+        self.payments = {}
 
     def add_customer(self, customer_id, name, email):
         """고객 등록"""
         if customer_id in self.customers:
-            print(f"오류: 이미 고객 {customer_id}가 등록되어 있습니다.")
-            return
+            raise ValueError(f"이미 등록된 고객 ID: {customer_id}")
         self.customers[customer_id] = Customer(customer_id, name, email)
-        print(f"고객 {name} ({email})을(를) 등록했습니다.")
+        print(f"고객 {name} ({customer_id}) 등록됨")
 
     def get_customer(self, customer_id):
         """고객 정보 반환"""
-        return self.customers.get(customer_id)
+        if customer_id not in self.customers:
+            return None
+        return self.customers[customer_id]
 
     def get_orders_by_customer(self, customer_id):
         """특정 고객의 모든 주문 반환"""
-        customer = self.get_customer(customer_id)
-        if not customer:
-            print(f"고객 {customer_id}을(를) 찾을 수 없습니다.")
-            return []
-        return [order for order in self.orders.values() if order.customer_id == customer_id]
+        orders = []
+        for order_id, order in self.orders.items():
+            if order.customer_id == customer_id:
+                orders.append(order)
+        return orders
 
     def add_order(self, order_id, items, inventory, customer_id):
         """주문 추가"""
         if customer_id not in self.customers:
             raise ValueError(f"등록되지 않은 고객 ID: {customer_id}")
 
-        order = Order(order_id, items, 0, status="PENDING", customer_id=customer_id)
+        total = sum(item.price * item.quantity for item in items)
+        order = Order(order_id, items, total, customer_id=customer_id)
         self.orders[order_id] = order
-        print(f"주문 {order_id}을(를) 고객 {customer_id}에 추가했습니다.")
-        return order
+        print(f"주문 {order_id} 추가됨, 고객 ID: {customer_id}")
 
     def get_order(self, order_id):
         """주문 정보 반환"""
         return self.orders.get(order_id)
 
     def cancel_order(self, order_id):
-        """주문 상태를 취소합니다."""
+        """주문 취소"""
         order = self.get_order(order_id)
         if order:
             order.status = "CANCELLED"
-            print(f"주문 {order_id}가 취소되었습니다.")
-        else:
-            print(f"주문 {order_id}을(를) 찾을 수 없습니다.")
+            print(f"주문 {order_id} 취소됨")
 
     def apply_discount(self, order_id, discount_percent):
         """할인 적용"""
         order = self.get_order(order_id)
         if order:
             order.discount_percent = discount_percent
-            order.total -= order.total * discount_percent / 100
-            print(f"주문 {order_id}에 {discount_percent}% 할인을 적용했습니다.")
-        else:
-            print(f"주문 {order_id}을(를) 찾을 수 없습니다.")
+            order.total *= (1 - discount_percent)
+            print(f"주문 {order_id}에 {discount_percent * 100}% 할인 적용됨")
 
     def get_order_total(self, order_id):
         """주문 총액 반환"""
         order = self.get_order(order_id)
-        if order:
-            return order.total
-        else:
-            print(f"주문 {order_id}을(를) 찾을 수 없습니다.")
-            return None
+        return order.total if order else None
 
-    def confirm_order(self, order
+    def confirm_order(self, order_id):
+        """주문 상태를 확인으로 변경"""
+        order = self.get_order(order_id)
+        if order and order.status == "PENDING":
+            order.status = "CONFIRMED"
+            print(f"주문 {order_id}이(가) 확인되었습니다.")
+        elif order and order.status != "PENDING":
+            print(f"주문 {order_id}은 이미 {order.status} 상태입니다.")
+        else:
+            print(f"주문 {order_id}을 찾을 수 없습니다.")
+
+    def ship_order(self, order_id):
+        """
