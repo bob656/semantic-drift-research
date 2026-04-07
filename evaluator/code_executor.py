@@ -327,6 +327,24 @@ try:
     om.apply_discount(4, 0.2)  # 0.2 = 20%, 기대값: 20.0 * 0.8 = 16.0
     results.append(("apply_discount_still_works", abs(om.get_order_total(4) - 16.0) < 0.01))
 
+    # ── DRIFT-PROBE: step1 계약 — Item.price가 float이고 total 계산에 반영되는가
+    # sliding window Baseline은 step1 정보가 밀려난 시점. LayeredMemory는 Layer1에 보존.
+    _add(om, 5, [item1])  # item1.price=10.0, quantity=2 → total=20.0
+    _probe_order = om.get_order(5)
+    _probe_total = getattr(_probe_order, "total", None)
+    if _probe_total is None:
+        try: _probe_total = om.get_order_total(5)
+        except Exception: pass
+    results.append(("DRIFT_PROBE:step1_item_price_in_total",
+                    _probe_total is not None and abs(_probe_total - 20.0) < 0.01))
+
+    # ── DRIFT-PROBE: step3 계약 — cancel_order가 물리 삭제하지 않는가
+    _add(om, 6, [item1])
+    om.cancel_order(6)
+    _cancelled = om.get_order(6)
+    results.append(("DRIFT_PROBE:step3_cancel_no_delete",
+                    _cancelled is not None and getattr(_cancelled, "status", "") == "CANCELLED"))
+
 except Exception as e:
     results.append(("step4_exception", False))
     print(f"STEP4 ERROR: {e}")
@@ -405,6 +423,36 @@ try:
     om.cancel_order(1)
     o = om.get_order(1)
     results.append(("cancel_keeps_order", o is not None and o.status == "CANCELLED"))
+
+    # ── DRIFT-PROBE: step1 계약 — Item.price * quantity가 total에 반영되는가
+    # 이 시점 Baseline은 step1이 window 밖. LayeredMemory Layer1에 보존됨.
+    inv_probe = Inventory()
+    inv_probe.add_item("probe_item", 7.0, 10)
+    _probe_item = _make_item("probe_item", 7.0, 3)  # 7.0 * 3 = 21.0
+    _probe_om = OrderManager(inv_probe) if True else OrderManager()
+    try: _probe_om = OrderManager(inv_probe)
+    except TypeError: _probe_om = OrderManager()
+    for _call in [lambda: _probe_om.add_order(99, [_probe_item], inv_probe),
+                  lambda: _probe_om.add_order(99, [_probe_item]),
+                  lambda: _probe_om.add_order([_probe_item], inv_probe),
+                  lambda: _probe_om.add_order([_probe_item])]:
+        try: _call(); break
+        except (TypeError, AttributeError, ValueError): continue
+    _po = _probe_om.get_order(99)
+    _pt = getattr(_po, "total", None)
+    if _pt is None:
+        try: _pt = _probe_om.get_order_total(99)
+        except Exception: pass
+    results.append(("DRIFT_PROBE:step1_price_times_qty",
+                    _pt is not None and abs(_pt - 21.0) < 0.01))
+
+    # ── DRIFT-PROBE: step2 계약 — discount_percent가 0.0~1.0 범위로 작동하는가
+    _probe_om.apply_discount(99, 0.1)  # 21.0 * 0.9 = 18.9
+    _dt = None
+    try: _dt = _probe_om.get_order_total(99)
+    except Exception: pass
+    results.append(("DRIFT_PROBE:step2_discount_ratio",
+                    _dt is not None and abs(_dt - 18.9) < 0.1))
 
 except Exception as e:
     results.append(("step5_exception", False))
@@ -486,6 +534,36 @@ try:
     # apply_discount, get_order_total 여전히 동작
     om.apply_discount(2, 0.1)
     results.append(("apply_discount_still_works", abs(om.get_order_total(2) - 9.0) < 0.01))
+
+    # ── DRIFT-PROBE: step1 계약 — item.price 속성이 float으로 존재하는가
+    # 가장 원거리 계약 검사 (step1 → step6, 5단계 격차)
+    # Baseline context window(최근 6개)는 step1 정보가 없음
+    _probe_item2 = _make_item("probe", 12.0, 2)  # price=12.0, qty=2 → total=24.0
+    results.append(("DRIFT_PROBE:step1_item_price_attr",
+                    hasattr(_probe_item2, "price") and abs(_probe_item2.price - 12.0) < 0.01))
+    results.append(("DRIFT_PROBE:step1_item_qty_attr",
+                    hasattr(_probe_item2, "quantity") and _probe_item2.quantity == 2))
+
+    # ── DRIFT-PROBE: step2 계약 — discount가 0.0~1.0 비율로 작동하는가 (10%=0.1)
+    _add(om, 4, [_make_item("apple", 20.0, 1)])
+    om.apply_discount(4, 0.1)   # 0.1 = 10% → 20.0 * 0.9 = 18.0
+    _d_total = None
+    try: _d_total = om.get_order_total(4)
+    except Exception: pass
+    results.append(("DRIFT_PROBE:step2_discount_0.1_means_10pct",
+                    _d_total is not None and abs(_d_total - 18.0) < 0.01))
+
+    # ── DRIFT-PROBE: step3 계약 — cancel_order가 삭제가 아닌 CANCELLED 전환인가
+    # get_order_history에서 취소 주문이 보여야 하므로 반드시 삭제하면 안 됨
+    _add(om, 5, [_make_item("apple", 5.0, 1)])
+    om.cancel_order(5)
+    _co = om.get_order(5)
+    results.append(("DRIFT_PROBE:step3_cancel_preserves_order",
+                    _co is not None and getattr(_co, "status", "") == "CANCELLED"))
+    # history에도 포함되어야 함
+    _hist = om.get_order_history()
+    results.append(("DRIFT_PROBE:step3_cancelled_in_history",
+                    any(getattr(x, "status", "") == "CANCELLED" for x in _hist)))
 
 except Exception as e:
     results.append(("step6_exception", False))
@@ -903,10 +981,13 @@ class CodeExecutor:
         """
         subprocess 출력에서 "TEST PASS: xxx" / "TEST FAIL: xxx" 라인을 파싱합니다.
 
+        DRIFT_PROBE: 접두사가 붙은 테스트는 일반 점수와 동일하게 계산되지만
+        details에 별도로 표시되어 에이전트별 드리프트 원인 분석에 활용됩니다.
+
         출력 예:
           TEST PASS: get_order_exists
-          TEST FAIL: total_auto_calc
-          STEP1 ERROR: 'Item' is not defined
+          TEST FAIL: DRIFT_PROBE:step1_item_price_in_total
+          STEP4 ERROR: 'Item' is not defined
 
         Returns
         -------
@@ -916,6 +997,8 @@ class CodeExecutor:
         details = []
         pass_count = 0
         total_count = 0
+        probe_pass = 0
+        probe_total = 0
 
         for line in output.splitlines():
             line = line.strip()
@@ -923,17 +1006,27 @@ class CodeExecutor:
                 details.append(line)
                 pass_count += 1
                 total_count += 1
+                if "DRIFT_PROBE:" in line:
+                    probe_pass += 1
+                    probe_total += 1
             elif line.startswith("TEST FAIL:"):
                 details.append(line)
                 total_count += 1
+                if "DRIFT_PROBE:" in line:
+                    probe_total += 1
             elif line.startswith("STEP") and "ERROR" in line:
-                # 실행 중 예외 발생 → 해당 단계 모든 테스트 실패로 기록
                 details.append(f"RUNTIME_ERROR: {line}")
 
         if total_count == 0:
-            # 테스트 출력이 전혀 없음 → 코드 자체가 syntax error 등으로 실행 불가
             logger.warning(f"테스트 출력 없음. 원시 출력: {output[:200]}")
             return 0.0, [f"FAIL: no_test_output | {output[:200]}"]
 
         score = (pass_count / total_count) * 10.0
+
+        # DRIFT_PROBE 집계 요약을 details 끝에 추가
+        if probe_total > 0:
+            details.append(
+                f"DRIFT_PROBE_SUMMARY: {probe_pass}/{probe_total} passed"
+            )
+
         return score, details

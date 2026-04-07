@@ -16,13 +16,20 @@ class BaselineAgent(BaseAgent):
     """대화 히스토리만 사용하는 베이스라인 에이전트"""
 
     def __init__(self, model: str, client: Any,
-                 temperature: float = 0.1, max_tokens: int = 2048):
+                 temperature: float = 0.5, max_tokens: int = 2048):
         super().__init__(model, client, temperature, max_tokens)
 
         # 지금까지 오간 대화를 순서대로 저장하는 리스트
         # 각 항목은 {'role': 'user'|'assistant', 'content': '...'} 형태
         # 단, 실제로 LLM에게는 최근 6개 항목만 전달됨 (_build_context 참고)
         self.conversation_history: List[Dict[str, str]] = []
+
+    def solve_initial_from_code(self, code: str) -> None:
+        """진단용: LLM 호출 없이 기존 코드로 내부 상태를 초기화한다."""
+        self.conversation_history = [
+            {'role': 'user', 'content': '(진단용 초기화)'},
+            {'role': 'assistant', 'content': code},
+        ]
 
     def solve_initial(self, task: str) -> str:
         """

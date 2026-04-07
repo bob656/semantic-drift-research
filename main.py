@@ -19,14 +19,14 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-DEFAULT_MODEL = "gemma3:12b"
+DEFAULT_MODEL = "qwen2.5-coder:14b"
 DEFAULT_HOST = "http://192.168.100.52:11434"
 
 
 def make_client(host: str):
     """Ollama 클라이언트 생성"""
     from ollama import Client
-    return Client(host=host)
+    return Client(host=host, timeout=600)
 
 
 def check_ollama_connection(client, model: str) -> bool:
@@ -76,7 +76,8 @@ def save_results(results: Dict, stats_result: Dict, args) -> str:
                     'scores': r.scores,
                     'drift_rate': r.drift_rate,
                     'execution_times': r.execution_times,
-                    'total_interactions': len(r.interaction_log)
+                    'total_interactions': len(r.interaction_log),
+                    'test_details': r.test_details or []
                 } for r in results['baseline_results']
             ],
             'statedoc': [
@@ -84,8 +85,18 @@ def save_results(results: Dict, stats_result: Dict, args) -> str:
                     'scores': r.scores,
                     'drift_rate': r.drift_rate,
                     'execution_times': r.execution_times,
-                    'total_interactions': len(r.interaction_log)
+                    'total_interactions': len(r.interaction_log),
+                    'test_details': r.test_details or []
                 } for r in results['statedoc_results']
+            ],
+            'semantic': [
+                {
+                    'scores': r.scores,
+                    'drift_rate': r.drift_rate,
+                    'execution_times': r.execution_times,
+                    'total_interactions': len(r.interaction_log),
+                    'test_details': r.test_details or []
+                } for r in results.get('semantic_results', [])
             ]
         }
     }
@@ -102,9 +113,13 @@ def print_results(stats_result: Dict):
     print(f"\n{'='*60}")
     print("📊 실험 결과 요약")
     print(f"{'='*60}")
-    print(f"베이스라인 평균 드리프트: {stats_result['baseline_mean_drift']:.3f}점 (±{stats_result['baseline_std']:.3f})")
-    print(f"CoTDoc 평균 드리프트:   {stats_result['statedoc_mean_drift']:.3f}점 (±{stats_result['statedoc_std']:.3f})")
-    print(f"📈 개선 효과: {stats_result['improvement']:.3f}점")
+    print(f"베이스라인 평균 드리프트:         {stats_result['baseline_mean_drift']:.3f}점 (±{stats_result['baseline_std']:.3f})")
+    print(f"LayeredMemory 평균 드리프트:     {stats_result['statedoc_mean_drift']:.3f}점 (±{stats_result['statedoc_std']:.3f})")
+    if stats_result.get('semantic_mean_drift') is not None:
+        print(f"SemanticCompressor 평균 드리프트: {stats_result['semantic_mean_drift']:.3f}점 (±{stats_result['semantic_std']:.3f})")
+    print(f"📈 개선 효과 (vs LayeredMemory): {stats_result['improvement']:.3f}점")
+    if stats_result.get('improvement_semantic') is not None:
+        print(f"📈 개선 효과 (vs Semantic):      {stats_result['improvement_semantic']:.3f}점")
 
     if stats_result['p_value'] != 1.0:
         print(f"P-value: {stats_result['p_value']:.4f}")

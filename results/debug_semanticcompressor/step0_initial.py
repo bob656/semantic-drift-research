@@ -8,45 +8,43 @@ class Order:
 
 class OrderManager:
     def __init__(self):
+        # 주문 목록을 저장할 딕셔너리 초기화
         self.orders = {}
 
     def add_order(self, order_id: int, items: List[str], total: float) -> None:
+        # 새로운 주문 추가
         if order_id in self.orders:
-            raise ValueError(f"Order with ID {order_id} already exists.")
-        self.orders[order_id] = Order(order_id, items, total)
+            print(f"Order ID {order_id} already exists.")
+        else:
+            self.orders[order_id] = Order(order_id, items, total)
+            print(f"Order with ID {order_id} added.")
 
     def get_order(self, order_id: int) -> Optional[Order]:
+        # 주문 조회
         return self.orders.get(order_id)
 
     def cancel_order(self, order_id: int) -> None:
+        # 주문 취소 (삭제)
         if order_id in self.orders:
             del self.orders[order_id]
+            print(f"Order with ID {order_id} has been cancelled.")
         else:
-            raise ValueError(f"Order with ID {order_id} does not exist.")
+            print(f"No order found with ID {order_id}.")
 
     def list_orders(self) -> List[Order]:
+        # 모든 주문 목록 반환
         return list(self.orders.values())
 
 # 간단한 사용 예제
 if __name__ == "__main__":
     manager = OrderManager()
-    
-    # 주문 추가
-    manager.add_order(1, ["item1", "item2"], 10.5)
-    manager.add_order(2, ["item3"], 5.0)
+    manager.add_order(1, ["apple", "banana"], 5.99)
+    manager.add_order(2, ["orange"], 3.49)
 
-    # 주문 조회
-    order = manager.get_order(1)
-    if order:
-        print(f"Order {order.order_id}: Items - {', '.join(order.items)}, Total - {order.total}")
+    print("Order 1:", manager.get_order(1).items)  # ['apple', 'banana']
+    print("Order 2:", manager.get_order(2).total)  # 3.49
 
-    # 주문 목록 출력
-    for order in manager.list_orders():
-        print(f"Order {order.order_id}: Items - {', '.join(order.items)}, Total - {order.total}")
-
-    # 주문 취소
     manager.cancel_order(1)
-    
-    # 취소된 후의 주문 목록 출력
+    print("List of orders after cancelling order 1:")
     for order in manager.list_orders():
-        print(f"Order {order.order_id}: Items - {', '.join(order.items)}, Total - {order.total}")
+        print(f"Order ID: {order.order_id}, Total: {order.total}")

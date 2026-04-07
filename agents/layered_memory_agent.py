@@ -73,6 +73,12 @@ class LayeredMemoryAgent(BaseAgent):
 
     # ─── 공개 인터페이스 ────────────────────────────────────────────────────────
 
+    def solve_initial_from_code(self, code: str) -> None:
+        """진단용: LLM 호출 없이 기존 코드로 Layer 1(영구 인터페이스)을 초기화한다."""
+        self.permanent_interface = self._build_permanent_interface(code)
+        self.delta_log = []
+        self._step = 0
+
     def solve_initial(self, task: str) -> str:
         """
         초기 코드 생성 후 Layer 1(영구 인터페이스)을 설정한다.

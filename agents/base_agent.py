@@ -8,6 +8,7 @@ BaselineAgent와 StateDocAgent 모두 이 클래스를 상속합니다.
 
 실제 코드 생성/수정 전략은 서브클래스에서 각자 구현합니다.
 """
+import ast
 import time
 import logging
 from datetime import datetime
@@ -168,3 +169,69 @@ class BaseAgent:
         modification_request : 이번 단계에서 추가/변경할 내용
         """
         raise NotImplementedError("서브클래스에서 구현해야 합니다")
+
+    def compress_code_for_context(self, code: str, max_body_lines: int = 4) -> str:
+        """
+        프롬프트 토큰을 줄이기 위해 현재 코드를 압축한다.
+
+        전략: 시그니처·필드·docstring은 유지, 메서드 본문이 max_body_lines를
+        초과하면 앞 max_body_lines 줄만 남기고 '# ... (생략)' 처리.
+
+        LLM이 코드 구조(클래스·메서드 목록·타입)를 파악하기에 충분하면서
+        입력 토큰을 크게 줄일 수 있다.
+
+        Parameters
+        ----------
+        code           : 압축할 Python 코드 문자열
+        max_body_lines : 메서드 본문 최대 허용 줄 수 (기본 6)
+        """
+        try:
+            tree = ast.parse(code)
+        except SyntaxError:
+            return code  # 파싱 실패 시 원본 반환
+
+        lines = code.splitlines()
+        # 제거할 줄 번호 집합 (1-indexed)
+        remove_lines = set()
+
+        for node in ast.walk(tree):
+            if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                continue
+
+            # 본문 시작: def 줄 다음 줄부터
+            body_start = node.lineno      # def 줄 (1-indexed)
+            body_end   = node.end_lineno  # 마지막 줄 (inclusive)
+            body_lines  = body_end - body_start  # def 줄 제외한 본문 길이
+
+            if body_lines <= max_body_lines:
+                continue
+
+            # docstring 줄 수 계산 (보존)
+            docstring_end = body_start  # def 줄
+            if (node.body and isinstance(node.body[0], ast.Expr) and
+                    isinstance(node.body[0].value, ast.Constant) and
+                    isinstance(node.body[0].value.value, str)):
+                docstring_end = node.body[0].end_lineno
+
+            # def 줄 + docstring 이후, max_body_lines 줄까지 보존
+            keep_until = docstring_end + max_body_lines
+            # keep_until ~ body_end-1 줄을 제거 (마지막 줄에 '# ...' 삽입)
+            for ln in range(keep_until + 1, body_end):
+                remove_lines.add(ln)
+
+        if not remove_lines:
+            return code
+
+        result = []
+        skip_next = False
+        for i, line in enumerate(lines, start=1):
+            if i in remove_lines:
+                if not skip_next:
+                    indent = len(line) - len(line.lstrip())
+                    result.append(" " * indent + "# ... (생략)")
+                    skip_next = True
+            else:
+                result.append(line)
+                skip_next = False
+
+        return "\n".join(result)

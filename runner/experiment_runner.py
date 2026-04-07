@@ -25,7 +25,7 @@ import os
 import time
 from dataclasses import dataclass
 from typing import List, Dict, Any
-from agents import BaselineAgent, LayeredMemoryAgent
+from agents import BaselineAgent, LayeredMemoryAgent, SemanticCompressorAgent
 from evaluator import CodeEvaluator
 from evaluator import CodeExecutor
 
@@ -48,6 +48,7 @@ class ExperimentResult:
     drift_rate: float
     execution_times: List[float]
     interaction_log: List[Dict[str, Any]]
+    test_details: List[List[str]] = None  # 각 단계별 테스트 상세 결과 (exec 모드)
 
 
 class ExperimentRunner:
@@ -175,36 +176,10 @@ class ExperimentRunner:
   (get_order_history에서 취소 주문이 조회되려면 반드시 보존되어야 합니다)
 - 기존 모든 기능이 동작해야 합니다''',
 
-                # 수정7: 환불 시스템 — process_payment와 충돌하는 refund 로직
-                # Baseline: 수정4의 payment 구조를 기억하는지 테스트
-                '''환불 시스템을 추가하세요.
-- Payment에 refunded(bool, 기본값 False) 필드를 추가하세요
-- OrderManager에 추가:
-  * refund_payment(order_id): 결제 환불 처리
-    - 해당 order_id의 Payment를 찾아 refunded=True로 표시
-    - Order status를 "REFUNDED"로 변경합니다 (새 상태 추가)
-    - 이미 환불된 결제는 ValueError 발생
-  * get_refunded_orders(): refunded=True인 모든 주문 반환
-- process_payment는 이미 결제된 주문에 대해 ValueError를 발생시켜야 합니다
-- 기존 get_payment, confirm_order, ship_order, cancel_order가 모두 동작해야 합니다''',
-
-                # 수정8: 멀티 고객 지원 — 전체 구조에 customer_id 추가
-                # Baseline: 수정1~7의 모든 누적 요구사항을 기억하는지 테스트
-                # 이 시점에서 Baseline context window는 수정3~8만 기억 (수정1~2 소실 가능)
-                '''멀티 고객 지원을 추가하세요.
-- Customer 클래스(또는 dataclass): customer_id(int), name(str), email(str) 필드
-- Order에 customer_id(int) 필드를 추가하세요
-- OrderManager에 추가:
-  * add_customer(customer_id, name, email): 고객 등록
-  * get_customer(customer_id): 고객 정보 반환
-  * get_orders_by_customer(customer_id): 특정 고객의 모든 주문 반환
-- add_order(order_id, items, inventory, customer_id)로 시그니처 업데이트
-  * 등록되지 않은 customer_id면 ValueError
-- 기존 get_order, cancel_order(CANCELLED 상태 유지), apply_discount, get_order_total,
-  confirm_order, ship_order, process_payment, get_payment, refund_payment,
-  get_order_history, get_orders_by_status가 모두 동작해야 합니다'''
             ]
         }
+        # step7(환불), step8(멀티고객) 제거 — 드리프트는 step6에서 이미 포착됨
+        # 스텝 축소로 실험 시간 ~40% 단축 (9스텝 → 7스텝)
 
     def run_pilot_experiment(self, num_repeats: int = 3) -> Dict[str, Any]:
         """
@@ -224,7 +199,8 @@ class ExperimentRunner:
         results = {
             'scenario': self.scenario['name'],
             'baseline_results': [],
-            'statedoc_results': []
+            'statedoc_results': [],
+            'semantic_results': []
         }
 
         print(f"\n🚀 파일럿 실험 시작")
@@ -239,21 +215,24 @@ class ExperimentRunner:
 
             # 각 반복마다 에이전트를 새로 생성 → 이전 실험의 상태가 남지 않음
             print("🔍 베이스라인 에이전트 실행 중...")
-            baseline_agent = BaselineAgent(self.model, self.client)
+            baseline_agent = BaselineAgent(self.model, self.client, max_tokens=4096)
             baseline_result = self._run_single_experiment(baseline_agent, "Baseline")
             results['baseline_results'].append(baseline_result)
 
             print("🧩 LayeredMemory 에이전트 실행 중...")
-            statedoc_agent = LayeredMemoryAgent(self.model, self.client)
+            statedoc_agent = LayeredMemoryAgent(self.model, self.client, max_tokens=4096)
             statedoc_result = self._run_single_experiment(statedoc_agent, "LayeredMemory")
             results['statedoc_results'].append(statedoc_result)
 
-            # 중간 결과 출력
-            print(f"   베이스라인 드리프트: {baseline_result.drift_rate:.3f}점")
-            print(f"   StateDoc 드리프트: {statedoc_result.drift_rate:.3f}점")
+            print("🔬 SemanticCompressor 에이전트 실행 중...")
+            semantic_agent = SemanticCompressorAgent(self.model, self.client, max_tokens=4096)
+            semantic_result = self._run_single_experiment(semantic_agent, "SemanticCompressor")
+            results['semantic_results'].append(semantic_result)
 
-            improvement = baseline_result.drift_rate - statedoc_result.drift_rate
-            print(f"   개선 효과: {improvement:.3f}점")
+            # 중간 결과 출력
+            print(f"   베이스라인 드리프트:       {baseline_result.drift_rate:.3f}점")
+            print(f"   LayeredMemory 드리프트:    {statedoc_result.drift_rate:.3f}점")
+            print(f"   SemanticCompressor 드리프트: {semantic_result.drift_rate:.3f}점")
 
         return results
 
@@ -267,6 +246,7 @@ class ExperimentRunner:
           3. _calculate_drift_rate() → 점수 리스트로 드리프트율 계산
         """
         execution_times = []
+        all_test_details = []  # 단계별 테스트 상세 결과
 
         # 생성된 코드를 단계별로 저장할 디렉터리 (exec 모드에서 디버깅에 사용)
         debug_dir = f"results/debug_{agent_type.lower()}"
@@ -285,8 +265,9 @@ class ExperimentRunner:
         completed_requirements = [self.scenario['initial_task']]
 
         # 초기 코드 채점 (기준점이 됨)
-        initial_score = self._score(current_code, step_index=0)
+        initial_score, initial_details = self._score(current_code, step_index=0)
         scores = [initial_score]
+        all_test_details.append(initial_details)
         print(f"   → 초기 점수: {initial_score:.1f}/10")
 
         # 수정 단계 반복
@@ -304,8 +285,9 @@ class ExperimentRunner:
             # 이번 수정 요청을 누적 목록에 추가
             completed_requirements.append(modification)
 
-            score = self._score(current_code, step_index=i, completed_requirements=completed_requirements)
+            score, step_details = self._score(current_code, step_index=i, completed_requirements=completed_requirements)
             scores.append(score)
+            all_test_details.append(step_details)
             print(f"      점수: {score:.1f}/10")
 
         # 최종 드리프트율 계산
@@ -316,7 +298,8 @@ class ExperimentRunner:
             scores=scores,                        # [초기, 수정1, 수정2, 수정3, 수정4]
             drift_rate=drift_rate,
             execution_times=execution_times,      # [초기시간, 수정1시간, ...]
-            interaction_log=agent.interaction_log # LLM 호출 기록 전체
+            interaction_log=agent.interaction_log,# LLM 호출 기록 전체
+            test_details=all_test_details         # 단계별 테스트 상세 결과 (DRIFT_PROBE 포함)
         )
 
     def _score(self, code: str, step_index: int,
@@ -329,11 +312,10 @@ class ExperimentRunner:
         """
         if self.eval_mode == 'exec':
             score, details = self.executor.evaluate(code, step_index)
-            # 테스트 상세 결과를 DEBUG 레벨로 출력
             for d in details:
                 pass_mark = "✓" if d.startswith("TEST PASS") else "✗"
                 print(f"         {pass_mark} {d}")
-            return score
+            return score, details
         else:
             # LLM 평가: 누적 요구사항 텍스트 생성
             if completed_requirements is None:
@@ -342,7 +324,7 @@ class ExperimentRunner:
                 f"[요구사항 {j}]\n{req}"
                 for j, req in enumerate(completed_requirements)
             )
-            return self.evaluator.evaluate(code, cumulative)
+            return self.evaluator.evaluate(code, cumulative), []
 
     def _calculate_drift_rate(self, scores: List[float]) -> float:
         """

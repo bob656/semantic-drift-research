@@ -2189,3 +2189,1156 @@ SyntaxError: unterminated string literal (detected at line 225)
 2026-04-01 17:59:27,097 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
 2026-04-01 18:01:00,957 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
 2026-04-01 18:03:22,067 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:05:28,746 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:07:48,958 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:07:49,782 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:07:49,786 - __main__ - INFO - ✅ Ollama 연결 성공 (모델: gemma3:12b)
+2026-04-01 18:10:09,121 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:12:29,928 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:13:01,526 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:15:27,955 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:17:54,447 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:18:36,844 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:21:03,382 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:23:29,840 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:24:34,740 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:27:01,384 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:27:01,430 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpravjmer7.py", line 239
+    """시그니처 검사 기반 add_order 호출 (customer_id 포함, next_order_id 낭비 방지)"""
+                                             
+2026-04-01 18:28:18,406 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:29:55,983 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:31:24,148 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:32:39,824 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:34:53,665 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:36:11,805 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:38:09,231 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:40:35,712 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:42:29,477 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:44:55,729 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:47:22,321 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:49:40,686 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:52:07,454 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:52:07,501 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpnop02kba.py", line 241
+    raise KeyError(f"Order with ID {order_id}
+                   ^
+SyntaxError: unterminated string literal (detected
+2026-04-01 18:54:34,287 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:57:00,415 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:59:27,055 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 18:59:27,101 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpf72aoswf.py", line 252
+    raise KeyError(f"Order
+                   ^
+SyntaxError: unterminated string literal (detected at line 252)
+
+2026-04-01 19:01:53,697 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:04:20,647 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:06:47,287 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:08:04,625 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:10:26,642 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:12:53,889 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:12:53,934 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpnz3fywkw.py", line 246
+    if payment.order_id
+                       ^
+SyntaxError: expected ':'
+
+2026-04-01 19:14:07,224 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:16:33,746 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:19:00,387 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:19:00,519 - __main__ - INFO - 실험 완료. 소요 시간: 501.3분
+2026-04-01 19:19:00,521 - __main__ - INFO - 실험 결과 저장: results/pilot_20260401_191900.json
+2026-04-01 19:20:44,021 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:23:10,670 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:23:10,804 - __main__ - INFO - 실험 완료. 소요 시간: 505.4분
+2026-04-01 19:23:10,806 - __main__ - INFO - 실험 결과 저장: results/pilot_20260401_192310.json
+2026-04-01 19:25:30,758 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:27:57,180 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:30:23,611 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:30:23,653 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp710l68yu.py", line 257
+    print(f"Order
+          ^
+SyntaxError: unterminated f-string literal (detected at line 257)
+
+2026-04-01 19:32:50,149 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:35:16,991 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:37:43,481 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:37:43,533 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmppz8o2jub.py", line 263
+    """시그니처 검사 기반 add_order 호출 (customer_id 포함, next_order_id 낭비 방지)"""
+                                             
+2026-04-01 19:38:15,265 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:38:57,981 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:40:00,850 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:41:40,695 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:43:54,813 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:46:00,797 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:48:27,542 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:50:53,669 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:53:20,452 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:54:46,124 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:55:58,935 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 19:57:48,629 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:00:09,618 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:02:26,016 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:04:52,768 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:07:14,952 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:09:41,959 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:12:08,587 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:12:40,531 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:13:23,233 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:14:26,109 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:16:05,748 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:18:25,733 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:20:51,864 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:23:18,841 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:25:45,760 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:28:12,399 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:29:46,099 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:31:10,481 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:33:20,532 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:35:47,479 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:38:13,859 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:40:40,557 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:40:40,604 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp5sa6_8zc.py", line 256
+    raise ValueError(f"주문 상태가 {order.status.value}이므로 확정할 수 없습니다
+                     ^
+SyntaxError: unterminated f-s
+2026-04-01 20:43:07,088 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:43:07,131 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpt5fur_hv.py", line 260
+    """시그니처 검사로 auto-id/explicit-id 구분, next_order_id 낭비 방지"""
+                                                      
+2026-04-01 20:45:33,324 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:47:59,758 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:47:59,808 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpz23mlgjk.py", line 261
+    """시그니처 검사 기반 add_order 호출 (customer_id 포함, next_order_id 낭비 방지)"""
+                                             
+2026-04-01 20:48:31,708 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:49:14,204 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:50:22,097 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:52:07,758 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:54:27,459 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:56:53,900 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 20:59:09,658 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:01:36,011 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:04:02,651 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:05:17,819 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:06:29,291 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:08:08,802 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:09:59,738 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:12:25,860 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:14:52,088 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:17:18,428 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:19:44,990 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:22:11,475 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:22:43,543 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:23:26,164 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:24:35,410 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:26:22,524 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:28:43,536 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:31:10,369 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:33:37,725 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:36:04,682 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:38:31,613 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:39:38,592 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:40:31,332 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:41:46,083 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:43:19,477 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:45:25,842 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:47:31,185 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:49:56,393 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:52:23,698 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:54:50,497 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-01 21:54:50,547 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpfxe6hlug.py", line 199
+    print(f"주문 생성: {order
+                    ^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+
+2026-04-01 21:54:50,563 - __main__ - INFO - 실험 완료. 소요 시간: 227.0분
+2026-04-01 21:54:50,564 - __main__ - INFO - 실험 결과 저장: results/pilot_20260401_215450.json
+2026-04-02 10:35:03,668 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:35:03,670 - __main__ - INFO - ✅ Ollama 연결 성공 (모델: gemma3:12b)
+2026-04-02 10:35:29,527 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:36:20,147 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:37:12,850 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:38:32,725 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:40:29,045 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:42:53,336 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:45:15,996 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:48:09,662 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:51:18,489 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:52:41,435 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:53:53,143 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:55:35,623 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:57:48,642 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 10:59:59,616 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:02:48,580 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:05:35,598 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:08:05,719 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:11:39,639 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:12:05,850 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:12:40,874 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:13:38,015 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:15:12,843 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:17:18,816 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:19:55,491 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:22:18,441 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:25:00,500 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:27:53,485 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:29:41,221 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:30:56,896 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:32:59,279 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:35:31,948 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:38:40,994 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:41:58,521 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:45:35,515 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:47:58,060 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:50:28,181 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:51:00,075 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:52:00,901 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:53:04,045 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:54:45,900 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:56:59,372 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 11:59:59,588 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:02:35,443 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:05:28,915 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:08:32,622 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:10:18,001 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:11:22,822 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:12:59,114 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:15:16,711 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:17:50,839 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:21:13,585 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:23:44,432 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:26:32,814 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:30:02,897 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:30:34,742 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:31:33,829 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:32:36,704 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:34:18,495 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:36:31,719 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:39:29,999 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:42:05,547 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:45:16,936 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:48:47,376 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:50:21,583 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:51:33,567 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:53:18,648 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:55:29,181 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 12:57:47,366 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:00:35,191 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:03:23,222 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:06:03,790 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:09:34,739 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:10:06,791 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:10:47,451 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:11:47,560 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:13:20,845 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:15:28,953 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:17:21,610 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:19:27,154 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:29:27,272 - agents.base_agent - ERROR - LLM 호출 실패: timed out
+2026-04-02 13:29:27,320 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpzxz7x1bg.py", line 2
+    ERROR: timed out
+                 ^^^
+SyntaxError: invalid syntax
+
+2026-04-02 13:31:13,074 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:32:41,993 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:33:51,829 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:35:36,691 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:37:51,182 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:40:39,916 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:43:48,647 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:46:47,732 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:49:41,815 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:53:13,377 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 13:53:13,538 - __main__ - INFO - 실험 완료. 소요 시간: 198.2분
+2026-04-02 13:53:13,542 - __main__ - INFO - 실험 결과 저장: results/pilot_20260402_135313.json
+2026-04-02 14:44:02,104 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 14:44:02,107 - __main__ - INFO - ✅ Ollama 연결 성공 (모델: gemma3:12b)
+2026-04-02 14:44:34,053 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 14:45:35,700 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 14:46:39,888 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 14:48:16,988 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 14:50:26,403 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 14:52:47,656 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 14:55:52,219 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 14:58:50,834 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:02:06,961 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:03:49,708 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:05:02,703 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:06:44,189 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:08:44,795 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:10:59,338 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:13:51,518 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:16:46,215 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:24:38,093 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:24:38,096 - __main__ - INFO - ✅ Ollama 연결 성공 (모델: gemma3:12b)
+2026-04-02 15:25:08,117 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:26:07,906 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:27:11,193 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:28:44,168 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:30:52,172 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:33:33,560 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:35:58,769 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:38:44,152 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:41:46,618 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:43:32,212 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:44:44,406 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:46:28,963 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:48:46,604 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:50:57,982 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:53:46,953 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:56:42,993 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 15:59:39,118 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:02:25,011 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:04:08,788 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:05:32,089 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:07:25,361 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:09:50,974 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:12:04,914 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:14:44,151 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:17:13,136 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:19:58,956 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:22:48,815 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:23:21,784 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:24:05,625 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:25:09,512 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:26:45,875 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:28:56,758 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:31:20,124 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:34:21,500 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:37:24,681 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:41:08,731 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:42:53,729 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:43:56,669 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:45:35,693 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:47:38,105 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:49:46,332 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:52:31,249 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:55:16,217 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 16:57:47,695 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:01:33,738 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:02:53,043 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:03:56,942 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:05:59,006 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:08:04,037 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:10:37,349 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:13:44,032 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:16:15,595 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:19:29,301 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:23:12,255 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:23:45,225 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:24:28,632 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:25:34,080 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:27:12,289 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:29:32,583 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:31:38,747 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:34:29,246 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:37:12,070 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:40:14,247 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:41:36,545 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:42:57,151 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:45:00,755 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:47:18,791 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:50:24,861 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:54:01,135 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:56:58,548 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 17:59:42,764 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:03:34,105 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:03:34,177 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpizd_3u6a.py", line 56
+    def __init__(self, order_id: int, items: List[Item], discount_percent: float = 0.0, status: str = "PENDING", custo
+2026-04-02 18:05:11,480 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:06:32,889 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:08:34,545 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:11:01,389 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:13:44,767 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:16:28,698 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:19:04,332 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:21:42,343 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:24:49,262 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:25:22,495 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:26:24,922 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:27:29,889 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:29:10,547 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:31:24,287 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:34:18,986 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:36:59,035 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:39:53,326 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:43:02,050 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:44:29,195 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:45:13,959 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:46:15,801 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:47:37,315 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:49:36,408 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:51:58,027 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:53:58,351 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:56:13,827 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 18:58:45,485 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:00:01,468 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:01:13,555 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:03:01,799 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:05:22,711 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:07:33,070 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:10:08,512 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:12:49,591 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:15:25,652 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:18:20,771 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:18:53,741 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:19:37,456 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:20:41,768 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:22:23,558 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:24:40,071 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:26:45,900 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:29:09,583 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:31:55,275 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:34:45,565 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:36:05,747 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:37:21,117 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:39:11,306 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:41:28,504 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:43:44,927 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:46:34,626 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:49:14,473 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:51:52,876 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:54:53,760 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:56:22,300 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:57:35,725 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 19:59:24,320 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:01:38,420 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:03:53,283 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:06:31,806 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:09:12,066 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:11:48,386 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:15:08,636 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:15:08,731 - __main__ - INFO - 실험 완료. 소요 시간: 290.5분
+2026-04-02 20:15:08,733 - __main__ - INFO - 실험 결과 저장: results/pilot_20260402_201508.json
+2026-04-02 20:15:11,191 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:15:11,192 - __main__ - INFO - ✅ Ollama 연결 성공 (모델: gemma3:12b)
+2026-04-02 20:15:43,918 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:16:47,762 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:17:52,901 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:19:31,608 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:21:49,751 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:23:53,251 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:26:10,378 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:28:51,244 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:32:00,483 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:33:28,142 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:34:41,357 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:36:26,634 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:38:28,289 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:41:00,149 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:44:02,748 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:46:36,752 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:49:35,754 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:53:46,961 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:55:15,425 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:56:41,004 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 20:58:44,636 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:01:20,594 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:04:15,194 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:07:37,032 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:10:51,393 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:13:53,059 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:17:39,033 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:18:11,930 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:19:16,245 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:20:25,873 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:22:12,989 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:24:38,213 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:27:46,960 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:30:19,214 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:33:53,338 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:37:10,349 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:38:34,832 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:39:50,307 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:41:39,086 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:43:54,536 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:46:23,328 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:49:11,372 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:51:56,550 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:54:45,002 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 21:58:11,348 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:00:04,913 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:01:23,145 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:03:12,306 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:05:36,797 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:08:36,821 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:12:15,554 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:15:51,728 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:19:05,781 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:23:05,194 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:23:38,281 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:24:21,801 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:25:26,112 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:27:06,265 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:29:23,294 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:31:46,441 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:34:22,514 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:37:19,966 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:40:32,177 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:41:59,936 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:43:16,672 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:45:10,100 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:47:27,216 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:50:07,991 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:53:10,267 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:56:19,827 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 22:59:45,651 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:02:43,105 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:04:44,969 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:06:03,303 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:07:58,611 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:10:21,986 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:13:44,629 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:16:59,298 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:20:06,899 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:23:00,163 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:26:53,452 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:26:53,501 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpepmthjp9.py", line 64
+    def __init__(self, order_id: int, items: List[Item], discount_percent: float = 0.0, status: OrderStatus = OrderSta
+2026-04-02 23:27:26,312 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:28:09,732 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:29:13,732 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:30:47,945 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:33:01,277 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:35:30,881 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:37:55,781 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:40:43,412 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:43:43,437 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:45:06,278 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:46:32,402 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:48:30,061 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:50:49,023 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:53:38,394 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:56:58,325 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-02 23:59:37,527 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:02:31,201 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:05:47,389 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:05:47,470 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmps6f91b65.py", line 97, in <module>
+    class OrderManager:
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhg
+2026-04-03 00:07:17,090 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:08:32,489 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:10:22,848 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:12:52,561 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:16:34,772 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:20:50,830 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:23:32,605 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:27:05,245 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:30:25,054 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:30:57,741 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:31:41,124 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:32:46,358 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:34:23,433 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:36:42,290 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:39:43,027 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:42:16,017 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:44:52,487 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:47:55,798 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:49:16,475 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:50:33,485 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:52:24,701 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:54:43,458 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 00:57:28,734 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:00:51,900 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:03:22,533 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:06:10,284 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:09:47,270 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:11:07,433 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:12:26,593 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:14:21,898 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:16:52,847 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:20:32,799 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:23:11,520 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:26:04,580 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:29:31,652 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:33:16,830 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 01:33:16,888 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpts7esdte.py", line 74
+    def __init__(self, order_id: int, items: List[Item], discount_percent: float = 0.0, status: OrderStatus = OrderSta
+2026-04-03 01:33:16,898 - __main__ - INFO - 실험 완료. 소요 시간: 318.1분
+2026-04-03 01:33:16,899 - __main__ - INFO - 실험 결과 저장: results/pilot_20260403_013316.json
+2026-04-03 09:31:53,257 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 500 Internal Server Error"
+2026-04-03 09:31:53,260 - __main__ - ERROR - ❌ Ollama 연결 실패: llama runner process has terminated: %!w(<nil>) (status code: 500)
+2026-04-03 09:32:26,027 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 09:32:26,030 - __main__ - INFO - ✅ Ollama 연결 성공 (모델: qwen2.5-coder:14b)
+2026-04-03 09:33:13,559 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 09:34:34,729 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 09:36:40,402 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 09:36:58,438 - agents.base_agent - ERROR - LLM 호출 실패: [Errno 60] Operation timed out
+2026-04-03 09:36:58,475 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmppkrpvaar.py", line 2
+    ERROR: [Errno 60] Operation timed out
+            ^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+2026-04-03 09:38:51,886 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 09:44:27,331 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 09:44:27,334 - __main__ - INFO - ✅ Ollama 연결 성공 (모델: qwen2.5-coder:14b)
+2026-04-03 09:45:29,407 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 09:47:10,582 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 09:50:35,696 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 09:55:21,938 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 10:01:25,661 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 10:08:25,939 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 10:15:17,685 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 10:15:17,761 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpmpxpa8j7.py", line 20, in <module>
+    @dataclass(order=True)
+     ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/min
+2026-04-03 10:21:44,367 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 10:21:44,450 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpchm967yi.py", line 21, in <module>
+    @dataclass(order=True)
+     ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/min
+2026-04-03 10:28:44,725 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 10:28:44,816 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmprsuq7vl9.py", line 21, in <module>
+    @dataclass(order=True)
+     ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/min
+2026-04-03 10:29:55,690 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 10:32:11,996 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 10:34:35,962 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 10:38:55,959 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 10:43:51,391 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 10:50:02,399 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 10:56:51,252 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:03:39,980 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:10:59,285 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:12:20,166 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:14:12,635 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:14:12,722 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp14dxub7w.py", line 2, in <module>
+    from typing import List, Optional, dataclass
+ImportError: cannot im
+2026-04-03 11:16:38,446 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:16:38,515 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp24y8o8yc.py", line 2, in <module>
+    from typing import List, Optional, dataclass
+ImportError: cannot im
+2026-04-03 11:20:37,054 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:25:18,662 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:31:51,440 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:41:51,558 - agents.base_agent - ERROR - LLM 호출 실패: timed out
+2026-04-03 11:41:51,626 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmppcaoj6l1.py", line 2
+    ERROR: timed out
+                 ^^^
+SyntaxError: invalid syntax
+
+2026-04-03 11:44:54,961 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:49:51,537 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:49:51,615 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpb2c58cy0.py", line 2, in <module>
+    from typing import List, Optional, Dict, Dataclass
+ImportError: can
+2026-04-03 11:50:54,033 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:52:23,782 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:55:07,673 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 11:58:42,995 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 12:03:33,214 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 12:09:35,413 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 12:16:32,004 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 12:16:32,100 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp_u231fyb.py", line 20, in <module>
+    @dataclass(order=True)
+     ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/min
+2026-04-03 12:22:51,394 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 12:22:51,484 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpje45u_uk.py", line 21, in <module>
+    @dataclass(order=True)
+     ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/min
+2026-04-03 12:29:48,985 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 12:29:49,077 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpaixysj40.py", line 21, in <module>
+    @dataclass(order=True)
+     ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/min
+2026-04-03 12:31:21,652 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 12:34:07,082 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 12:37:17,728 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 12:42:19,231 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 12:48:57,327 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 12:55:56,567 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 13:01:48,419 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 13:08:33,634 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 13:16:13,642 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 13:17:19,181 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 13:19:09,535 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 13:21:14,875 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 13:24:44,032 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 13:29:57,139 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 13:36:23,093 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 13:44:09,847 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 13:44:09,938 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp9zpi7cxi.py", line 39, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File "/opt/miniconda3/envs/python312rg
+2026-04-03 13:51:21,486 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 13:51:21,596 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpcmvtfk6v.py", line 40, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File "/opt/miniconda3/envs/python312rg
+2026-04-03 13:58:19,084 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 13:58:19,192 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmprqwqjpee.py", line 46, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File "/opt/miniconda3/envs/python312rg
+2026-04-03 13:59:16,925 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 14:00:54,436 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 14:03:33,047 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 14:07:38,909 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 14:13:17,955 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 14:19:55,499 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 14:26:54,841 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 14:32:47,808 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 14:39:14,078 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 14:40:34,337 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 14:42:54,027 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 14:45:55,097 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 14:50:13,548 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 14:56:20,485 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 15:03:29,853 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 15:09:53,926 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 15:17:35,342 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 15:25:18,688 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 15:26:40,751 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 15:28:13,058 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 15:30:36,204 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 15:35:12,848 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 15:40:27,620 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 15:47:11,698 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 15:54:16,008 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 15:54:16,103 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp4bryo_4k.py", line 21, in <module>
+    class Order:
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000g
+2026-04-03 16:02:05,240 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:02:05,345 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp4y0xl_d4.py", line 22, in <module>
+    class Order:
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000g
+2026-04-03 16:09:06,432 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:09:06,541 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp7inyfoaf.py", line 28, in <module>
+    class Order:
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000g
+2026-04-03 16:10:08,278 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:11:56,612 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:14:42,255 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:18:40,096 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:24:06,638 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:30:41,246 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:37:31,653 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:43:09,157 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:48:38,245 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:49:49,636 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:51:16,170 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:53:55,225 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 16:57:06,350 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 17:01:54,309 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 17:08:11,929 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 17:15:14,539 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 17:15:14,646 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp60_yk5du.py", line 13, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File "/opt/miniconda3/envs/python312rg
+2026-04-03 17:23:49,008 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 17:23:49,164 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpsw25p0fa.py", line 13, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File "/opt/miniconda3/envs/python312rg
+2026-04-03 17:29:21,226 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 17:29:21,446 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpaghp5xwl.py", line 13, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File "/opt/miniconda3/envs/python312rg
+2026-04-03 17:30:59,072 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 17:33:21,223 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 17:36:26,066 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 17:40:52,015 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 17:47:17,890 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 17:55:28,712 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:01:24,267 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:08:02,800 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:14:45,349 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:15:35,819 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:17:02,560 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:19:16,600 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:22:40,796 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:27:21,255 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:33:23,896 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:40:19,967 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:47:23,631 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:54:52,347 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:56:14,358 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 18:58:42,741 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 19:01:41,799 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 19:05:30,478 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 19:11:22,782 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 19:18:06,999 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 19:25:22,410 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 19:32:15,883 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 19:39:08,795 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 19:40:36,336 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 19:42:04,316 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 19:44:27,320 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 19:47:59,805 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 19:52:55,384 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 19:59:08,721 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 20:06:23,257 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 20:13:45,431 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 20:21:06,478 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-03 20:21:06,661 - __main__ - INFO - 실험 완료. 소요 시간: 636.7분
+2026-04-03 20:21:06,666 - __main__ - INFO - 실험 결과 저장: results/pilot_20260403_202106.json
+2026-04-06 09:53:31,471 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 09:53:31,472 - __main__ - INFO - ✅ Ollama 연결 성공 (모델: qwen2.5-coder:14b)
+2026-04-06 09:54:24,292 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 09:55:46,018 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 09:57:54,041 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:01:14,265 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:06:33,405 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:13:07,759 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:19:34,541 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:20:44,312 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:23:07,840 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:25:12,906 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:28:37,813 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:33:07,091 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:38:54,215 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:45:12,218 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:45:12,309 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpyke997l6.py", line 21, in <module>
+    class Order:
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000g
+2026-04-06 10:46:42,840 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:48:15,828 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:50:56,356 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 10:55:50,907 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:01:36,495 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:08:43,235 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:15:54,247 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:16:57,868 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:18:28,245 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:21:09,789 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:24:51,798 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:29:51,929 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:36:00,685 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:42:55,635 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:44:30,977 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:46:38,531 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:49:13,217 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:53:41,523 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 11:59:10,340 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:05:29,023 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:12:19,487 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:12:19,547 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpo9bv88aj.py", line 60
+    self.orders[order_id] = Order(order_id, items)
+    ^^^^
+IndentationError: expected an indented block after 'for' s
+2026-04-06 12:13:57,268 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:15:41,949 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:19:15,210 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:24:08,947 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:29:34,971 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:36:45,102 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:44:05,225 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:44:55,902 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:46:20,518 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:48:24,346 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:51:39,512 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 12:56:05,390 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:01:46,458 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:08:14,866 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:09:46,457 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:12:06,898 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:14:35,920 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:17:43,503 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:22:00,751 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:27:57,879 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:34:29,639 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:34:29,733 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp8efxroh4.py", line 20, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File "/opt/miniconda3/envs/python312rg
+2026-04-06 13:35:48,080 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:37:12,043 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:39:10,706 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:42:13,804 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:46:35,470 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:51:26,503 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:57:39,867 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 13:57:39,925 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpfo_x7hm5.py", line 32
+    item.stock -= quantity
+    ^^^^
+IndentationError: expected an indented block after 'if' statement on line 30
+
+2026-04-06 13:58:41,867 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:00:13,243 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:02:59,832 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:06:36,250 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:11:26,045 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:17:54,088 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:25:07,397 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:25:07,480 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpzjia6nvs.py", line 20, in <module>
+    @dataclass(order=True)
+     ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/min
+2026-04-06 14:26:27,552 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:28:48,468 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:31:49,961 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:35:14,252 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:39:41,204 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:45:31,549 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:52:30,582 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:54:14,605 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:56:14,447 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 14:59:26,334 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:03:56,437 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:09:03,357 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:15:07,717 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:15:07,782 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp9b_1mbsg.py", line 112
+    self.payments[payment.payment_id] = payment
+    ^^^^
+IndentationError: expected an indented block after 'if' stat
+2026-04-06 15:22:42,554 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:22:42,610 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpnwp12mdd.py", line 117
+    self.payments[payment.payment_id] = payment
+    ^^^^
+IndentationError: expected an indented block after 'if' stat
+2026-04-06 15:23:46,151 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:25:20,291 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:28:10,398 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:32:04,577 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:36:46,225 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:42:37,390 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:49:21,813 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:50:48,343 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:52:49,191 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:55:00,838 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 15:58:40,722 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 16:03:17,658 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 16:09:06,824 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 16:15:31,635 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 16:16:46,439 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 16:18:31,621 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 16:20:30,337 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 16:23:33,483 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 16:28:00,519 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 16:28:00,596 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp5do2qlak.py", line 56
+    order.status = "CONFIRMED"
+    ^^^^^
+IndentationError: expected an indented block after 'if' statement on line 54
+
+2026-04-06 16:33:52,107 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 16:33:52,168 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpcs5bj9q5.py", line 85
+    order.status = "CONFIRMED"
+    ^^^^^
+IndentationError: expected an indented block after 'if' statement on line 83
+
+2026-04-06 16:41:14,350 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 16:41:14,406 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력:   File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp69dg4o05.py", line 87
+    order.status = "CONFIRMED"
+    ^^^^^
+IndentationError: expected an indented block after 'if' statement on line 85
+
+2026-04-06 16:41:14,493 - __main__ - INFO - 실험 완료. 소요 시간: 407.7분
+2026-04-06 16:41:14,496 - __main__ - INFO - 실험 결과 저장: results/pilot_20260406_164114.json
+2026-04-06 17:34:43,617 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 17:34:43,620 - __main__ - INFO - ✅ Ollama 연결 성공 (모델: qwen2.5-coder:14b)
+2026-04-06 17:35:37,692 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 17:37:21,511 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 17:39:44,244 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 17:43:02,107 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 17:47:33,622 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 17:53:17,804 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 17:59:52,315 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:01:15,506 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:03:45,734 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:06:31,435 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:10:16,809 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:16:22,090 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:23:31,763 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:30:38,906 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:31:53,455 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:33:25,914 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:36:34,135 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:41:00,550 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:46:03,720 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:52:31,934 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 18:59:44,322 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:00:53,966 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:02:41,630 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:05:42,278 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:09:54,700 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:15:27,576 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:22:32,766 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:28:53,985 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:28:54,063 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpaahy52ig.py", line 20, in <module>
+    @dataclass(order=True)
+     ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/min
+2026-04-06 19:30:05,800 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:32:35,513 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:35:04,715 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:38:18,150 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:42:47,172 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:48:40,053 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:55:34,538 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:57:01,497 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 19:59:05,519 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 20:01:50,387 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 20:06:26,864 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 20:11:36,493 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 20:19:33,850 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 20:27:32,267 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 20:28:36,768 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 20:30:36,257 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 20:33:26,736 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 20:37:17,830 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 20:42:26,178 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 20:49:03,066 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 20:56:07,834 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 20:56:07,932 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpav4s699f.py", line 20, in <module>
+    @dataclass(order=True)
+     ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/min
+2026-04-06 20:57:12,163 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:00:19,215 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:03:14,842 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:07:38,745 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:12:07,528 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:18:35,139 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:24:58,090 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:24:58,186 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpmtkvzh5z.py", line 39, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File "/opt/miniconda3/envs/python312rg
+2026-04-06 21:26:59,493 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:29:07,504 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:32:06,679 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:36:47,982 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:42:30,340 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:50:06,621 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:57:29,373 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 21:58:35,926 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:00:16,215 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:03:10,405 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:07:12,434 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:12:12,036 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:18:41,370 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:25:56,990 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:25:57,083 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpo8gxldq5.py", line 48, in <module>
+    @dataclass(order=True)
+     ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/min
+2026-04-06 22:27:24,650 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:30:18,618 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:32:59,596 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:37:12,444 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:42:38,535 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:49:46,212 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:55:56,476 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:55:56,563 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpsmuf4w_r.py", line 14, in <module>
+    class Order:
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000g
+2026-04-06 22:57:15,120 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 22:59:32,593 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:02:03,939 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:06:33,475 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:11:34,538 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:17:38,278 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:25:29,993 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:26:35,320 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:28:10,840 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:30:58,333 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:35:07,884 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:40:26,415 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:47:05,925 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:54:12,854 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:55:51,363 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-06 23:58:03,228 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 00:00:38,791 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 00:04:53,067 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 00:10:54,517 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 00:17:59,304 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 00:25:12,272 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 00:25:12,354 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp726p9jec.py", line 40, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File "/opt/miniconda3/envs/python312rg
+2026-04-07 00:26:34,563 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 00:29:03,654 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 00:31:42,104 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 00:35:52,077 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 00:40:59,887 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 00:47:59,852 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 00:55:41,274 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 00:55:41,370 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpz1q1l4pw.py", line 39, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File "/opt/miniconda3/envs/python312rg
+2026-04-07 00:55:41,449 - __main__ - INFO - 실험 완료. 소요 시간: 441.0분
+2026-04-07 00:55:41,453 - __main__ - INFO - 실험 결과 저장: results/pilot_20260407_005541.json
+2026-04-07 09:18:22,006 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 09:18:22,009 - __main__ - INFO - ✅ Ollama 연결 성공 (모델: qwen2.5-coder:14b)
+2026-04-07 09:19:17,610 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 09:20:39,635 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 09:23:02,603 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 09:26:39,880 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 09:31:21,004 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 09:38:07,543 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 09:45:21,708 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 09:46:54,497 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 09:49:52,065 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 09:53:36,035 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 09:57:51,491 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:03:57,407 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:11:14,986 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:16:53,587 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:16:53,688 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp8ja7ohsw.py", line 51, in <module>
+    class Order:
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000g
+2026-04-07 10:18:11,866 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:20:08,246 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:22:39,211 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:27:31,771 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:32:54,688 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:39:38,147 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:47:19,719 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:47:19,820 - evaluator.code_executor - WARNING - 테스트 출력 없음. 원시 출력: Traceback (most recent call last):
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmphs63iizk.py", line 47, in <module>
+    class Order:
+  File "/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000g
+2026-04-07 10:48:22,845 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:50:18,970 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:53:25,560 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 10:58:16,357 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 11:04:45,811 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 11:10:59,275 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 11:18:21,347 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 11:19:46,628 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 11:21:25,443 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 11:24:23,469 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 11:28:10,132 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 11:33:33,133 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
+2026-04-07 11:40:27,557 - httpx - INFO - HTTP Request: POST http://192.168.100.52:11434/api/chat "HTTP/1.1 200 OK"
