@@ -429,7 +429,6 @@ try:
     inv_probe = Inventory()
     inv_probe.add_item("probe_item", 7.0, 10)
     _probe_item = _make_item("probe_item", 7.0, 3)  # 7.0 * 3 = 21.0
-    _probe_om = OrderManager(inv_probe) if True else OrderManager()
     try: _probe_om = OrderManager(inv_probe)
     except TypeError: _probe_om = OrderManager()
     for _call in [lambda: _probe_om.add_order(99, [_probe_item], inv_probe),

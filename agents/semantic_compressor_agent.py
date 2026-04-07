@@ -83,6 +83,7 @@ class SemanticCompressorAgent(BaseAgent):
     def solve_initial_from_code(self, code: str) -> None:
         """진단용: LLM 호출 없이 기존 코드로 의미론적 계약을 초기화한다."""
         self.semantic_contracts = self._extract_semantic_contracts(code)
+        self._original_class_names = self._get_class_names(ast.parse(code))
         self.weighted_deltas = []
         self._step = 0
 
@@ -93,6 +94,10 @@ class SemanticCompressorAgent(BaseAgent):
         )
         code = self.extract_code(response)
         self.semantic_contracts = self._extract_semantic_contracts(code)
+        try:
+            self._original_class_names = self._get_class_names(ast.parse(code))
+        except SyntaxError:
+            self._original_class_names = set()
         self._step = 0
         return code
 
@@ -480,3 +485,60 @@ class SemanticCompressorAgent(BaseAgent):
     def _summarize_request(self, request: str) -> str:
         words = re.findall(r'[가-힣a-zA-Z_]{2,}', request)
         return " ".join(words[:8]) if words else request[:60]
+
+
+class SemanticCompressorV2Agent(SemanticCompressorAgent):
+    """
+    SemanticCompressor v2 — 매 수정마다 의미론적 계약을 갱신한다.
+
+    v1과의 차이:
+      v1: step0 코드에서 계약 1회 추출 → 이후 불변
+          문제: step6에 이르면 계약이 낡아 잘못된 가이드 제공 가능
+
+      v2: modify_code() 후 new_code에서 계약 재추출 → 항상 현재 상태 반영
+          효과: 새로 추가된 클래스(Inventory, Payment 등)의 타입·상태·의존성도 포함
+
+    진단 실험(diagnose_step6.py)에서 SemanticCompressor가 10/10을 기록한 것은
+    step5 코드를 직접 받아서 계약을 추출했기 때문임 — 이것을 매 단계에 적용.
+    """
+
+    def modify_code(self, current_code: str, modification_request: str) -> str:
+        self._step += 1
+
+        prompt = self._build_prompt(current_code, modification_request)
+        system = (
+            "당신은 Python 개발자입니다.\n"
+            "'의미론적 계약' 섹션의 타입·상태·의존성을 절대 깨지 마세요.\n"
+            "계약을 유지하면서 수정 요청만 구현하세요."
+        )
+
+        new_code = self.extract_code(self.call_llm(prompt, system))
+
+        delta = self._extract_weighted_delta(modification_request, current_code, new_code)
+        if delta:
+            self.weighted_deltas.append(delta)
+
+        # v2 핵심: 새 코드 기준으로 계약 갱신
+        # 조건: AST 파싱 성공 + step0의 원본 클래스가 모두 존재 (구조 오염 방지)
+        # Order.stock 같은 잘못된 구조가 들어오면 원본 클래스 목록 체크에서 걸림
+        try:
+            tree = ast.parse(new_code)
+            new_classes = self._get_class_names(tree)
+            original = getattr(self, '_original_class_names', set())
+            # 원본 클래스가 모두 새 코드에 존재할 때만 갱신
+            if original and not original.issubset(new_classes):
+                pass  # 원본 클래스 일부 소실 → 오염된 코드, 갱신 거부
+            elif new_classes:
+                updated = self._extract_semantic_contracts(new_code)
+                if updated and updated not in ("(파싱 실패)", "(계약 없음)"):
+                    self.semantic_contracts = updated
+        except SyntaxError:
+            pass  # 파싱 실패 시 기존 계약 유지
+
+        return new_code
+
+    def solve_initial_from_code(self, code: str) -> None:
+        """진단용: LLM 호출 없이 기존 코드로 계약을 초기화한다."""
+        self.semantic_contracts = self._extract_semantic_contracts(code)
+        self.weighted_deltas = []
+        self._step = 0

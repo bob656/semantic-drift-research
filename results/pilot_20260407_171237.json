@@ -1,0 +1,1222 @@
+{
+  "metadata": {
+    "timestamp": "20260407_171237",
+    "model": "qwen2.5-coder:14b",
+    "host": "http://192.168.100.52:11434",
+    "repeats": 3,
+    "mode": "pilot",
+    "eval_mode": "exec",
+    "system_info": {
+      "platform": "macOS",
+      "environment": "Ollama + VSCode"
+    }
+  },
+  "summary": {
+    "baseline_mean_drift": 3.555555555555556,
+    "statedoc_mean_drift": 4.444444444444444,
+    "semantic_mean_drift": 7.037037037037037,
+    "improvement": -0.888888888888888,
+    "baseline_std": 2.6943012562182536,
+    "statedoc_std": 4.843221048378526,
+    "semantic_std": 5.132002392796674,
+    "t_statistic": -0.2777956407261113,
+    "p_value": 0.7949364154230624,
+    "effect_size": -0.22681919084949684,
+    "effect_interpretation": "중간 효과",
+    "significant": false,
+    "improvement_semantic": -3.4814814814814814,
+    "t_semantic": -1.0403425358345835,
+    "p_semantic": 0.35692831580654627,
+    "d_semantic": -0.8494361235026177,
+    "significant_semantic": false,
+    "t_vs": -0.6363636363636366,
+    "p_vs": 0.559131642796184,
+    "d_vs": -0.519588733317644,
+    "baseline_scores": [
+      [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        8.88888888888889,
+        8.0
+      ],
+      [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        8.88888888888889,
+        8.0
+      ],
+      [
+        10.0,
+        10.0,
+        8.571428571428571,
+        8.571428571428571,
+        9.0,
+        7.777777777777778,
+        3.333333333333333
+      ]
+    ],
+    "statedoc_scores": [
+      [
+        10.0,
+        10.0,
+        8.571428571428571,
+        8.571428571428571,
+        9.0,
+        7.777777777777778,
+        8.0
+      ],
+      [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        8.88888888888889,
+        0.0
+      ],
+      [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        8.88888888888889,
+        10.0
+      ]
+    ],
+    "semantic_scores": [
+      [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        8.88888888888889,
+        10.0
+      ],
+      [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        8.88888888888889,
+        0.0
+      ],
+      [
+        10.0,
+        0.0,
+        0.0,
+        10.0,
+        10.0,
+        8.88888888888889,
+        10.0
+      ]
+    ],
+    "sample_size": 3
+  },
+  "raw_results": {
+    "baseline": [
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          8.88888888888889,
+          8.0
+        ],
+        "drift_rate": 2.0,
+        "execution_times": [
+          43.59693503379822,
+          78.67024993896484,
+          111.69343090057373,
+          162.73029804229736,
+          203.26150512695312,
+          283.64297008514404,
+          305.9558172225952
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: OrderManager.__init__() takes 1 positional argument but 2 were given",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "TEST FAIL: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST FAIL: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 4/5 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          8.88888888888889,
+          8.0
+        ],
+        "drift_rate": 2.0,
+        "execution_times": [
+          42.595134973526,
+          67.55817890167236,
+          86.57483386993408,
+          134.21458792686462,
+          179.75229001045227,
+          241.17534804344177,
+          288.2350640296936
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: OrderManager.__init__() takes 1 positional argument but 2 were given",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "TEST FAIL: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST FAIL: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 4/5 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          8.571428571428571,
+          8.571428571428571,
+          9.0,
+          7.777777777777778,
+          3.333333333333333
+        ],
+        "drift_rate": 6.666666666666667,
+        "execution_times": [
+          46.8266019821167,
+          64.36996579170227,
+          126.4762670993805,
+          143.04290413856506,
+          207.62398195266724,
+          261.4904968738556,
+          356.69231700897217
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST FAIL: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST FAIL: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST FAIL: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: OrderManager.__init__() takes 1 positional argument but 2 were given",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST FAIL: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP6 ERROR: time data '10.0' does not match format '%Y-%m-%d %H:%M:%S.%f'",
+            "TEST FAIL: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST FAIL: step6_exception"
+          ]
+        ]
+      }
+    ],
+    "statedoc": [
+      {
+        "scores": [
+          10.0,
+          10.0,
+          8.571428571428571,
+          8.571428571428571,
+          9.0,
+          7.777777777777778,
+          8.0
+        ],
+        "drift_rate": 2.2222222222222223,
+        "execution_times": [
+          79.06667494773865,
+          82.77212810516357,
+          128.67454504966736,
+          174.41682505607605,
+          251.1629250049591,
+          328.0315272808075,
+          314.32726216316223
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST FAIL: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST FAIL: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST FAIL: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: OrderManager.__init__() takes 1 positional argument but 2 were given",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST FAIL: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST FAIL: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST FAIL: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 4/5 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          8.88888888888889,
+          0.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          67.81871700286865,
+          86.76899814605713,
+          139.00582671165466,
+          168.5212368965149,
+          201.36678910255432,
+          263.39407205581665,
+          309.58908104896545
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: OrderManager.__init__() takes 1 positional argument but 2 were given",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp6ri4666e.py\", line 40, in <module>\n    class Order:\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000g"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          8.88888888888889,
+          10.0
+        ],
+        "drift_rate": 1.1111111111111107,
+        "execution_times": [
+          59.58280396461487,
+          94.87224698066711,
+          127.74480104446411,
+          155.08119702339172,
+          205.46531128883362,
+          281.86451601982117,
+          307.5143778324127
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: OrderManager.__init__() takes 1 positional argument but 2 were given",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      }
+    ],
+    "semantic": [
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          8.88888888888889,
+          10.0
+        ],
+        "drift_rate": 1.1111111111111107,
+        "execution_times": [
+          60.1277379989624,
+          64.77817392349243,
+          111.54223895072937,
+          143.7870740890503,
+          200.86458897590637,
+          257.7059497833252,
+          311.09252095222473
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: OrderManager.__init__() takes 1 positional argument but 2 were given",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          8.88888888888889,
+          0.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          57.19197082519531,
+          64.98165202140808,
+          119.22108292579651,
+          157.17607188224792,
+          197.2667679786682,
+          278.84961199760437,
+          352.97554421424866
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: OrderManager.__init__() takes 1 positional argument but 2 were given",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpcs7axxuk.py\", line 40, in <module>\n    @dataclass\n     ^^^^^^^^^\n  File \"/Users/wonhochoi/.pyenv/versions"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          0.0,
+          0.0,
+          10.0,
+          10.0,
+          8.88888888888889,
+          10.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          65.64546704292297,
+          68.8421881198883,
+          119.12954330444336,
+          161.8594250679016,
+          197.6632640361786,
+          251.5347352027893,
+          319.0724308490753
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpuiuqcn4e.py\", line 2, in <module>\n    from typing import List, Optional, dataclass\nImportError: cannot im"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpvkx266jc.py\", line 2, in <module>\n    from typing import List, Optional, dataclass\nImportError: cannot im"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: OrderManager.__init__() takes 1 positional argument but 2 were given",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      }
+    ],
+    "semantic_v2": [
+      {
+        "scores": [
+          10.0,
+          0.0,
+          0.0,
+          0.0,
+          9.0,
+          7.777777777777778,
+          8.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          74.82210803031921,
+          72.17747092247009,
+          109.08379173278809,
+          190.0653257369995,
+          263.4485640525818,
+          297.5373103618622,
+          309.50277876853943
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp3k918x1l.py\", line 2, in <module>\n    from typing import List, Optional, dataclass\nImportError: cannot im"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmptcz1h1_w.py\", line 4, in <module>\n    @dataclass\n     ^^^^^^^^^\nNameError: name 'dataclass' is not define"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpg0iai0_2.py\", line 4, in <module>\n    @dataclass\n     ^^^^^^^^^\nNameError: name 'dataclass' is not define"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST FAIL: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: OrderManager.__init__() takes 1 positional argument but 2 were given",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST FAIL: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST FAIL: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST FAIL: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 4/5 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          8.88888888888889,
+          10.0
+        ],
+        "drift_rate": 1.1111111111111107,
+        "execution_times": [
+          60.18453407287598,
+          63.88106894493103,
+          98.55765008926392,
+          163.91093182563782,
+          206.63088297843933,
+          234.5302939414978,
+          333.5392770767212
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: OrderManager.__init__() takes 1 positional argument but 2 were given",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          8.88888888888889,
+          8.0
+        ],
+        "drift_rate": 2.0,
+        "execution_times": [
+          79.8850588798523,
+          76.6674690246582,
+          122.28404307365417,
+          185.66547393798828,
+          231.48805785179138,
+          314.68537306785583,
+          376.26208996772766
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: OrderManager.__init__() takes 1 positional argument but 2 were given",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP6 ERROR: 'OrderManager' object has no attribute 'apply_discount'",
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST FAIL: step6_exception"
+          ]
+        ]
+      }
+    ]
+  }
+}

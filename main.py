@@ -97,6 +97,15 @@ def save_results(results: Dict, stats_result: Dict, args) -> str:
                     'total_interactions': len(r.interaction_log),
                     'test_details': r.test_details or []
                 } for r in results.get('semantic_results', [])
+            ],
+            'semantic_v2': [
+                {
+                    'scores': r.scores,
+                    'drift_rate': r.drift_rate,
+                    'execution_times': r.execution_times,
+                    'total_interactions': len(r.interaction_log),
+                    'test_details': r.test_details or []
+                } for r in results.get('semantic_v2_results', [])
             ]
         }
     }
@@ -207,6 +216,16 @@ def main():
         default='llm',
         help='평가 방식: llm=LLM 채점(기본), exec=코드 실행 테스트'
     )
+    parser.add_argument(
+        '--quick',
+        action='store_true',
+        help='빠른 검증 모드: step3 이후만 실행 (step0~2 생략, ~3배 빠름)'
+    )
+    parser.add_argument(
+        '--agents',
+        default=None,
+        help='실행할 에이전트 (콤마 구분, 기본=전체). 예: Baseline,SemanticCompressorV2'
+    )
 
     args = parser.parse_args()
 
@@ -227,7 +246,17 @@ def main():
     eval_mode = args.eval_mode
     print(f"평가 방식: {'코드 실행 테스트' if eval_mode == 'exec' else 'LLM 채점'}")
     runner = ExperimentRunner(model=args.model, client=client, eval_mode=eval_mode)
-    results = runner.run_pilot_experiment(num_repeats=args.repeats)
+
+    selected_agents = [a.strip() for a in args.agents.split(',')] if args.agents else None
+
+    if args.quick:
+        print("⚡ 빠른 검증 모드")
+        results = runner.run_quick_experiment(
+            num_repeats=args.repeats,
+            agents=selected_agents,
+        )
+    else:
+        results = runner.run_pilot_experiment(num_repeats=args.repeats)
     end_time = datetime.now()
 
     analyzer = StatisticalAnalyzer()

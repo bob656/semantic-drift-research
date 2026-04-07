@@ -5,6 +5,6 @@ from .statedoc_agent import StateDocAgent
 from .cot_agent import CoTDocAgent
 from .guideline_agent import GuidelineAgent
 from .layered_memory_agent import LayeredMemoryAgent
-from .semantic_compressor_agent import SemanticCompressorAgent
+from .semantic_compressor_agent import SemanticCompressorAgent, SemanticCompressorV2Agent
 
-__all__ = ['BaseAgent', 'BaselineAgent', 'StateDocAgent', 'CoTDocAgent', 'GuidelineAgent', 'LayeredMemoryAgent', 'SemanticCompressorAgent']
+__all__ = ['BaseAgent', 'BaselineAgent', 'StateDocAgent', 'CoTDocAgent', 'GuidelineAgent', 'LayeredMemoryAgent', 'SemanticCompressorAgent', 'SemanticCompressorV2Agent']

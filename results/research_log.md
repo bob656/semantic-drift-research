@@ -191,6 +191,7 @@ step4, step5, step6에 이전 단계 계약 검증 테스트 추가
 | 8 | step0 가이드라인 불변 | 오류 누적 방지 |
 | 9 | DRIFT_PROBE 테스트 | 어느 단계에서 어떤 계약이 깨지는지 기계적 측정 |
 | 10 | max_tokens=4096 | 코드 생성 중단으로 인한 SyntaxError 방지 |
+| 11 | 계약을 매 단계 갱신 (v2) | step0 기준 계약은 step6에서 낡아 잘못된 가이드 제공 — 진단 실험으로 확인 |
 
 ---
 
@@ -207,15 +208,60 @@ step4, step5, step6에 이전 단계 계약 검증 테스트 추가
 
 ---
 
+## Phase 8: 진단 실험 + SemanticCompressorV2 (2026-04-07)
+
+### diagnose_step6.py 결과
+
+**실험 설계:** step5 완성 코드를 직접 주고 step6만 요청 → 메모리 문제 vs 생성 능력 한계 판별
+
+| 에이전트 | 점수 | 원인 |
+|---|---|---|
+| Baseline | 0.00 | LLM timeout (600초 초과) |
+| LayeredMemory | 0.00 | LLM timeout (600초 초과) |
+| SemanticCompressor | **10.00** | DRIFT_PROBE 5/5 포함 전부 통과 |
+
+**핵심 발견:**
+- H1(생성 능력 한계) 부분 기각 — SemanticCompressor는 step6를 완벽히 풀었음
+- Baseline/LayeredMemory의 timeout은 **프롬프트 구조 문제** (현재 코드 7113자를 처리하는 방식 차이)
+- SemanticCompressor의 타입 계약 + 상태 전이 규칙이 LLM에게 `created_at` 추가 시 어떤 구조를 건드려야 하는지 명확히 안내한 것으로 추정
+
+**실제 실험(pilot_20260407)에서 SemanticCompressor도 0.0이었던 이유:**
+- 진단: step5 코드 → 계약 추출 → step6 요청 (계약이 최신)
+- 실제: step0 코드 → 계약 추출 → 6번 수정 후 step6 요청 (계약이 낡음)
+- step6 시점엔 Inventory, Payment, status 등이 추가됐지만 계약은 step0 기준 → 잘못된 가이드
+
+### SemanticCompressorV2 설계
+
+**파일:** `agents/semantic_compressor_agent.py` (SemanticCompressorV2Agent 서브클래스)
+
+**v1 vs v2 차이:**
+```
+v1: solve_initial()에서 계약 1회 추출 → 이후 불변
+v2: modify_code() 마다 new_code로 계약 재추출 → 항상 현재 코드 반영
+```
+
+**runner에 추가:** `semantic_v2_results` 키로 별도 추적
+
+---
+
+## 초록 문서
+
+`results/abstract.md` — 한국어/영어 초록 + 연구 현황 + 참고문헌
+
+---
+
 ## 현재 상태 (2026-04-07)
 
 **완료:**
 - [x] temperature 0.5로 수정 (`agents/baseline_agent.py`)
 - [x] DRIFT_PROBE 상세 결과 JSON 저장 (`runner/experiment_runner.py`, `main.py`)
 - [x] Harness Engineering (step4/5/6 DRIFT_PROBE 테스트) 구현
+- [x] `diagnose_step6.py` — step6 붕괴 원인 진단 스크립트
+- [x] `SemanticCompressorV2Agent` 구현 — 매 단계 계약 갱신
+- [x] `solve_initial_from_code()` 헬퍼 — 3개 에이전트 모두 (진단용)
 
 **다음 실험 목표:**
-- [ ] 재실험: temperature=0.5 적용 후 Baseline이 다양한 결과를 내는지 확인
-- [ ] LayeredMemory vs SemanticCompressor 차이 분석 (현재 동일)
-- [ ] step6 0.0 붕괴 원인 분석 — DRIFT_PROBE 상세 결과 활용
-- [ ] n=5 → n=10 이상으로 통계 신뢰도 확보
+- [ ] 4개 에이전트 비교 실험 (Baseline / LayeredMemory / SemanticV1 / SemanticV2)
+- [ ] SemanticV2가 실제 실험에서도 step6를 통과하는지 확인
+- [ ] Baseline/LayeredMemory timeout 원인 분석 (프롬프트 길이 측정)
+- [ ] n=5 → 통계 신뢰도 확보

@@ -25,7 +25,7 @@ import os
 import time
 from dataclasses import dataclass
 from typing import List, Dict, Any
-from agents import BaselineAgent, LayeredMemoryAgent, SemanticCompressorAgent
+from agents import BaselineAgent, LayeredMemoryAgent, SemanticCompressorAgent, SemanticCompressorV2Agent
 from evaluator import CodeEvaluator
 from evaluator import CodeExecutor
 
@@ -181,6 +181,118 @@ class ExperimentRunner:
         # step7(환불), step8(멀티고객) 제거 — 드리프트는 step6에서 이미 포착됨
         # 스텝 축소로 실험 시간 ~40% 단축 (9스텝 → 7스텝)
 
+    def run_quick_experiment(self, num_repeats: int = 3,
+                             agents: List[str] = None,
+                             start_step: int = 3) -> Dict[str, Any]:
+        """
+        빠른 검증 모드 — step0~(start_step-1)을 건너뛰고 start_step 이후만 실행.
+
+        step0~3은 모든 에이전트가 거의 항상 10점이므로 생략 가능.
+        이전 실험에서 저장된 step{start_step} 코드를 기준점으로 사용한다.
+
+        Parameters
+        ----------
+        agents     : 실행할 에이전트 목록 (None이면 전체)
+                     예: ["Baseline", "SemanticCompressorV2"]
+        start_step : 시작 단계 (기본 3 — step3 코드부터 step4,5,6만 실행)
+        """
+        all_agents = {
+            'Baseline':           lambda: BaselineAgent(self.model, self.client, max_tokens=4096),
+            'LayeredMemory':      lambda: LayeredMemoryAgent(self.model, self.client, max_tokens=4096),
+            'SemanticCompressor': lambda: SemanticCompressorAgent(self.model, self.client, max_tokens=4096),
+            'SemanticCompressorV2': lambda: SemanticCompressorV2Agent(self.model, self.client, max_tokens=4096),
+        }
+        selected = agents or list(all_agents.keys())
+
+        # start_step 코드 로드 — Baseline의 이전 실험 결과 사용
+        # (step3까지는 모든 에이전트가 동일한 수준의 코드를 생성하므로 공유 기준점으로 사용)
+        ref_dirs = [
+            f"results/debug_baseline/step{start_step}_mod{start_step}.py",
+            f"results/debug_layeredmemory/step{start_step}_mod{start_step}.py",
+            f"results/debug_semanticcompressor/step{start_step}_mod{start_step}.py",
+        ]
+        start_code = None
+        for path in ref_dirs:
+            if os.path.exists(path):
+                with open(path, encoding="utf-8") as f:
+                    start_code = f.read()
+                print(f"기준점 코드: {path}")
+                break
+
+        if not start_code:
+            print(f"⚠️  step{start_step} 기준 코드를 찾을 수 없습니다. 전체 실험으로 전환합니다.")
+            return self.run_pilot_experiment(num_repeats)
+
+        modifications = self.scenario['modifications'][start_step:]
+        results = {name: [] for name in selected}
+        results['scenario'] = self.scenario['name']
+
+        print(f"\n⚡ 빠른 실험 모드 (step{start_step}~{start_step + len(modifications)})")
+        print(f"모델: {self.model} | 반복: {num_repeats} | 에이전트: {', '.join(selected)}")
+        print("=" * 60)
+
+        for repeat in range(num_repeats):
+            print(f"\n📊 실험 {repeat + 1}/{num_repeats}")
+            print("-" * 40)
+
+            for name in selected:
+                print(f"  [{name}] 실행 중...")
+                agent = all_agents[name]()
+                agent.solve_initial_from_code(start_code)
+                result = self._run_quick_steps(agent, name, start_code,
+                                               modifications, start_step)
+                results[name].append(result)
+                print(f"  → 드리프트: {result.drift_rate:.3f}점")
+
+        # 호환성을 위해 기존 키 매핑
+        return {
+            'scenario': results['scenario'],
+            'baseline_results':    results.get('Baseline', []),
+            'statedoc_results':    results.get('LayeredMemory', []),
+            'semantic_results':    results.get('SemanticCompressor', []),
+            'semantic_v2_results': results.get('SemanticCompressorV2', []),
+            '_quick_raw':          results,
+        }
+
+    def _run_quick_steps(self, agent, agent_type: str, start_code: str,
+                         modifications: List[str], start_step: int) -> ExperimentResult:
+        """start_code를 기준으로 수정 단계만 실행한다."""
+        execution_times = []
+        all_test_details = []
+        debug_dir = f"results/debug_{agent_type.lower()}"
+        os.makedirs(debug_dir, exist_ok=True)
+
+        current_code = start_code
+        # start_step 점수를 기준점으로 측정
+        initial_score, initial_details = self._score(current_code, step_index=start_step)
+        scores = [initial_score]
+        all_test_details.append(initial_details)
+        print(f"     step{start_step} 기준 점수: {initial_score:.1f}/10")
+
+        for i, modification in enumerate(modifications, start_step + 1):
+            print(f"     → 수정 {i}/{start_step + len(modifications)}: {modification[:50]}...")
+            start_time = time.time()
+            current_code = agent.modify_code(current_code, modification)
+            execution_times.append(time.time() - start_time)
+
+            with open(f"{debug_dir}/step{i}_mod{i}.py", "w", encoding="utf-8") as f:
+                f.write(current_code)
+
+            score, step_details = self._score(current_code, step_index=i)
+            scores.append(score)
+            all_test_details.append(step_details)
+            print(f"        점수: {score:.1f}/10")
+
+        drift_rate = self._calculate_drift_rate(scores)
+        return ExperimentResult(
+            agent_type=agent_type,
+            scores=scores,
+            drift_rate=drift_rate,
+            execution_times=execution_times,
+            interaction_log=agent.interaction_log,
+            test_details=all_test_details,
+        )
+
     def run_pilot_experiment(self, num_repeats: int = 3) -> Dict[str, Any]:
         """
         파일럿 실험을 num_repeats회 반복 실행합니다.
@@ -200,7 +312,8 @@ class ExperimentRunner:
             'scenario': self.scenario['name'],
             'baseline_results': [],
             'statedoc_results': [],
-            'semantic_results': []
+            'semantic_results': [],
+            'semantic_v2_results': []
         }
 
         print(f"\n🚀 파일럿 실험 시작")
@@ -229,10 +342,16 @@ class ExperimentRunner:
             semantic_result = self._run_single_experiment(semantic_agent, "SemanticCompressor")
             results['semantic_results'].append(semantic_result)
 
+            print("🔬 SemanticCompressorV2 에이전트 실행 중...")
+            semantic_v2_agent = SemanticCompressorV2Agent(self.model, self.client, max_tokens=4096)
+            semantic_v2_result = self._run_single_experiment(semantic_v2_agent, "SemanticCompressorV2")
+            results['semantic_v2_results'].append(semantic_v2_result)
+
             # 중간 결과 출력
-            print(f"   베이스라인 드리프트:       {baseline_result.drift_rate:.3f}점")
-            print(f"   LayeredMemory 드리프트:    {statedoc_result.drift_rate:.3f}점")
-            print(f"   SemanticCompressor 드리프트: {semantic_result.drift_rate:.3f}점")
+            print(f"   베이스라인 드리프트:         {baseline_result.drift_rate:.3f}점")
+            print(f"   LayeredMemory 드리프트:      {statedoc_result.drift_rate:.3f}점")
+            print(f"   SemanticCompressor 드리프트:  {semantic_result.drift_rate:.3f}점")
+            print(f"   SemanticCompressorV2 드리프트: {semantic_v2_result.drift_rate:.3f}점")
 
         return results
 
