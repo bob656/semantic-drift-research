@@ -1,20 +1,12 @@
-from dataclasses import dataclass, field
-from typing import List
+from typing import List, Optional
+from dataclasses import dataclass
 
 @dataclass
 class Item:
     name: str
     price: float
     quantity: int
-    stock: int  # 추가된 재고 필드
-
-class Order:
-    def __init__(self, order_id, items, discount_percent=0.0):
-        self.order_id = order_id
-        self.items = items
-        self.discount_percent = discount_percent
-        self.status = "PENDING"
-        self.total = sum(item.price * item.quantity for item in items) * (1 - discount_percent)
+    stock: int  # 현재 재고 수량
 
 @dataclass
 class Payment:
@@ -27,120 +19,115 @@ class Inventory:
     def __init__(self):
         self.items = {}
 
-    def add_item(self, item_name, price, stock):
+    def add_item(self, item_name: str, price: float, stock: int) -> None:
+        # 상품을 재고에 등록
         if item_name in self.items:
-            print(f"Item {item_name} already exists in inventory.")
-        else:
-            self.items[item_name] = Item(name=item_name, price=price, quantity=0, stock=stock)
-            print(f"Item {item_name} added to inventory with stock {stock}.")
+            raise ValueError(f"Item {item_name} already exists in inventory")
+        self.items[item_name] = Item(name=item_name, price=price, quantity=0, stock=stock)
 
-    def get_stock(self, item_name):
-        return self.items.get(item_name).stock if item_name in self.items else 0
+    def get_stock(self, item_name: str) -> Optional[int]:
+        # 현재 재고 수량 반환
+        return self.items.get(item_name, None).stock if item_name in self.items else None
 
-    def reduce_stock(self, item_name, quantity):
+    def reduce_stock(self, item_name: str, quantity: int) -> None:
+        # 재고 차감 (부족 시 ValueError)
         if item_name not in self.items:
-            raise ValueError(f"Item {item_name} does not exist in inventory.")
+            raise ValueError(f"Item {item_name} does not exist in inventory")
         item = self.items[item_name]
-        if item.stock >= quantity:
-            item.stock -= quantity
-            print(f"Stock for {item_name} reduced by {quantity}. Remaining stock: {item.stock}.")
-        else:
-            raise ValueError(f"Not enough stock for {item_name}: requested {quantity}, available {item.stock}.")
+        if item.stock < quantity:
+            raise ValueError(f"Not enough stock for {item_name}: required {quantity}, available {item.stock}")
+        item.stock -= quantity
+
+class Order:
+    def __init__(self, order_id: int, items: List[Item], discount_percent: float = 0.0):
+        self.order_id = order_id
+        self.items = items
+        self.discount_percent = discount_percent
+        self.status = "PENDING"
+        self.total = self.calculate_total()
+
+    def calculate_total(self) -> float:
+        # 할인 적용된 총 가격 계산
+        total = sum(item.price * item.quantity for item in self.items)
+        return total - (total * self.discount_percent)
 
 class OrderManager:
     def __init__(self):
+        # 주문을 저장할 딕셔너리 초기화
         self.orders = {}
         self.payments = {}
 
-    def add_order(self, order_id, items: List[Item], inventory: Inventory):
-        if order_id in self.orders:
-            print(f"Order ID {order_id} already exists.")
-            return
-
+    def add_order(self, order_id: int, items: List[Item], inventory: Inventory) -> None:
+        # 새로운 주문 생성 및 저장, 재고 차감
         for item in items:
-            try:
-                inventory.reduce_stock(item.name, item.quantity)
-            except ValueError as e:
-                print(e)
-                return
+            if item.name not in inventory.items or item.quantity > inventory.items[item.name].stock:
+                raise ValueError(f"재고 부족: {item.name}")
+            inventory.reduce_stock(item.name, item.quantity)
+        new_order = Order(order_id, items, discount_percent=0.0)  # 초기 할인율은 0으로 설정
+        self.orders[order_id] = new_order
 
-        self.orders[order_id] = Order(order_id, items)
-        print(f"Order ID {order_id} added.")
-
-    def get_order(self, order_id):
+    def get_order(self, order_id: int) -> Optional[Order]:
+        # 주문 조회, 없으면 None 반환
         return self.orders.get(order_id)
 
-    def confirm_order(self, order_id):
+    def confirm_order(self, order_id: int) -> bool:
+        # 주문 상태를 PENDING에서 CONFIRMED로 전환
         order = self.get_order(order_id)
         if order and order.status == "PENDING":
             order.status = "CONFIRMED"
-            print(f"Order ID {order_id} confirmed.")
-        else:
-            print("Order cannot be confirmed.")
+            return True
+        return False
 
-    def ship_order(self, order_id):
+    def ship_order(self, order_id: int) -> bool:
+        # 주문 상태를 CONFIRMED에서 SHIPPED로 전환
         order = self.get_order(order_id)
         if order and order.status == "CONFIRMED":
             order.status = "SHIPPED"
-            print(f"Order ID {order_id} shipped.")
-        else:
-            print("Order cannot be shipped.")
+            return True
+        return False
 
-    def cancel_order(self, order_id):
+    def cancel_order(self, order_id: int) -> None:
+        # 주문 상태를 PENDING 또는 CONFIRMED에서 CANCELLED로 전환
         order = self.get_order(order_id)
         if order and (order.status == "PENDING" or order.status == "CONFIRMED"):
             order.status = "CANCELLED"
-            print(f"Order ID {order_id} canceled.")
         elif order and order.status == "SHIPPED":
             raise ValueError("배송 중인 주문은 취소할 수 없습니다")
-        else:
-            print(f"Order ID {order_id} not found.")
 
-    def list_orders(self):
-        return [(order.order_id, [f'{item.name} x{item.quantity}' for item in order.items], order.total, order.status) for order in self.orders.values()]
+    def list_orders(self) -> List[Order]:
+        # 모든 주문 목록 반환
+        return list(self.orders.values())
 
-    def apply_discount(self, order_id, discount_percent):
+    def apply_discount(self, order_id: int, discount_percent: float) -> None:
+        # 주어진 order_id의 할인율을 적용합니다.
         if 0.0 <= discount_percent <= 1.0:
             order = self.get_order(order_id)
             if order:
                 order.discount_percent = discount_percent
-                order.total = sum(item.price * item.quantity for item in order.items) * (1 - discount_percent)
-                print(f"Order ID {order_id} updated with discount {discount_percent*100}%.")
-            else:
-                print(f"Order ID {order_id} not found.")
-        else:
-            print("Discount percent must be between 0.0 and 1.0.")
+                order.total = order.calculate_total()
 
-    def get_order_total(self, order_id):
+    def get_order_total(self, order_id: int) -> Optional[float]:
+        # 주어진 order_id의 최종 금액을 반환합니다.
         order = self.get_order(order_id)
-        if order:
-            return order.total
-        else:
-            print(f"Order ID {order_id} not found.")
-            return None
+        return order.total if order else None
 
-    def process_payment(self, order_id, amount, method):
+    def process_payment(self, order_id: int, amount: float, method: str) -> Optional[Payment]:
+        # 결제 처리
         order = self.get_order(order_id)
         if order and order.status == "PENDING":
-            if amount != order.total:
-                raise ValueError("결제 금액이 주문 총액과 일치하지 않습니다.")
-            else:
+            if abs(amount - order.total) < 1e-6:  # 부동 소수점 오차를 고려한 비교
                 payment_id = len(self.payments) + 1
-                payment = Payment(payment_id, order_id, amount, method)
-                self.payments[payment_id] = payment
+                new_payment = Payment(payment_id, order_id, amount, method)
+                self.payments[payment_id] = new_payment
                 order.status = "CONFIRMED"
-                print(f"Order ID {order_id} paid and confirmed.")
-                return payment
-        else:
-            print("주문을 결제할 수 없습니다.")
-            return None
-
-    def get_payment(self, order_id):
-        for payment in self.payments.values():
-            if payment.order_id == order_id:
-                return payment
-        print(f"Order ID {order_id}에 대한 결제 정보가 없습니다.")
+                return new_payment
+            else:
+                raise ValueError("결제 금액이 주문 총액과 일치하지 않습니다")
         return None
+
+    def get_payment(self, payment_id: int) -> Optional[Payment]:
+        # 결제 정보 조회, 없으면 None 반환
+        return self.payments.get(payment_id)
 
 # 간단한 사용 예제
 if __name__ == "__main__":
@@ -148,60 +135,46 @@ if __name__ == "__main__":
     inventory = Inventory()
 
     # 재고 등록
-    inventory.add_item("item1", 25.0, 3)
-    inventory.add_item("item2", 10.0, 5)
-    inventory.add_item("item3", 20.0, 2)
+    inventory.add_item('apple', 0.99, 10)
+    inventory.add_item('banana', 0.59, 20)
+    inventory.add_item('orange', 0.79, 15)
 
-    # 주문 추가 (재고 부족 테스트)
-    item1 = Item(name="item1", price=25.0, quantity=4, stock=0)  # 재고 부족
-    item2 = Item(name="item2", price=10.0, quantity=1, stock=0)  # 재고 부족
+    # 주문 추가
+    item1 = Item(name='apple', price=0.99, quantity=2, stock=10)
+    item2 = Item(name='banana', price=0.59, quantity=3, stock=20)
     manager.add_order(1, [item1, item2], inventory)
 
-    item3 = Item(name="item3", price=20.0, quantity=1, stock=0)
+    item3 = Item(name='orange', price=0.79, quantity=1, stock=15)
     manager.add_order(2, [item3], inventory)
 
-    # 재고 등록 후 주문 추가
-    inventory.add_item("item1", 25.0, 3)  # 재고 다시 등록
-    inventory.add_item("item2", 10.0, 5)
-    item1 = Item(name="item1", price=25.0, quantity=2, stock=0)
-    item2 = Item(name="item2", price=10.0, quantity=1, stock=0)
-    manager.add_order(3, [item1, item2], inventory)
+    # 주문 조회
+    order = manager.get_order(1)
+    print(f"Order ID: {order.order_id}, Status: {order.status}, Items: {[f'{item.name} x{item.quantity}' for item in order.items]}, Total: {order.total}")
 
-    # 할인 적용
-    manager.apply_discount(3, 0.1)
+    # 모든 주문 목록 출력
+    for order in manager.list_orders():
+        print(f"Order ID: {order.order_id}, Status: {order.status}, Items: {[f'{item.name} x{item.quantity}' for item in order.items]}, Total: {order.total}")
 
     # 결제 처리
     try:
-        payment = manager.process_payment(3, 58.5, "credit_card")
-        if payment:
-            print(f"Payment ID {payment.payment_id} processed for Order ID {payment.order_id}.")
+        payment = manager.process_payment(1, 2.46, 'credit card')
+        print(f"Payment ID: {payment.payment_id}, Order ID: {payment.order_id}, Amount: {payment.amount}, Method: {payment.method}")
     except ValueError as e:
         print(e)
 
-    # 주문 상태 변경
-    manager.confirm_order(2)  # 수동 확인
-    manager.ship_order(3)
+    # 주문 상태 전환
+    manager.confirm_order(1)
+    manager.ship_order(1)
+
+    # 주문의 최종 금액 확인
+    print(f"Order ID 1's total after discount and status change: {manager.get_order_total(1)}")
+
+    # 주문 취소 시도
     try:
-        manager.cancel_order(3)
+        manager.cancel_order(1)
     except ValueError as e:
         print(e)
 
-    # 주문 조회 및 총액 확인
-    order = manager.get_order(3)
-    if order:
-        print(f"Order {order.order_id}: Items - {[f'{item.name} x{item.quantity}' for item in order.items]}, Total - {order.total}, Status - {order.status}")
-
-    # 모든 주문 목록
-    all_orders = manager.list_orders()
-    for order_id, items, total, status in all_orders:
-        print(f"Order {order_id}: Items - {items}, Total - {total}, Status - {status}")
-
-    # 특정 주문의 결제 정보 및 총액 확인
-    payment_info = manager.get_payment(3)
-    if payment_info:
-        print(f"Payment ID {payment_info.payment_id} for Order ID {payment_info.order_id}: Amount - {payment_info.amount}, Method - {payment_info.method}")
-    print("Order 2 total:", manager.get_order_total(2))
-
-    # 재고 조회
-    print("Stock for item1:", inventory.get_stock("item1"))
-    print("Stock for item2:", inventory.get_stock("item2"))
+    # 남아 있는 모든 주문 목록 출력
+    for order in manager.list_orders():
+        print(f"Order ID: {order.order_id}, Status: {order.status}, Items: {[f'{item.name} x{item.quantity}' for item in order.items]}, Total: {order.total}")
