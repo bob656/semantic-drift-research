@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Optional
 
 @dataclass
 class Item:
@@ -8,81 +8,58 @@ class Item:
     quantity: int = 1
 
 class Order:
-    def __init__(self, order_id, items, discount_percent=0.0):
+    def __init__(self, order_id: int, items: List[Item], discount_percent: float = 0.0):
         self.order_id = order_id
         self.items = items
-        self.discount_percent = max(0.0, min(1.0, discount_percent))
-        self.total = sum(item.price * item.quantity for item in items) * (1 - self.discount_percent)
+        self.discount_percent = discount_percent
+        self.total = sum(item.price * item.quantity for item in items) * (1 - discount_percent)
+
+    def apply_discount(self, discount_percent: float):
+        if 0 <= discount_percent <= 1:
+            self.discount_percent = discount_percent
+            self.total = sum(item.price * item.quantity for item in self.items) * (1 - self.discount_percent)
+        else:
+            raise ValueError("discount percent must be between 0.0 and 1.0")
 
 class OrderManager:
     def __init__(self):
         self.orders = {}
 
-    def add_order(self, order_id, items: List[Item], discount_percent=0.0):
-        if order_id in self.orders:
-            print(f"Order ID {order_id} already exists.")
-            return
-        self.orders[order_id] = Order(order_id, items, discount_percent)
-        print(f"Order ID {order_id} added.")
+    def add_order(self, order_id: int, items: List[Item], discount_percent: float = 0.0) -> bool:
+        if order_id not in self.orders:
+            self.orders[order_id] = Order(order_id, items, discount_percent)
+            return True
+        return False
 
-    def get_order(self, order_id):
+    def get_order(self, order_id: int) -> Optional[Order]:
         return self.orders.get(order_id)
 
-    def cancel_order(self, order_id):
+    def cancel_order(self, order_id: int) -> bool:
         if order_id in self.orders:
             del self.orders[order_id]
-            print(f"Order ID {order_id} cancelled.")
-        else:
-            print(f"Order ID {order_id} not found.")
+            return True
+        return False
 
-    def apply_discount(self, order_id, discount_percent):
-        order = self.get_order(order_id)
-        if order:
-            order.discount_percent = max(0.0, min(1.0, discount_percent))
-            order.total = sum(item.price * item.quantity for item in order.items) * (1 - order.discount_percent)
-            print(f"Discount applied to Order ID {order_id}.")
+    def apply_discount(self, order_id: int, discount_percent: float):
+        if order_id in self.orders:
+            self.orders[order_id].apply_discount(discount_percent)
         else:
-            print(f"Order ID {order_id} not found.")
+            raise KeyError("Order not found")
 
-    def get_order_total(self, order_id):
-        order = self.get_order(order_id)
-        if order:
-            return order.total
-        else:
-            print(f"Order ID {order_id} not found.")
-            return None
+    def get_order_total(self, order_id: int) -> Optional[float]:
+        return self.orders.get(order_id)?.total
 
-    def list_orders(self):
-        return [f"Order ID: {order.order_id}, Total: {order.total:.2f}, Discount: {order.discount_percent*100}%" for order in self.orders.values()]
+    def list_orders(self) -> List[Order]:
+        return [order for order in self.orders.values()]
 
 # 간단한 사용 예제
-if __name__ == "__main__":
-    manager = OrderManager()
-    item1 = Item(name="item1", price=5.25)
-    item2 = Item(name="item2", price=5.25, quantity=2)
-    manager.add_order(1, [item1, item2], 0.1)
+order_manager = OrderManager()
+order_manager.add_order(1, [Item("apple", 0.5), Item("banana", 0.3)], discount_percent=0.1)
+order_manager.add_order(2, [Item("steak", 10.0), Item("potatoes", 1.5)])
 
-    item3 = Item(name="item3", price=2.50)
-    manager.add_order(2, [item3])
+print(order_manager.get_order(1))
+print(order_manager.list_orders())
 
-    print("Order List:")
-    for order in manager.list_orders():
-        print(order)
-
-    order = manager.get_order(1)
-    if order:
-        print(f"Order ID 1: {order.items}, Total: {order.total:.2f}")
-
-    manager.apply_discount(2, 0.2)
-    print("After applying discount to Order ID 2:")
-    for order in manager.list_orders():
-        print(order)
-
-    total = manager.get_order_total(1)
-    if total is not None:
-        print(f"Total for Order ID 1: {total:.2f}")
-
-    manager.cancel_order(2)
-    print("After cancelling Order ID 2, Order List:")
-    for order in manager.list_orders():
-        print(order)
+order_manager.apply_discount(1, discount_percent=0.2)
+print(order_manager.get_order_total(1))
+print(order_manager.list_orders())

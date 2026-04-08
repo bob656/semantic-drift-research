@@ -1,11 +1,10 @@
 from typing import List, Optional
-from dataclasses import dataclass
 
-@dataclass
 class Item:
-    name: str
-    price: float
-    quantity: int
+    def __init__(self, name: str, price: float, quantity: int):
+        self.name = name
+        self.price = price
+        self.quantity = quantity
 
 class Order:
     def __init__(self, order_id: int, items: List[Item]):
@@ -18,43 +17,33 @@ class OrderManager:
         self.orders = {}
 
     def add_order(self, order_id: int, items: List[Item]) -> None:
-        if order_id not in self.orders:
-            self.orders[order_id] = Order(order_id, items)
-        else:
-            print(f"Order ID {order_id} already exists.")
+        if order_id in self.orders:
+            raise ValueError(f"Order with ID {order_id} already exists.")
+        new_order = Order(order_id, items)
+        self.orders[order_id] = new_order
 
     def get_order(self, order_id: int) -> Optional[Order]:
         return self.orders.get(order_id)
 
     def cancel_order(self, order_id: int) -> None:
-        if order_id in self.orders:
-            del self.orders[order_id]
-        else:
-            print(f"Order ID {order_id} not found.")
+        if order_id not in self.orders:
+            raise ValueError(f"Order with ID {order_id} does not exist.")
+        del self.orders[order_id]
 
     def list_orders(self) -> List[Order]:
         return list(self.orders.values())
 
-# 사용 예제
-if __name__ == "__main__":
-    manager = OrderManager()
-    
-    # 주문 추가
-    item1 = Item(name="item1", price=25.0, quantity=2)
-    item2 = Item(name="item2", price=25.0, quantity=1)
-    manager.add_order(1, [item1, item2])
+# 간단한 사용 예제
+order_manager = OrderManager()
+item1 = Item("Apple", 0.5, 2)
+item2 = Item("Banana", 0.3, 5)
+order_manager.add_order(1, [item1, item2])
 
-    item3 = Item(name="item3", price=30.0, quantity=1)
-    manager.add_order(2, [item3])
+item3 = Item("Laptop", 800, 1)
+item4 = Item("Mouse", 20, 2)
+order_manager.add_order(2, [item3, item4])
 
-    # 주문 조회
-    order = manager.get_order(1)
-    if order:
-        print(f"Order {order.order_id}: Items - {[f'{item.name} x{item.quantity}' for item in order.items]}, Total - {order.total}")
-
-    # 주문 취소
-    manager.cancel_order(2)
-
-    # 모든 주문 목록 출력
-    for order in manager.list_orders():
-        print(f"Order {order.order_id}: Items - {[f'{item.name} x{item.quantity}' for item in order.items]}, Total - {order.total}")
+print(order_manager.get_order(1)) # Output: Order(order_id=1, items=[Item(name='Apple', price=0.5, quantity=2), Item(name='Banana', price=0.3, quantity=5)], total=3.5)
+print(order_manager.list_orders()) # Output: [Order(order_id=1, items=[Item(name='Apple', price=0.5, quantity=2), Item(name='Banana', price=0.3, quantity=5)], total=3.5), Order(order_id=2, items=[Item(name='Laptop', price=800, quantity=1), Item(name='Mouse', price=20, quantity=2)], total=840)]
+order_manager.cancel_order(1)
+print(order_manager.get_order(1)) # Output: None

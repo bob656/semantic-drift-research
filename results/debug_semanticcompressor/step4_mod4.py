@@ -1,22 +1,4 @@
-from typing import List, Optional
-from dataclasses import dataclass
-
-@dataclass
-class Item:
-    name: str
-    price: float
-    quantity: int
-
-@dataclass
-class Order:
-    order_id: int
-    items: List[Item]
-    total: float
-    discount_percent: float = 0.0
-    status: str = "PENDING"
-
-    def __post_init__(self):
-        self.total = sum(item.price * item.quantity for item in self.items) * (1 - self.discount_percent)
+from typing import List, Optional, dataclass
 
 @dataclass
 class Payment:
@@ -25,141 +7,136 @@ class Payment:
     amount: float
     method: str
 
+class OrderStatus:
+    PENDING = "PENDING"
+    CONFIRMED = "CONFIRMED"
+    SHIPPED = "SHIPPED"
+    CANCELLED = "CANCELLED"
+
+class Order:
+    def __init__(self, order_id: int, items: List[Item], discount_percent: float = 0.0):
+        self.order_id = order_id
+        self.items = items
+        self.discount_percent = discount_percent
+        self.status = OrderStatus.PENDING
+        self.update_total()
+
+    def update_total(self) -> None:
+        total_price = sum(item.total_price for item in self.items)
+        self.total = total_price * (1 - self.discount_percent)
+
 class OrderManager:
     def __init__(self):
         self.orders = {}
         self.payments = {}
 
-    def add_order(self, order_id: int, items: List[Item], total: float) -> None:
+    def add_order(self, order_id: int, items: List[Item], discount_percent: float = 0.0) -> None:
         if order_id in self.orders:
-            print(f"Order ID {order_id} already exists.")
-        else:
-            self.orders[order_id] = Order(order_id, items)
-            print(f"Order with ID {order_id} added.")
+            raise ValueError("Order already exists")
+        self.orders[order_id] = Order(order_id, items, discount_percent)
 
     def get_order(self, order_id: int) -> Optional[Order]:
         return self.orders.get(order_id)
 
     def confirm_order(self, order_id: int) -> None:
-        order = self.get_order(order_id)
-        if order and order.status == "PENDING":
-            order.status = "CONFIRMED"
-            print(f"Order ID {order_id} confirmed.")
+        if order_id not in self.orders:
+            raise ValueError("Order does not exist")
+        order = self.orders[order_id]
+        if order.status == OrderStatus.PENDING:
+            order.status = OrderStatus.CONFIRMED
         else:
-            print("Invalid status change.")
+            raise ValueError("Invalid status to confirm an order")
 
     def ship_order(self, order_id: int) -> None:
-        order = self.get_order(order_id)
-        if order and order.status == "CONFIRMED":
-            order.status = "SHIPPED"
-            print(f"Order ID {order_id} shipped.")
+        if order_id not in self.orders:
+            raise ValueError("Order does not exist")
+        order = self.orders[order_id]
+        if order.status == OrderStatus.CONFIRMED:
+            order.status = OrderStatus.SHIPPED
         else:
-            print("Invalid status change.")
+            raise ValueError("Invalid status to ship an order")
 
     def cancel_order(self, order_id: int) -> None:
-        order = self.get_order(order_id)
-        if order and order.status in ["PENDING", "CONFIRMED"]:
-            order.status = "CANCELLED"
-            print(f"Order ID {order_id} cancelled.")
-        elif order and order.status == "SHIPPED":
+        if order_id not in self.orders:
+            raise ValueError("Order does not exist")
+        order = self.orders[order_id]
+        if order.status == OrderStatus.PENDING or order.status == OrderStatus.CONFIRMED:
+            order.status = OrderStatus.CANCELLED
+        elif order.status == OrderStatus.SHIPPED:
             raise ValueError("배송 중인 주문은 취소할 수 없습니다")
-        else:
-            print("Invalid status change.")
-
-    def list_orders(self) -> List[Order]:
-        return list(self.orders.values())
-
-    def apply_discount(self, order_id: int, discount_percent: float) -> None:
-        if 0.0 <= discount_percent <= 1.0:
-            order = self.get_order(order_id)
-            if order:
-                order.discount_percent = discount_percent
-                order.total = sum(item.price * item.quantity for item in order.items) * (1 - discount_percent)
-                print(f"Discount applied to Order ID {order_id}: {discount_percent*100}%")
-            else:
-                print(f"No order found with ID {order_id}")
-        else:
-            print("Invalid discount percent. Must be between 0.0 and 1.0.")
 
     def get_order_total(self, order_id: int) -> Optional[float]:
         order = self.get_order(order_id)
-        if order:
-            return order.total
-        else:
-            print(f"No order found with ID {order_id}")
-            return None
+        return order.total if order else None
 
-    def process_payment(self, order_id: int, amount: float, method: str) -> Optional[Payment]:
+    def process_payment(self, order_id: int, amount: float, method: str) -> Payment:
         order = self.get_order(order_id)
-        if order and order.status == "PENDING":
-            if amount != order.total:
-                raise ValueError("Amount does not match the order total.")
-            else:
-                payment_id = len(self.payments) + 1
-                payment = Payment(payment_id, order_id, amount, method)
-                self.payments[payment_id] = payment
-                order.status = "CONFIRMED"
-                print(f"Order ID {order_id} confirmed and paid with {method}.")
-                return payment
-        else:
-            print("Invalid status change or no order found.")
-            return None
+        if not order:
+            raise ValueError("Order does not exist")
+        if amount != order.total:
+            raise ValueError("Payment amount does not match order total")
 
-    def get_payment(self, order_id: int) -> Optional[Payment]:
-        for payment in self.payments.values():
-            if payment.order_id == order_id:
-                return payment
-        print(f"No payment found for Order ID {order_id}")
-        return None
+        payment_id = max(self.payments.keys(), default=0) + 1
+        payment = Payment(payment_id, order_id, amount, method)
+        self.payments[payment_id] = payment
+
+        order.status = OrderStatus.CONFIRMED
+        return payment
+
+    def get_payment(self, payment_id: int) -> Optional[Payment]:
+        return self.payments.get(payment_id)
+
+    def list_orders(self) -> List[Order]:
+        return [order for order in self.orders.values()]
 
 # 간단한 사용 예제
 if __name__ == "__main__":
     manager = OrderManager()
     
     # 주문 추가
-    item1 = Item(name="item1", price=25.0, quantity=2)
-    item2 = Item(name="item2", price=25.0, quantity=1)
-    manager.add_order(1, [item1, item2], 75.0)
+    items1 = [Item("Apple", 0.5, 2), Item("Banana", 0.3, 3)]
+    manager.add_order(1, items1, discount_percent=0.1)
+    
+    items2 = [Item("Bread", 2.0, 1), Item("Milk", 1.5, 2)]
+    manager.add_order(2, items2, discount_percent=0.2)
+    
+    # 결제 처리
+    payment = manager.process_payment(1, order.total, method="Credit Card")
+    print(f"Payment ID: {payment.payment_id}, Order ID: {payment.order_id}, Amount: {payment.amount}, Method: {payment.method}")
+    
+    # 주문 확인
+    try:
+        manager.confirm_order(1)
+        print("Order confirmed")
+    except ValueError as e:
+        print(e)
 
-    item3 = Item(name="item3", price=30.0, quantity=1)
-    manager.add_order(2, [item3], 30.0)
+    # 주문 배송
+    try:
+        manager.ship_order(1)
+        print("Order shipped")
+    except ValueError as e:
+        print(e)
 
     # 주문 조회
     order = manager.get_order(1)
     if order:
-        print(f"Order ID: {order.order_id}, Status: {order.status}, Items: {[f'{item.name} x{item.quantity}' for item in order.items]}, Total: {order.total}")
+        print(f"Order ID: {order.order_id}, Items: {[item.name for item in order.items]}, Total: {order.total}, Status: {order.status}")
+    
+    # 모든 주문 목록 출력
+    orders = manager.list_orders()
+    for order in orders:
+        print(f"Order ID: {order.order_id}, Items: {[item.name for item in order.items]}, Total: {order.total}, Status: {order.status}")
+    
+    # 주문 취소
+    try:
+        manager.cancel_order(1)
+        print("Order cancelled")
+    except ValueError as e:
+        print(e)
 
-    # 결제 처리
-    payment = manager.process_payment(1, 75.0, "Credit Card")
-    if payment:
-        print(f"Payment ID: {payment.payment_id}, Order ID: {payment.order_id}, Amount: {payment.amount}, Method: {payment.method}")
-
-    # 주문 확정 (결제 없이)
-    manager.confirm_order(2)
-
-    # 주문 배송
-    manager.ship_order(1)
-
-    # 주문 취소 시도 (SHIPPED 상태)
+    # 이미 취소된 주문을 다시 취소하려고 시도
     try:
         manager.cancel_order(1)
     except ValueError as e:
         print(e)
-
-    # 주문 취소
-    manager.cancel_order(2)
-
-    # 모든 주문 목록
-    for order in manager.list_orders():
-        print(f"Order ID: {order.order_id}, Status: {order.status}, Items: {[f'{item.name} x{item.quantity}' for item in order.items]}, Total: {order.total}")
-
-    # 할인 적용 후 전체 주문 목록
-    print("\nList of orders after applying discount:")
-    manager.apply_discount(1, 0.1)
-    for order in manager.list_orders():
-        print(f"Order ID: {order.order_id}, Status: {order.status}, Items: {[f'{item.name} x{item.quantity}' for item in order.items]}, Total: {order.total}")
-
-    # 결제 정보 조회
-    payment = manager.get_payment(1)
-    if payment:
-        print(f"Payment ID: {payment.payment_id}, Order ID: {payment.order_id}, Amount: {payment.amount}, Method: {payment.method}")
