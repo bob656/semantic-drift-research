@@ -1,0 +1,185 @@
+{
+  "metadata": {
+    "timestamp": "20260408_105132",
+    "model": "qwen2.5-coder:14b",
+    "host": "http://192.168.100.52:11434",
+    "repeats": 1,
+    "mode": "pilot",
+    "eval_mode": "exec",
+    "system_info": {
+      "platform": "macOS",
+      "environment": "Ollama + VSCode"
+    }
+  },
+  "summary": {
+    "baseline_mean_drift": 0.0,
+    "statedoc_mean_drift": NaN,
+    "semantic_mean_drift": null,
+    "improvement": NaN,
+    "baseline_std": 0.0,
+    "statedoc_std": 0.0,
+    "semantic_std": 0.0,
+    "t_statistic": 0.0,
+    "p_value": 1.0,
+    "effect_size": 0.0,
+    "effect_interpretation": "작은 효과",
+    "significant": false,
+    "improvement_semantic": null,
+    "t_semantic": 0.0,
+    "p_semantic": 1.0,
+    "d_semantic": 0.0,
+    "significant_semantic": false,
+    "t_vs": 0.0,
+    "p_vs": 1.0,
+    "d_vs": 0.0,
+    "baseline_scores": [
+      [
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ]
+    ],
+    "statedoc_scores": [],
+    "semantic_scores": [],
+    "sample_size": 1
+  },
+  "raw_results": {
+    "baseline": [
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 0.0,
+        "execution_times": [
+          190.42937898635864,
+          288.15655183792114,
+          340.5594298839569
+        ],
+        "total_interactions": 3,
+        "test_details": [
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST PASS: DRIFT_PROBE:step1_price_times_qty",
+            "TEST PASS: DRIFT_PROBE:step2_discount_ratio",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      }
+    ],
+    "statedoc": [],
+    "semantic": [],
+    "semantic_v2": [
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 0.0,
+        "execution_times": [
+          240.56737875938416,
+          326.91859102249146,
+          358.89195013046265
+        ],
+        "total_interactions": 3,
+        "test_details": [
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST PASS: DRIFT_PROBE:step1_price_times_qty",
+            "TEST PASS: DRIFT_PROBE:step2_discount_ratio",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      }
+    ]
+  }
+}

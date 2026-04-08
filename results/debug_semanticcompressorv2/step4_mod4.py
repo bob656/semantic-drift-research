@@ -6,13 +6,6 @@ class Item:
     price: float
     quantity: int
 
-@dataclass
-class Payment:
-    payment_id: int
-    order_id: int
-    amount: float
-    method: str
-
 class Order:
     def __init__(self, order_id, items, discount_percent=0.0):
         self.order_id = order_id
@@ -20,6 +13,13 @@ class Order:
         self.discount_percent = discount_percent
         self.status = "PENDING"
         self.total = sum(item.price * item.quantity for item in items) * (1 - discount_percent)
+
+@dataclass
+class Payment:
+    payment_id: int
+    order_id: int
+    amount: float
+    method: str
 
 class OrderManager:
     def __init__(self):
@@ -88,23 +88,24 @@ class OrderManager:
     def process_payment(self, order_id, amount, method):
         order = self.get_order(order_id)
         if order and order.status == "PENDING":
-            if order.total != amount:
-                raise ValueError("Amount does not match the order total.")
-            order.status = "CONFIRMED"
-            payment_id = len(self.payments) + 1
-            payment = Payment(payment_id, order_id, amount, method)
-            self.payments[payment_id] = payment
-            print(f"Order ID {order_id} confirmed with payment {payment_id}.")
-            return payment
+            if amount != order.total:
+                raise ValueError("결제 금액이 주문 총액과 일치하지 않습니다.")
+            else:
+                payment_id = len(self.payments) + 1
+                payment = Payment(payment_id, order_id, amount, method)
+                self.payments[payment_id] = payment
+                order.status = "CONFIRMED"
+                print(f"Order ID {order_id} paid and confirmed.")
+                return payment
         else:
-            print("Payment cannot be processed.")
+            print("주문을 결제할 수 없습니다.")
             return None
 
     def get_payment(self, order_id):
         for payment in self.payments.values():
             if payment.order_id == order_id:
                 return payment
-        print(f"No payment found for Order ID {order_id}.")
+        print(f"Order ID {order_id}에 대한 결제 정보가 없습니다.")
         return None
 
 # 간단한 사용 예제
@@ -123,14 +124,16 @@ if __name__ == "__main__":
     manager.apply_discount(1, 0.1)
 
     # 결제 처리
-    payment = manager.process_payment(1, 49.5, "credit_card")
-    if payment:
-        print(f"Payment ID {payment.payment_id} processed for Order ID {payment.order_id}.")
+    try:
+        payment = manager.process_payment(1, 48.5, "credit_card")
+        if payment:
+            print(f"Payment ID {payment.payment_id} processed for Order ID {payment.order_id}.")
+    except ValueError as e:
+        print(e)
 
     # 주문 상태 변경
-    manager.confirm_order(2)
-    manager.ship_order(2)
-
+    manager.confirm_order(2)  # 수동 확인
+    manager.ship_order(1)
     try:
         manager.cancel_order(1)
     except ValueError as e:
@@ -146,10 +149,8 @@ if __name__ == "__main__":
     for order_id, items, total, status in all_orders:
         print(f"Order {order_id}: Items - {items}, Total - {total}, Status - {status}")
 
-    # 특정 주문의 결제 정보 확인
+    # 특정 주문의 결제 정보 및 총액 확인
     payment_info = manager.get_payment(1)
     if payment_info:
-        print(f"Payment ID: {payment_info.payment_id}, Order ID: {payment_info.order_id}, Amount: {payment_info.amount}, Method: {payment_info.method}")
-
-    # 특정 주문의 총액 확인
-    print("Order 1 total:", manager.get_order_total(1))
+        print(f"Payment ID {payment_info.payment_id} for Order ID {payment_info.order_id}: Amount - {payment_info.amount}, Method - {payment_info.method}")
+    print("Order 2 total:", manager.get_order_total(2))

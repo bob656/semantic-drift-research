@@ -88,15 +88,15 @@ class OrderManager:
     def process_payment(self, order_id, amount, method):
         order = self.get_order(order_id)
         if order and order.status == "PENDING":
-            if amount == order.total:
+            if abs(amount - order.total) < 1e-6:
+                order.status = "CONFIRMED"
                 payment_id = len(self.payments) + 1
                 payment = Payment(payment_id, order_id, amount, method)
                 self.payments[payment_id] = payment
-                order.status = "CONFIRMED"
-                print(f"Order ID {order_id} confirmed and paid.")
+                print(f"Order ID {order_id} paid successfully with {method}.")
                 return payment
             else:
-                raise ValueError("Payment amount does not match the order total.")
+                raise ValueError("Payment amount does not match the total order cost.")
         else:
             print("Order cannot be processed for payment.")
 
@@ -104,7 +104,7 @@ class OrderManager:
         for payment in self.payments.values():
             if payment.order_id == order_id:
                 return payment
-        print(f"Payment for Order ID {order_id} not found.")
+        print(f"No payment found for Order ID {order_id}.")
         return None
 
 # 간단한 사용 예제
@@ -124,13 +124,13 @@ if __name__ == "__main__":
 
     # 결제 처리
     try:
-        payment = manager.process_payment(1, 58.0, "Credit Card")
-        print(f"Payment ID {payment.payment_id} processed for Order ID {payment.order_id}.")
+        payment = manager.process_payment(1, 45.0, "Credit Card")
     except ValueError as e:
         print(e)
 
     # 주문 상태 변경
-    manager.confirm_order(2)  # 수동 확인
+    manager.confirm_order(1)
+    manager.ship_order(1)
 
     try:
         manager.cancel_order(1)
@@ -143,9 +143,9 @@ if __name__ == "__main__":
         print(f"Order {order.order_id}: Items - {[f'{item.name} x{item.quantity}' for item in order.items]}, Total - {order.total}, Status - {order.status}")
 
     # 결제 정보 조회
-    payment = manager.get_payment(1)
-    if payment:
-        print(f"Payment ID {payment.payment_id} for Order ID {payment.order_id}: Amount - {payment.amount}, Method - {payment.method}")
+    payment_info = manager.get_payment(1)
+    if payment_info:
+        print(f"Payment ID: {payment_info.payment_id}, Order ID: {payment_info.order_id}, Amount: {payment_info.amount}, Method: {payment_info.method}")
 
     # 모든 주문 목록
     all_orders = manager.list_orders()

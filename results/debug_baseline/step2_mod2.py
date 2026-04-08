@@ -1,94 +1,84 @@
 from dataclasses import dataclass, field
+from typing import List
 
 @dataclass
 class Item:
     name: str
     price: float
-    quantity: int
+    quantity: int = 1
 
 class Order:
-    def __init__(self, order_id, items, discount_percent=0.0):
+    def __init__(self, order_id: int, items: List[Item], discount_percent: float = 0.0):
         self.order_id = order_id
         self.items = items
         self.discount_percent = discount_percent
-        self.total = sum(item.price * item.quantity for item in items) * (1 - discount_percent)
+        self.total = self.calculate_total()
+
+    def calculate_total(self) -> float:
+        return sum(item.price * item.quantity for item in self.items) * (1 - self.discount_percent)
 
 class OrderManager:
     def __init__(self):
         self.orders = {}
 
-    def add_order(self, order_id, items: list[Item], discount_percent=0.0):
-        if order_id in self.orders:
-            print(f"Order ID {order_id} already exists.")
-        else:
-            self.orders[order_id] = Order(order_id, items, discount_percent)
-            print(f"Order ID {order_id} added.")
+    def add_order(self, order_id: int, items: List[Item]) -> bool:
+        if order_id not in self.orders:
+            self.orders[order_id] = Order(order_id, items)
+            return True
+        return False
 
-    def get_order(self, order_id):
+    def get_order(self, order_id: int):
         return self.orders.get(order_id)
 
-    def cancel_order(self, order_id):
+    def cancel_order(self, order_id: int) -> bool:
         if order_id in self.orders:
             del self.orders[order_id]
-            print(f"Order ID {order_id} canceled.")
-        else:
-            print(f"Order ID {order_id} not found.")
+            return True
+        return False
 
-    def list_orders(self):
-        return [(order.order_id, [f'{item.name} x{item.quantity}' for item in order.items], order.total) for order in self.orders.values()]
+    def apply_discount(self, order_id: int, discount_percent: float) -> bool:
+        if 0.0 <= discount_percent <= 1.0 and order_id in self.orders:
+            self.orders[order_id].discount_percent = discount_percent
+            self.orders[order_id].total = self.orders[order_id].calculate_total()
+            return True
+        return False
 
-    def apply_discount(self, order_id, discount_percent):
-        if 0.0 <= discount_percent <= 1.0:
-            order = self.get_order(order_id)
-            if order:
-                order.discount_percent = discount_percent
-                order.total = sum(item.price * item.quantity for item in order.items) * (1 - discount_percent)
-                print(f"Order ID {order_id} updated with discount {discount_percent*100}%.")
-            else:
-                print(f"Order ID {order_id} not found.")
-        else:
-            print("Discount percent must be between 0.0 and 1.0.")
+    def get_order_total(self, order_id: int) -> float:
+        if order_id in self.orders:
+            return self.orders[order_id].total
+        return None
 
-    def get_order_total(self, order_id):
-        order = self.get_order(order_id)
-        if order:
-            return order.total
-        else:
-            print(f"Order ID {order_id} not found.")
-            return None
+    def list_orders(self) -> List[Order]:
+        return list(self.orders.values())
 
 # 간단한 사용 예제
 if __name__ == "__main__":
     manager = OrderManager()
-
-    # 주문 추가
-    item1 = Item("item1", 25.0, 2)
-    item2 = Item("item2", 10.0, 1)
+    
+    item1 = Item(name="item1", price=25.0, quantity=2)
+    item2 = Item(name="item2", price=25.0)
     manager.add_order(1, [item1, item2])
 
-    item3 = Item("item3", 20.0, 1)
+    item3 = Item(name="item3", price=30.0)
     manager.add_order(2, [item3])
 
-    # 할인 적용
-    manager.apply_discount(1, 0.1)
+    print("주문 목록:")
+    for order in manager.list_orders():
+        print(f"Order ID: {order.order_id}, Items: {[f'{item.name}({item.quantity})' for item in order.items]}, Total: {order.total}")
 
-    # 주문 조회 및 총액 확인
-    order = manager.get_order(1)
-    if order:
-        print(f"Order {order.order_id}: Items - {[f'{item.name} x{item.quantity}' for item in order.items]}, Total - {order.total}")
+    print("\n할인 적용 (ID: 1, 10% 할인):")
+    if manager.apply_discount(1, 0.1):
+        print("할인이 적용되었습니다.")
+    else:
+        print("할인을 적용할 수 없습니다.")
 
-    # 모든 주문 목록
-    all_orders = manager.list_orders()
-    for order_id, items, total in all_orders:
-        print(f"Order {order_id}: Items - {items}, Total - {total}")
+    print("\n주문 목록 (할인 후):")
+    for order in manager.list_orders():
+        print(f"Order ID: {order.order_id}, Items: {[f'{item.name}({item.quantity})' for item in order.items]}, Total: {order.total}")
 
-    # 특정 주문의 총액 확인
-    print("Order 1 total:", manager.get_order_total(1))
-
-    # 주문 취소
-    manager.cancel_order(1)
-
-    # 취소된 후 다시 조회
-    canceled_order = manager.get_order(1)
-    if not canceled_order:
-        print("Order 1 has been canceled.")
+    print("\n주문 조회 (ID: 1, 최종 금액):")
+    total = manager.get_order_total(1)
+    if total is not None:
+        print(f"Order ID: 1, Total: {total}")
+    else:
+        print("주문을 찾을 수 없습니다.")

@@ -9,11 +9,10 @@ class OrderManager:
         self.orders = {}
 
     def add_order(self, order_id, items, total):
-        if order_id in self.orders:
-            print(f"Order ID {order_id} already exists.")
-        else:
+        if order_id not in self.orders:
             self.orders[order_id] = Order(order_id, items, total)
-            print(f"Order ID {order_id} added.")
+            return True
+        return False
 
     def get_order(self, order_id):
         return self.orders.get(order_id)
@@ -21,9 +20,8 @@ class OrderManager:
     def cancel_order(self, order_id):
         if order_id in self.orders:
             del self.orders[order_id]
-            print(f"Order ID {order_id} canceled.")
-        else:
-            print(f"Order ID {order_id} not found.")
+            return True
+        return False
 
     def list_orders(self):
         return list(self.orders.values())
@@ -31,25 +29,26 @@ class OrderManager:
 # 간단한 사용 예제
 if __name__ == "__main__":
     manager = OrderManager()
-    
-    # 주문 추가
     manager.add_order(1, ["item1", "item2"], 50.0)
-    manager.add_order(2, ["item3"], 20.0)
+    manager.add_order(2, ["item3"], 30.0)
 
-    # 주문 조회
+    print("주문 목록:")
+    for order in manager.list_orders():
+        print(f"Order ID: {order.order_id}, Items: {order.items}, Total: {order.total}")
+
+    print("\n주문 조회 (ID: 1):")
     order = manager.get_order(1)
     if order:
-        print(f"Order {order.order_id}: Items - {order.items}, Total - {order.total}")
+        print(f"Order ID: {order.order_id}, Items: {order.items}, Total: {order.total}")
+    else:
+        print("주문을 찾을 수 없습니다.")
 
-    # 모든 주문 목록
-    all_orders = manager.list_orders()
-    for order in all_orders:
-        print(f"Order {order.order_id}: Items - {order.items}, Total - {order.total}")
+    print("\n주문 취소 (ID: 2):")
+    if manager.cancel_order(2):
+        print("주문이 취소되었습니다.")
+    else:
+        print("취소할 주문을 찾을 수 없습니다.")
 
-    # 주문 취소
-    manager.cancel_order(1)
-
-    # 취소된 후 다시 조회
-    canceled_order = manager.get_order(1)
-    if not canceled_order:
-        print("Order 1 has been canceled.")
+    print("\n주문 목록 (취소 후):")
+    for order in manager.list_orders():
+        print(f"Order ID: {order.order_id}, Items: {order.items}, Total: {order.total}")

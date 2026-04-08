@@ -168,8 +168,12 @@ class ExperimentRunner:
                 '''주문 이력 관리 기능을 추가하세요.
 - OrderManager에 get_order_history() 메서드를 추가하세요:
   * CANCELLED 포함 모든 주문을 반환합니다 (list_orders는 활성 주문만 반환)
+  * 반환값은 Order 객체의 리스트여야 합니다 (튜플 리스트 아님)
   * 주문 생성 시각(created_at: datetime) 기준으로 정렬합니다
 - Order에 created_at(datetime) 필드를 추가하세요 (add_order 시 자동 설정)
+  * 중요: Python dataclass 필드 순서 규칙 — default 없는 필드가 앞에, default 있는 필드가 뒤에 와야 합니다.
+    올바른 예: order_id: int, items: List[Item], discount_percent: float = 0.0, status: str = "PENDING", created_at: datetime = field(default_factory=datetime.now)
+    또는 created_at을 __post_init__에서 설정하세요: self.created_at = datetime.now()
 - OrderManager에 get_orders_by_status(status: str) 메서드를 추가하세요:
   * 지정한 status의 주문만 반환합니다 ("PENDING", "CONFIRMED", "SHIPPED", "CANCELLED")
 - 기존 cancel_order가 주문을 삭제하지 않고 CANCELLED 상태로 유지해야 합니다
