@@ -18,7 +18,7 @@ class OrderManager:
 
     def add_order(self, order_id: int, items: List[Item]) -> None:
         if order_id in self.orders:
-            raise ValueError(f"Order with ID {order_id} already exists.")
+            raise ValueError("Order ID already exists")
         new_order = Order(order_id, items)
         self.orders[order_id] = new_order
 
@@ -26,24 +26,38 @@ class OrderManager:
         return self.orders.get(order_id)
 
     def cancel_order(self, order_id: int) -> None:
-        if order_id not in self.orders:
-            raise ValueError(f"Order with ID {order_id} does not exist.")
-        del self.orders[order_id]
+        if order_id in self.orders:
+            del self.orders[order_id]
+        else:
+            raise ValueError("Order ID does not exist")
 
     def list_orders(self) -> List[Order]:
         return list(self.orders.values())
 
 # 간단한 사용 예제
-order_manager = OrderManager()
-item1 = Item("Apple", 0.5, 2)
-item2 = Item("Banana", 0.3, 5)
-order_manager.add_order(1, [item1, item2])
+if __name__ == "__main__":
+    manager = OrderManager()
+    
+    # 주문 추가
+    items1 = [Item("apple", 0.99, 2), Item("banana", 0.59, 3)]
+    items2 = [Item("orange", 0.79, 1)]
+    manager.add_order(1, items1)
+    manager.add_order(2, items2)
 
-item3 = Item("Laptop", 800, 1)
-item4 = Item("Mouse", 20, 2)
-order_manager.add_order(2, [item3, item4])
+    # 주문 조회
+    order_1 = manager.get_order(1)
+    print(f"Order 1: {order_1.items[0].name} x {order_1.items[0].quantity}, "
+          f"{order_1.items[1].name} x {order_1.items[1].quantity} - Total: ${order_1.total}")
 
-print(order_manager.get_order(1)) # Output: Order(order_id=1, items=[Item(name='Apple', price=0.5, quantity=2), Item(name='Banana', price=0.3, quantity=5)], total=3.5)
-print(order_manager.list_orders()) # Output: [Order(order_id=1, items=[Item(name='Apple', price=0.5, quantity=2), Item(name='Banana', price=0.3, quantity=5)], total=3.5), Order(order_id=2, items=[Item(name='Laptop', price=800, quantity=1), Item(name='Mouse', price=20, quantity=2)], total=840)]
-order_manager.cancel_order(1)
-print(order_manager.get_order(1)) # Output: None
+    # 모든 주문 목록 출력
+    for order in manager.list_orders():
+        print(f"Order ID: {order.order_id}, Items: {[f'{item.name} x {item.quantity}' for item in order.items]}, "
+              f"Total: ${order.total}")
+
+    # 주문 취소
+    manager.cancel_order(1)
+    
+    # 취소된 후 주문 조회
+    cancelled_order = manager.get_order(1)
+    if cancelled_order is None:
+        print("Order 1 has been cancelled.")

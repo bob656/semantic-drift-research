@@ -71,41 +71,22 @@ def save_results(results: Dict, stats_result: Dict, args) -> str:
         },
         'summary': stats_result,
         'raw_results': {
-            'baseline': [
+            agent_key: [
                 {
                     'scores': r.scores,
                     'drift_rate': r.drift_rate,
                     'execution_times': r.execution_times,
                     'total_interactions': len(r.interaction_log),
-                    'test_details': r.test_details or []
-                } for r in results['baseline_results']
-            ],
-            'statedoc': [
-                {
-                    'scores': r.scores,
-                    'drift_rate': r.drift_rate,
-                    'execution_times': r.execution_times,
-                    'total_interactions': len(r.interaction_log),
-                    'test_details': r.test_details or []
-                } for r in results['statedoc_results']
-            ],
-            'semantic': [
-                {
-                    'scores': r.scores,
-                    'drift_rate': r.drift_rate,
-                    'execution_times': r.execution_times,
-                    'total_interactions': len(r.interaction_log),
-                    'test_details': r.test_details or []
-                } for r in results.get('semantic_results', [])
-            ],
-            'semantic_v2': [
-                {
-                    'scores': r.scores,
-                    'drift_rate': r.drift_rate,
-                    'execution_times': r.execution_times,
-                    'total_interactions': len(r.interaction_log),
-                    'test_details': r.test_details or []
-                } for r in results.get('semantic_v2_results', [])
+                    'test_details': r.test_details or [],
+                    'verifier_log': r.verifier_log or [],
+                } for r in results.get(result_key, [])
+            ]
+            for agent_key, result_key in [
+                ('baseline',    'baseline_results'),
+                ('statedoc',    'statedoc_results'),
+                ('semantic',    'semantic_results'),
+                ('semantic_v2', 'semantic_v2_results'),
+                ('semantic_v3', 'semantic_v3_results'),
             ]
         }
     }
@@ -226,6 +207,12 @@ def main():
         default=None,
         help='실행할 에이전트 (콤마 구분, 기본=전체). 예: Baseline,SemanticCompressorV2'
     )
+    parser.add_argument(
+        '--scenario',
+        choices=['order', 'budget'],
+        default='order',
+        help='실험 시나리오: order=OrderSystem(기본), budget=BudgetTracker(설계 의도 보존 측정)'
+    )
 
     args = parser.parse_args()
 
@@ -249,7 +236,22 @@ def main():
 
     selected_agents = [a.strip() for a in args.agents.split(',')] if args.agents else None
 
-    if args.quick:
+    if args.scenario == 'budget':
+        print("📒 BudgetTracker 시나리오 (설계 의도 보존 측정)")
+        raw = runner.run_budget_experiment(
+            num_repeats=args.repeats,
+            agents=selected_agents,
+        )
+        # analyzer가 기대하는 키 형식으로 변환
+        results = {
+            'scenario': raw.get('scenario', 'BudgetTracker Intent'),
+            'baseline_results':    raw.get('Baseline', []),
+            'statedoc_results':    raw.get('LayeredMemory', []),
+            'semantic_results':    raw.get('SemanticCompressor', []),
+            'semantic_v2_results': raw.get('SemanticCompressorV2', []),
+            'semantic_v3_results': raw.get('SemanticCompressorV3', []),
+        }
+    elif args.quick:
         print("⚡ 빠른 검증 모드")
         results = runner.run_quick_experiment(
             num_repeats=args.repeats,

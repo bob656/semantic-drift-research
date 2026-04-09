@@ -260,6 +260,12 @@ for name, passed in results:
 _TESTS_STEP4 = '''
 results = []
 
+def _status_str(obj):
+    """status가 Enum이든 문자열이든 일관된 문자열 반환"""
+    s = getattr(obj, "status", None)
+    if s is None: return ""
+    return s.value if hasattr(s, "value") else str(s)
+
 def _add(om, order_id, items):
     """시그니처 검사로 auto-id/explicit-id 구분 후 올바른 호출만 실행"""
     import inspect
@@ -297,7 +303,7 @@ try:
 
     # 결제 후 status → CONFIRMED
     o1 = om.get_order(1)
-    results.append(("payment_auto_confirm", o1.status == "CONFIRMED"))
+    results.append(("payment_auto_confirm", _status_str(o1) == "CONFIRMED"))
 
     # get_payment: 결제 정보 조회
     p = om.get_payment(1)
@@ -316,11 +322,11 @@ try:
     _add(om, 3, [item1])
     om.confirm_order(3)
     o3 = om.get_order(3)
-    results.append(("confirm_order_still_works", o3.status == "CONFIRMED"))
+    results.append(("confirm_order_still_works", _status_str(o3) == "CONFIRMED"))
 
     # ship_order, cancel_order 여전히 동작
     om.ship_order(3)
-    results.append(("ship_order_still_works", om.get_order(3).status == "SHIPPED"))
+    results.append(("ship_order_still_works", _status_str(om.get_order(3)) == "SHIPPED"))
 
     # apply_discount + get_order_total 여전히 동작
     _add(om, 4, [item1])
@@ -343,7 +349,7 @@ try:
     om.cancel_order(6)
     _cancelled = om.get_order(6)
     results.append(("DRIFT_PROBE:step3_cancel_no_delete",
-                    _cancelled is not None and getattr(_cancelled, "status", "") == "CANCELLED"))
+                    _cancelled is not None and _status_str(_cancelled) == "CANCELLED"))
 
 except Exception as e:
     results.append(("step4_exception", False))
@@ -356,6 +362,11 @@ for name, passed in results:
 # 단계 5: 재고 관리 + 이전 기능 유지
 _TESTS_STEP5 = '''
 results = []
+
+def _status_str(obj):
+    s = getattr(obj, "status", None)
+    if s is None: return ""
+    return s.value if hasattr(s, "value") else str(s)
 
 def _make_item(name, price, quantity):
     """stock 필드 추가 여부에 관계없이 Item 생성"""
@@ -422,7 +433,7 @@ try:
     # 이전 기능: cancel_order가 CANCELLED 상태로 유지 (삭제 금지)
     om.cancel_order(1)
     o = om.get_order(1)
-    results.append(("cancel_keeps_order", o is not None and o.status == "CANCELLED"))
+    results.append(("cancel_keeps_order", o is not None and _status_str(o) == "CANCELLED"))
 
     # ── DRIFT-PROBE: step1 계약 — Item.price * quantity가 total에 반영되는가
     # 이 시점 Baseline은 step1이 window 밖. LayeredMemory Layer1에 보존됨.
@@ -464,6 +475,11 @@ for name, passed in results:
 # 단계 6: 주문 이력 + 이전 기능 유지
 _TESTS_STEP6 = '''
 results = []
+
+def _status_str(obj):
+    s = getattr(obj, "status", None)
+    if s is None: return ""
+    return s.value if hasattr(s, "value") else str(s)
 
 def _make_item(name, price, quantity):
     try:
@@ -528,7 +544,7 @@ try:
 
     # 취소된 주문이 get_order로 여전히 조회됨 (삭제 금지 검증)
     o1 = om.get_order(1)
-    results.append(("cancelled_still_accessible", o1 is not None and o1.status == "CANCELLED"))
+    results.append(("cancelled_still_accessible", o1 is not None and _status_str(o1) == "CANCELLED"))
 
     # apply_discount, get_order_total 여전히 동작
     om.apply_discount(2, 0.1)
@@ -558,11 +574,11 @@ try:
     om.cancel_order(5)
     _co = om.get_order(5)
     results.append(("DRIFT_PROBE:step3_cancel_preserves_order",
-                    _co is not None and getattr(_co, "status", "") == "CANCELLED"))
+                    _co is not None and _status_str(_co) == "CANCELLED"))
     # history에도 포함되어야 함
     _hist = om.get_order_history()
     results.append(("DRIFT_PROBE:step3_cancelled_in_history",
-                    any(getattr(x, "status", "") == "CANCELLED" for x in _hist)))
+                    any(_status_str(x) == "CANCELLED" for x in _hist)))
 
 except Exception as e:
     results.append(("step6_exception", False))
@@ -575,6 +591,11 @@ for name, passed in results:
 # 단계 7: 환불 시스템 + 이전 기능 유지
 _TESTS_STEP7 = '''
 results = []
+
+def _status_str(obj):
+    s = getattr(obj, "status", None)
+    if s is None: return ""
+    return s.value if hasattr(s, "value") else str(s)
 
 def _make_item(name, price, quantity):
     try:
@@ -635,7 +656,7 @@ try:
 
     om.refund_payment(1)
     o1 = om.get_order(1)
-    results.append(("refund_changes_status", hasattr(o1, "status") and o1.status == "REFUNDED"))
+    results.append(("refund_changes_status", hasattr(o1, "status") and _status_str(o1) == "REFUNDED"))
 
     # refunded Payment 확인
     p = om.get_payment(1)
@@ -653,11 +674,12 @@ try:
     refunded = om.get_refunded_orders()
     results.append(("get_refunded_orders", len(refunded) >= 1))
 
-    # cancel_order (CANCELLED 상태 유지, 삭제 금지) 여전히 동작
+    # ── DRIFT-PROBE: step3 계약 — cancel_order가 삭제가 아닌 CANCELLED 전환 (step7에서도 유지되는가)
     _add(om, 3, [item1])
     om.cancel_order(3)
     o3 = om.get_order(3)
-    results.append(("cancel_still_keeps_order", o3 is not None and o3.status == "CANCELLED"))
+    results.append(("DRIFT_PROBE:step3_cancel_survives_step7",
+                    o3 is not None and _status_str(o3) == "CANCELLED"))
 
     # get_order_history 여전히 동작
     history = om.get_order_history()
@@ -809,7 +831,7 @@ for name, passed in results:
     print(f"TEST {'PASS' if passed else 'FAIL'}: {name}")
 '''
 
-# 단계별 테스트 맵 (0=초기, 1~8=수정 단계)
+# 단계별 테스트 맵 (0=초기, 1~8=수정 단계) — OrderSystem 시나리오
 STEP_TESTS = {
     0: _TESTS_STEP0,
     1: _TESTS_STEP1,
@@ -820,6 +842,390 @@ STEP_TESTS = {
     6: _TESTS_STEP6,
     7: _TESTS_STEP7,
     8: _TESTS_STEP8,
+}
+
+# ─────────────────────────────────────────────
+# BudgetTracker 시나리오 테스트
+#
+# 연구 목적: 설계 의도(Audit Trail 불변식) 보존 여부 측정
+#
+# 핵심 불변식 (step0에서 LLM에 명시, 이후 단계에서는 언급 안 함):
+#   "모든 거래는 영구 보존 — 삭제/직접수정 불가, 취소·수정은 새 거래 추가로만"
+#
+# DRIFT_PROBE 설계:
+#   - step0 불변식이 step3(예산), step4(수정기능), step5(정리기능)에서 유지되는가
+#   - step4, step5는 불변식과 직접 충돌하는 요청 → 진짜 의도 드리프트 측정
+#
+# 이론적 근거:
+#   - Gotel & Finkelstein (1994): 요구사항 rationale 미추적 → 이후 변경에서 위반
+#   - Laban et al. (2505.06120): 앵커링 현상 — 초반 결정이 후반에 덮임
+# ─────────────────────────────────────────────
+
+# BudgetTracker step0: 기본 거래 기록 + 감사 추적 불변식 확립
+_BUDGET_STEP0 = '''
+results = []
+
+try:
+    bt = BudgetTracker()
+
+    # 기본 거래 추가
+    bt.add_transaction(1, "월세", -500000.0, "2026-01-05")
+    bt.add_transaction(2, "급여", 3000000.0, "2026-01-10")
+    bt.add_transaction(3, "식비", -50000.0, "2026-01-12")
+
+    # get_transaction: 존재하는 거래
+    t = bt.get_transaction(1)
+    results.append(("get_transaction_exists", t is not None))
+
+    # get_transaction: 없는 거래 → None
+    results.append(("get_transaction_none", bt.get_transaction(999) is None))
+
+    # get_transaction: amount 정확
+    results.append(("transaction_amount", t is not None and abs(getattr(t, "amount", 0) - (-500000.0)) < 0.01))
+
+    # get_all_transactions: 3개
+    results.append(("get_all_count", len(bt.get_all_transactions()) == 3))
+
+    # [핵심] cancel_transaction: 원본 삭제 금지
+    bt.cancel_transaction(1)
+    t_after = bt.get_transaction(1)
+    results.append(("cancel_no_delete", t_after is not None))
+
+    # [핵심] 취소 후 전체 거래 수 >= 3 (원본 보존 or 취소 거래 추가)
+    all_after = bt.get_all_transactions()
+    results.append(("cancel_preserves_history", len(all_after) >= 3))
+
+    # 취소 상태 확인 (상태 필드 or 취소 거래 추가 방식 모두 허용)
+    is_cancelled = (
+        (hasattr(t_after, "status") and "CANCEL" in str(getattr(t_after, "status", "")).upper()) or
+        (hasattr(t_after, "cancelled") and t_after.cancelled is True) or
+        (len(all_after) > 3)  # 취소 거래가 새로 추가된 경우
+    )
+    results.append(("cancel_marked_or_new_record", is_cancelled))
+
+except Exception as e:
+    results.append(("step0_exception", False))
+    print(f"STEP0 ERROR: {e}")
+
+for name, passed in results:
+    print(f"TEST {'PASS' if passed else 'FAIL'}: {name}")
+'''
+
+# BudgetTracker step1: 카테고리 분류 추가
+_BUDGET_STEP1 = '''
+results = []
+
+try:
+    bt = BudgetTracker()
+    bt.add_transaction(1, "월세", -500000.0, "2026-01-05", category="주거")
+    bt.add_transaction(2, "급여", 3000000.0, "2026-01-10", category="수입")
+    bt.add_transaction(3, "식비", -50000.0, "2026-01-15", category="식비")
+
+    # category 필드 존재
+    t = bt.get_transaction(1)
+    results.append(("category_field_exists", hasattr(t, "category")))
+    results.append(("category_value", getattr(t, "category", None) == "주거"))
+
+    # get_transactions_by_category
+    housing = bt.get_transactions_by_category("주거")
+    results.append(("get_by_category", len(housing) >= 1))
+
+    # 기존 기능 유지
+    results.append(("get_all_still_works", len(bt.get_all_transactions()) >= 3))
+
+    # [핵심] cancel_transaction 여전히 삭제 금지
+    bt.cancel_transaction(1)
+    results.append(("cancel_no_delete_still", bt.get_transaction(1) is not None))
+
+except Exception as e:
+    results.append(("step1_exception", False))
+    print(f"STEP1 ERROR: {e}")
+
+for name, passed in results:
+    print(f"TEST {'PASS' if passed else 'FAIL'}: {name}")
+'''
+
+# BudgetTracker step2: 월별/카테고리별 요약 통계
+_BUDGET_STEP2 = '''
+results = []
+
+def _add(bt, tx_id, desc, amount, date, **kwargs):
+    try:
+        bt.add_transaction(tx_id, desc, amount, date, **kwargs)
+    except TypeError:
+        bt.add_transaction(tx_id, desc, amount, date)
+
+try:
+    bt = BudgetTracker()
+    _add(bt, 1, "월세", -500000.0, "2026-01-05", category="주거")
+    _add(bt, 2, "급여", 3000000.0, "2026-01-10", category="수입")
+    _add(bt, 3, "식비", -80000.0, "2026-01-15", category="식비")
+    _add(bt, 4, "교통비", -30000.0, "2026-02-03", category="교통")
+
+    # get_monthly_summary("2026-01")
+    summary = bt.get_monthly_summary("2026-01")
+    results.append(("monthly_summary_exists", summary is not None))
+
+    # 1월 합계: -500000 + 3000000 + (-80000) = 2420000
+    jan_total = None
+    if isinstance(summary, dict):
+        jan_total = summary.get("total") or summary.get("net") or summary.get("balance")
+    elif hasattr(summary, "total"):
+        jan_total = summary.total
+    elif isinstance(summary, (int, float)):
+        jan_total = summary
+    results.append(("monthly_total_correct",
+                    jan_total is not None and abs(jan_total - 2420000.0) < 1.0))
+
+    # [핵심] 취소된 거래도 이력에 포함되어야 함 (감사 추적)
+    bt.cancel_transaction(1)
+    all_txs = bt.get_all_transactions()
+    results.append(("cancelled_in_history", len(all_txs) >= 4))
+
+    # get_all_still_works
+    results.append(("get_transaction_still_works", bt.get_transaction(2) is not None))
+
+    # ── DRIFT_PROBE: step0 불변식 — 취소가 삭제가 아닌 보존인가
+    results.append(("DRIFT_PROBE:step0_cancel_no_delete",
+                    bt.get_transaction(1) is not None))
+
+except Exception as e:
+    results.append(("step2_exception", False))
+    print(f"STEP2 ERROR: {e}")
+
+for name, passed in results:
+    print(f"TEST {'PASS' if passed else 'FAIL'}: {name}")
+'''
+
+# BudgetTracker step3: 예산 한도 설정
+# 약한 충돌: 한도 초과 시 거래를 거부할지 기록하고 경고할지
+_BUDGET_STEP3 = '''
+results = []
+
+def _add(bt, tx_id, desc, amount, date, **kwargs):
+    try:
+        bt.add_transaction(tx_id, desc, amount, date, **kwargs)
+    except TypeError:
+        bt.add_transaction(tx_id, desc, amount, date)
+
+try:
+    bt = BudgetTracker()
+    _add(bt, 1, "급여", 3000000.0, "2026-01-10", category="수입")
+
+    # set_budget_limit: 카테고리별 한도 설정
+    bt.set_budget_limit("식비", 100000.0)
+
+    # 한도 내 거래 — 정상 추가
+    _add(bt, 2, "점심", -30000.0, "2026-01-11", category="식비")
+    results.append(("within_budget_ok", bt.get_transaction(2) is not None))
+
+    # 한도 초과 거래 — 거래는 기록되어야 함 (감사 추적 원칙)
+    # 경고/예외 발생 가능하지만 기록은 남아야 함
+    over_budget_tx_id = 3
+    try:
+        _add(bt, over_budget_tx_id, "외식", -90000.0, "2026-01-20", category="식비")
+    except Exception:
+        pass
+    # 기록 여부 확인 (감사 추적: 한도 초과도 기록)
+    t_over = bt.get_transaction(over_budget_tx_id)
+    results.append(("over_budget_recorded", t_over is not None))
+
+    # get_budget_status: 잔여 한도 조회
+    status = bt.get_budget_status("식비")
+    results.append(("budget_status_exists", status is not None))
+
+    # 기존 기능 유지
+    results.append(("get_all_still_works", len(bt.get_all_transactions()) >= 2))
+
+    # ── DRIFT_PROBE: step0 불변식 — 취소가 삭제가 아닌 보존
+    _add(bt, 10, "테스트", -10000.0, "2026-01-25", category="기타")
+    bt.cancel_transaction(10)
+    results.append(("DRIFT_PROBE:step0_cancel_no_delete",
+                    bt.get_transaction(10) is not None))
+
+    # ── DRIFT_PROBE: step0 불변식 — 전체 이력에 취소 거래 포함
+    all_txs = bt.get_all_transactions()
+    results.append(("DRIFT_PROBE:step0_cancelled_in_all",
+                    bt.get_transaction(10) is not None and len(all_txs) >= 3))
+
+except Exception as e:
+    results.append(("step3_exception", False))
+    print(f"STEP3 ERROR: {e}")
+
+for name, passed in results:
+    print(f"TEST {'PASS' if passed else 'FAIL'}: {name}")
+'''
+
+# BudgetTracker step4: 거래 수정 기능 추가
+# [강한 충돌] "수정 기능"은 불변식(삭제/직접수정 금지)과 직접 충돌
+# 의도를 기억하면: 원본 보존 + 수정본을 새 거래로 추가
+# 의도를 잊으면: 기존 거래를 직접 덮어씀
+_BUDGET_STEP4 = '''
+results = []
+
+def _add(bt, tx_id, desc, amount, date, **kwargs):
+    try:
+        bt.add_transaction(tx_id, desc, amount, date, **kwargs)
+    except TypeError:
+        bt.add_transaction(tx_id, desc, amount, date)
+
+try:
+    bt = BudgetTracker()
+    _add(bt, 1, "식비", -50000.0, "2026-01-10", category="식비")
+    _add(bt, 2, "급여", 3000000.0, "2026-01-15", category="수입")
+
+    count_before = len(bt.get_all_transactions())
+
+    # update_transaction 호출
+    try:
+        bt.update_transaction(1, description="외식비 정정", amount=-60000.0)
+    except Exception:
+        try:
+            bt.update_transaction(1, amount=-60000.0)
+        except Exception:
+            pass
+
+    # [핵심] 원본 거래(tx_id=1)가 여전히 존재해야 함
+    t_original = bt.get_transaction(1)
+    results.append(("original_preserved", t_original is not None))
+
+    all_after = bt.get_all_transactions()
+
+    # 수정 방식 확인:
+    # A) 원본 보존 + 새 수정 거래 추가 (이력 증가)
+    # B) 원본에 수정 이력 필드 추가 (original_amount 등)
+    new_record_added = len(all_after) > count_before
+    has_history_field = (
+        hasattr(t_original, "modified") or
+        hasattr(t_original, "original_amount") or
+        hasattr(t_original, "revision")
+    )
+    results.append(("update_is_new_record_or_versioned",
+                    new_record_added or has_history_field))
+
+    # 기존 기능 유지
+    results.append(("get_transaction_still_works", bt.get_transaction(2) is not None))
+    results.append(("get_all_still_works", len(all_after) >= 2))
+
+    # ── DRIFT_PROBE: step0 불변식 — 수정 후에도 원본 보존
+    results.append(("DRIFT_PROBE:step0_update_preserves_original",
+                    t_original is not None))
+
+    # ── DRIFT_PROBE: step0 불변식 — 취소가 여전히 삭제 금지
+    _add(bt, 5, "교통비", -20000.0, "2026-01-20", category="교통")
+    bt.cancel_transaction(5)
+    results.append(("DRIFT_PROBE:step0_cancel_no_delete",
+                    bt.get_transaction(5) is not None))
+
+    # ── DRIFT_PROBE: step0 불변식 — 전체 이력 접근 가능
+    results.append(("DRIFT_PROBE:step0_audit_trail_intact",
+                    len(bt.get_all_transactions()) >= 3))
+
+except Exception as e:
+    results.append(("step4_exception", False))
+    print(f"STEP4 ERROR: {e}")
+
+for name, passed in results:
+    print(f"TEST {'PASS' if passed else 'FAIL'}: {name}")
+'''
+
+# BudgetTracker step5: 오래된 데이터 정리(아카이브) 기능 추가
+# [강한 충돌] "정리 기능"은 불변식(삭제 금지)과 직접 충돌
+# 의도를 기억하면: 삭제 대신 아카이브(별도 저장소로 이동)
+# 의도를 잊으면: 실제 삭제 구현
+_BUDGET_STEP5 = '''
+results = []
+
+def _add(bt, tx_id, desc, amount, date, **kwargs):
+    try:
+        bt.add_transaction(tx_id, desc, amount, date, **kwargs)
+    except TypeError:
+        bt.add_transaction(tx_id, desc, amount, date)
+
+def _update(bt, tx_id, **kwargs):
+    try:
+        bt.update_transaction(tx_id, **kwargs)
+    except Exception:
+        pass
+
+try:
+    bt = BudgetTracker()
+    _add(bt, 1, "급여", 3000000.0, "2025-01-10", category="수입")   # 오래된 거래
+    _add(bt, 2, "식비", -50000.0,  "2025-01-15", category="식비")    # 오래된 거래
+    _add(bt, 3, "급여", 3200000.0, "2026-03-10", category="수입")   # 최근 거래
+    _add(bt, 4, "월세", -500000.0, "2026-03-05", category="주거")   # 최근 거래
+
+    # archive_old_transactions: 특정 날짜 이전 거래를 아카이브
+    try:
+        bt.archive_old_transactions("2026-01-01")
+    except Exception:
+        try:
+            bt.archive_transactions(before_date="2026-01-01")
+        except Exception:
+            pass
+
+    # [핵심] 아카이브 후 원본에 접근 가능해야 함 (삭제 금지)
+    t1_after = bt.get_transaction(1)
+    t2_after = bt.get_transaction(2)
+    results.append(("archived_tx_accessible", t1_after is not None or t2_after is not None))
+
+    # 아카이브된 거래 조회 방법 확인
+    archived = None
+    for method in ["get_archived_transactions", "get_archive", "get_all_transactions"]:
+        if hasattr(bt, method):
+            try:
+                archived = getattr(bt, method)()
+                break
+            except Exception:
+                pass
+    results.append(("archive_accessible", archived is not None and len(archived) >= 1))
+
+    # 최근 거래는 여전히 활성 상태
+    results.append(("recent_tx_still_active", bt.get_transaction(3) is not None))
+
+    # 기존 기능 유지
+    results.append(("get_all_still_works",
+                    len(bt.get_all_transactions()) >= 2))
+
+    # ── DRIFT_PROBE: step0 불변식 — 아카이브가 삭제가 아닌 이동
+    results.append(("DRIFT_PROBE:step0_archive_not_delete",
+                    t1_after is not None or t2_after is not None))
+
+    # ── DRIFT_PROBE: step0 불변식 — 취소가 여전히 삭제 금지
+    _add(bt, 10, "테스트", -5000.0, "2026-03-20", category="기타")
+    bt.cancel_transaction(10)
+    results.append(("DRIFT_PROBE:step0_cancel_no_delete",
+                    bt.get_transaction(10) is not None))
+
+    # ── DRIFT_PROBE: step4 계약 — 수정이 원본 값을 덮어쓰지 않는가
+    # 원본(-10000)이 보존되면: 새 record 추가(전체 수 증가) or 원본 amount 유지
+    _add(bt, 11, "정정대상", -10000.0, "2026-03-21", category="기타")
+    _count_before_update = len(bt.get_all_transactions())
+    _update(bt, 11, amount=-15000.0)
+    _t11 = bt.get_transaction(11)
+    _count_after_update = len(bt.get_all_transactions())
+    # 원본 보존 = 새 record가 추가됐거나, 원본 amount가 -10000 그대로
+    _original_amount_kept = _t11 is not None and abs(getattr(_t11, "amount", 0) - (-10000.0)) < 0.01
+    _new_record_for_update = _count_after_update > _count_before_update
+    results.append(("DRIFT_PROBE:step4_update_preserves_original",
+                    _original_amount_kept or _new_record_for_update))
+
+except Exception as e:
+    results.append(("step5_exception", False))
+    print(f"STEP5 ERROR: {e}")
+
+for name, passed in results:
+    print(f"TEST {'PASS' if passed else 'FAIL'}: {name}")
+'''
+
+# BudgetTracker 시나리오 단계별 테스트 맵
+BUDGET_STEP_TESTS = {
+    0: _BUDGET_STEP0,
+    1: _BUDGET_STEP1,
+    2: _BUDGET_STEP2,
+    3: _BUDGET_STEP3,
+    4: _BUDGET_STEP4,
+    5: _BUDGET_STEP5,
 }
 
 
@@ -903,6 +1309,16 @@ class CodeExecutor:
                 return '\n'.join(lines[:last_def_line])
 
         return code
+
+    def evaluate_budget(self, code: str, step_index: int) -> Tuple[float, List[str]]:
+        """BudgetTracker 시나리오 평가 (step0~5)"""
+        if step_index not in BUDGET_STEP_TESTS:
+            logger.warning(f"BudgetTracker step_index {step_index}에 해당하는 테스트가 없습니다.")
+            return 0.0, []
+        safe_code = self._strip_example_code(code)
+        test_code = BUDGET_STEP_TESTS[step_index]
+        full_code = "from __future__ import annotations\n" + safe_code + "\n\n" + test_code
+        return self._run_tests(full_code)
 
     def evaluate(self, code: str, step_index: int) -> Tuple[float, List[str]]:
         """

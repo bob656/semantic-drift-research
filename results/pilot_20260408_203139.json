@@ -1,0 +1,1841 @@
+{
+  "metadata": {
+    "timestamp": "20260408_203139",
+    "model": "qwen2.5-coder:7b",
+    "host": "http://192.168.100.52:11434",
+    "repeats": 5,
+    "mode": "pilot",
+    "eval_mode": "exec",
+    "system_info": {
+      "platform": "macOS",
+      "environment": "Ollama + VSCode"
+    }
+  },
+  "summary": {
+    "baseline_mean_drift": 9.0,
+    "statedoc_mean_drift": 4.0,
+    "semantic_mean_drift": 6.0,
+    "improvement": 5.0,
+    "baseline_std": 2.23606797749979,
+    "statedoc_std": 5.477225575051661,
+    "semantic_std": 3.8369548110737797,
+    "t_statistic": 1.889822365046136,
+    "p_value": 0.09545200899274064,
+    "effect_size": 1.1952286093343936,
+    "effect_interpretation": "매우 큰 효과",
+    "significant": false,
+    "improvement_semantic": 3.0,
+    "t_semantic": 1.5105264449340403,
+    "p_semantic": 0.16935283142654428,
+    "d_semantic": 0.9553408063816955,
+    "significant_semantic": false,
+    "t_vs": -0.6687338550904234,
+    "p_vs": 0.5224898742123517,
+    "d_vs": -0.42294442611014477,
+    "baseline_scores": [
+      [
+        10.0,
+        10.0,
+        10.0,
+        0.0,
+        6.0,
+        5.0,
+        0.0
+      ],
+      [
+        10.0,
+        10.0,
+        10.0,
+        5.0,
+        8.333333333333334,
+        10.0,
+        10.0
+      ],
+      [
+        10.0,
+        10.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        10.0,
+        10.0,
+        8.0,
+        5.0,
+        8.333333333333334,
+        5.0,
+        0.0
+      ],
+      [
+        10.0,
+        10.0,
+        8.0,
+        5.0,
+        8.333333333333334,
+        6.666666666666666,
+        0.0
+      ]
+    ],
+    "statedoc_scores": [
+      [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      [
+        10.0,
+        10.0,
+        10.0,
+        0.0,
+        0.0,
+        0.0,
+        6.0
+      ],
+      [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      [
+        10.0,
+        10.0,
+        8.333333333333334,
+        8.333333333333334,
+        8.75,
+        8.571428571428571,
+        0.0
+      ],
+      [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ]
+    ],
+    "semantic_scores": [
+      [
+        10.0,
+        10.0,
+        8.333333333333334,
+        8.333333333333334,
+        10.0,
+        10.0,
+        10.0
+      ],
+      [
+        10.0,
+        10.0,
+        10.0,
+        5.0,
+        8.333333333333334,
+        6.666666666666666,
+        10.0
+      ],
+      [
+        10.0,
+        10.0,
+        10.0,
+        8.333333333333334,
+        8.75,
+        8.571428571428571,
+        0.0
+      ],
+      [
+        10.0,
+        10.0,
+        8.333333333333334,
+        8.571428571428571,
+        10.0,
+        10.0,
+        6.666666666666666
+      ],
+      [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "sample_size": 5
+  },
+  "raw_results": {
+    "baseline": [
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          0.0,
+          6.0,
+          5.0,
+          0.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          3.2547669410705566,
+          6.508758783340454,
+          8.301260948181152,
+          10.588537693023682,
+          14.062440872192383,
+          23.291836977005005,
+          25.83484721183777
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpklvvtx06.py\", line 11, in <module>\n    class OrderStatus(Enum):\n                      ^^^^\nNameError: nam"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST FAIL: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST FAIL: confirm_order_still_works",
+            "TEST FAIL: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST FAIL: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 1/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: 재고 부족: apple",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST FAIL: get_stock",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP6 ERROR: 1",
+            "TEST FAIL: step6_exception"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          5.0,
+          8.333333333333334,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 5.0,
+        "execution_times": [
+          17.023070096969604,
+          17.678348064422607,
+          25.234235048294067,
+          42.03345608711243,
+          40.4456262588501,
+          23.67762589454651,
+          27.518043756484985
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "RUNTIME_ERROR: STEP3 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: initial_status_pending",
+            "TEST FAIL: step3_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP4 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST FAIL: step4_exception"
+          ],
+          [
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST PASS: DRIFT_PROBE:step1_price_times_qty",
+            "TEST PASS: DRIFT_PROBE:step2_discount_ratio",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          14.898371934890747,
+          27.908687114715576,
+          29.03248882293701,
+          39.4896821975708,
+          44.406590938568115,
+          28.942476987838745,
+          32.82030987739563
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "FAIL: no_test_output |   File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp0hhqcpmr.py\", line 45\n    return self.orders.get(order_id)?.total\n                                    ^\nSyntaxError: invalid syntax\n"
+          ],
+          [
+            "FAIL: no_test_output |   File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpkj0suu5q.py\", line 62\n    return self.orders.get(order_id)?.total\n                                    ^\nSyntaxError: invalid syntax\n"
+          ],
+          [
+            "FAIL: no_test_output |   File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp7snz5e91.py\", line 90\n    return self.orders.get(order_id)?.total\n                                    ^\nSyntaxError: invalid syntax\n"
+          ],
+          [
+            "FAIL: no_test_output |   File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpi4zeo_75.py\", line 38\n    return self.items.get(item_name)?.stock\n                                    ^\nSyntaxError: invalid syntax\n"
+          ],
+          [
+            "FAIL: no_test_output |   File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpph5vmnoy.py\", line 53\n    return self.items.get(item_name)?.stock\n                                    ^\nSyntaxError: invalid syntax\n"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          8.0,
+          5.0,
+          8.333333333333334,
+          5.0,
+          0.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          14.184890747070312,
+          24.28265404701233,
+          29.949980974197388,
+          33.840338945388794,
+          38.00088620185852,
+          26.3500919342041,
+          29.696614980697632
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "RUNTIME_ERROR: STEP2 ERROR: object of type 'NoneType' has no len()",
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST FAIL: step2_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP3 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: initial_status_pending",
+            "TEST FAIL: step3_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP4 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST FAIL: step4_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: Insufficient stock for apple",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST FAIL: get_stock",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP6 ERROR: 'Order ID does not exist'",
+            "TEST FAIL: step6_exception"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          8.0,
+          5.0,
+          8.333333333333334,
+          6.666666666666666,
+          0.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          12.626847982406616,
+          16.002816915512085,
+          23.92288112640381,
+          28.613542318344116,
+          35.37597918510437,
+          21.857056856155396,
+          24.4135639667511
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "RUNTIME_ERROR: STEP2 ERROR: object of type 'NoneType' has no len()",
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST FAIL: step2_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP3 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: initial_status_pending",
+            "TEST FAIL: step3_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP4 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST FAIL: step4_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: 'Item' object has no attribute 'get'",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP6 ERROR: 'OrderManager' object has no attribute 'cancel_order'",
+            "TEST FAIL: step6_exception"
+          ]
+        ]
+      }
+    ],
+    "statedoc": [
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 0.0,
+        "execution_times": [
+          13.76341199874878,
+          20.046599864959717,
+          25.962828874588013,
+          35.6950798034668,
+          40.69806909561157,
+          23.024243354797363,
+          25.811372995376587
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST PASS: DRIFT_PROBE:step1_price_times_qty",
+            "TEST PASS: DRIFT_PROBE:step2_discount_ratio",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          0.0,
+          0.0,
+          0.0,
+          6.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          13.878757953643799,
+          21.646464109420776,
+          27.091547966003418,
+          35.904139041900635,
+          41.937021017074585,
+          29.549121141433716,
+          33.75072717666626
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpu6316pg_.py\", line 10, in <module>\n    class OrderStatus(Enum):\n                      ^^^^\nNameError: nam"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmptjop0jwm.py\", line 10, in <module>\n    class OrderStatus(Enum):\n                      ^^^^\nNameError: nam"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpudh_3y7b.py\", line 11, in <module>\n    class OrderStatus(Enum):\n                      ^^^^\nNameError: nam"
+          ],
+          [
+            "TEST FAIL: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST FAIL: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST FAIL: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST FAIL: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 3/5 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 0.0,
+        "execution_times": [
+          14.746072769165039,
+          20.804789066314697,
+          24.54201602935791,
+          33.580564975738525,
+          39.792901039123535,
+          31.79631996154785,
+          36.4119348526001
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST PASS: DRIFT_PROBE:step1_price_times_qty",
+            "TEST PASS: DRIFT_PROBE:step2_discount_ratio",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          8.333333333333334,
+          8.333333333333334,
+          8.75,
+          8.571428571428571,
+          0.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          15.116868019104004,
+          19.297790050506592,
+          28.84414005279541,
+          35.89887309074402,
+          42.9693078994751,
+          29.61765480041504,
+          35.61721968650818
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "RUNTIME_ERROR: STEP2 ERROR: 'OrderManager' object has no attribute 'cancel_order'",
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST FAIL: step2_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP3 ERROR: 'OrderManager' object has no attribute 'apply_discount'",
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST FAIL: step3_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP4 ERROR: 'OrderManager' object has no attribute 'apply_discount'",
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST FAIL: step4_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: 'OrderManager' object has no attribute 'apply_discount'",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP6 ERROR: name 'item_name' is not defined",
+            "TEST FAIL: step6_exception"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 0.0,
+        "execution_times": [
+          14.93675422668457,
+          22.128457069396973,
+          25.166878938674927,
+          33.33447217941284,
+          43.02406311035156,
+          30.122202157974243,
+          33.05134081840515
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST PASS: DRIFT_PROBE:step1_price_times_qty",
+            "TEST PASS: DRIFT_PROBE:step2_discount_ratio",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      }
+    ],
+    "semantic": [
+      {
+        "scores": [
+          10.0,
+          10.0,
+          8.333333333333334,
+          8.333333333333334,
+          10.0,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 1.666666666666666,
+        "execution_times": [
+          15.813168048858643,
+          23.383289098739624,
+          29.612886905670166,
+          36.86299276351929,
+          43.571566104888916,
+          25.048177003860474,
+          31.426370859146118
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "RUNTIME_ERROR: STEP2 ERROR: 'OrderManager' object has no attribute 'cancel_order'",
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST FAIL: step2_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP3 ERROR: 'OrderManager' object has no attribute 'apply_discount'",
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST FAIL: step3_exception"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST PASS: DRIFT_PROBE:step1_price_times_qty",
+            "TEST PASS: DRIFT_PROBE:step2_discount_ratio",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          5.0,
+          8.333333333333334,
+          6.666666666666666,
+          10.0
+        ],
+        "drift_rate": 5.0,
+        "execution_times": [
+          17.4084370136261,
+          26.308637857437134,
+          36.325122117996216,
+          42.55764722824097,
+          48.07699012756348,
+          29.07478094100952,
+          38.04658889770508
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "RUNTIME_ERROR: STEP3 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: initial_status_pending",
+            "TEST FAIL: step3_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP4 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST FAIL: step4_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: 'Item' object has no attribute 'get'",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          8.333333333333334,
+          8.75,
+          8.571428571428571,
+          0.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          17.579853057861328,
+          25.008049964904785,
+          30.66540813446045,
+          35.088923931121826,
+          45.40871810913086,
+          26.12627673149109,
+          41.38283896446228
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "RUNTIME_ERROR: STEP3 ERROR: 'OrderManager' object has no attribute 'apply_discount'",
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST FAIL: step3_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP4 ERROR: 'OrderManager' object has no attribute 'apply_discount'",
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST FAIL: step4_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: 'OrderManager' object has no attribute 'apply_discount'",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP6 ERROR: 'Order ID does not exist'",
+            "TEST FAIL: step6_exception"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          8.333333333333334,
+          8.571428571428571,
+          10.0,
+          10.0,
+          6.666666666666666
+        ],
+        "drift_rate": 3.333333333333334,
+        "execution_times": [
+          18.269203901290894,
+          27.337427854537964,
+          34.24011993408203,
+          39.45854640007019,
+          42.84820508956909,
+          29.624876022338867,
+          27.848958015441895
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "RUNTIME_ERROR: STEP2 ERROR: 'OrderManager' object has no attribute 'cancel_order'",
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST FAIL: step2_exception"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST FAIL: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST PASS: DRIFT_PROBE:step1_price_times_qty",
+            "TEST PASS: DRIFT_PROBE:step2_discount_ratio",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP6 ERROR: type object 'OrderStatus' has no attribute '__members__'",
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST FAIL: step6_exception"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          16.620399951934814,
+          25.85706901550293,
+          30.065711736679077,
+          39.62577486038208,
+          46.42242479324341,
+          34.048463106155396,
+          37.74340105056763
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpdbaqtwai.py\", line 2, in <module>\n    from typing import List, Optional, dataclass\nImportError: cannot im"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmpm2t7d6io.py\", line 2, in <module>\n    from typing import List, Optional, dataclass\nImportError: cannot im"
+          ],
+          [
+            "FAIL: no_test_output | Traceback (most recent call last):\n  File \"/var/folders/vs/hwlb12zd40l6b3h8dhtjhgm80000gn/T/tmp2410wx6s.py\", line 2, in <module>\n    from typing import List, Optional, dataclass, datetime\nImportError:"
+          ]
+        ]
+      }
+    ],
+    "semantic_v2": [
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          8.333333333333334,
+          9.0,
+          7.5,
+          0.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          18.623058795928955,
+          24.74315118789673,
+          29.348016023635864,
+          42.24925971031189,
+          52.48930788040161,
+          39.17471408843994,
+          34.66018509864807
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "RUNTIME_ERROR: STEP3 ERROR: 'OrderManager' object has no attribute 'apply_discount'",
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST FAIL: step3_exception"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST FAIL: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: cannot assign to field 'stock'",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP6 ERROR: Order with id 1 does not exist",
+            "TEST FAIL: step6_exception"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          8.333333333333334,
+          5.0,
+          6.666666666666666,
+          8.75,
+          0.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          15.46371579170227,
+          23.990362882614136,
+          28.73167109489441,
+          39.074034214019775,
+          47.45792365074158,
+          28.747068881988525,
+          36.59398603439331
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "RUNTIME_ERROR: STEP2 ERROR: 'OrderManager' object has no attribute 'cancel_order'",
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST FAIL: step2_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP3 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: initial_status_pending",
+            "TEST FAIL: step3_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP4 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST FAIL: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST FAIL: step4_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: 'OrderManager' object has no attribute 'cancel_order'",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP6 ERROR: 'OrderManager' object has no attribute 'cancel_order'",
+            "TEST FAIL: step6_exception"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 0.0,
+        "execution_times": [
+          17.5239200592041,
+          19.427910327911377,
+          26.1788489818573,
+          37.64347195625305,
+          44.193033933639526,
+          33.65453815460205,
+          39.39712905883789
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "TEST PASS: initial_status_pending",
+            "TEST PASS: confirm_order",
+            "TEST PASS: ship_order",
+            "TEST PASS: cancel_shipped_raises",
+            "TEST PASS: cancel_pending_ok",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: get_order_total_still_works"
+          ],
+          [
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST PASS: confirm_order_still_works",
+            "TEST PASS: ship_order_still_works",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_in_total",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST PASS: DRIFT_PROBE:step1_price_times_qty",
+            "TEST PASS: DRIFT_PROBE:step2_discount_ratio",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          5.0,
+          8.333333333333334,
+          8.75,
+          0.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          18.647055864334106,
+          25.048990964889526,
+          32.00616812705994,
+          42.549864053726196,
+          47.875186920166016,
+          30.25238823890686,
+          34.993243932724
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "RUNTIME_ERROR: STEP3 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: initial_status_pending",
+            "TEST FAIL: step3_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP4 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST FAIL: step4_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: 'OrderManager' object has no attribute 'cancel_order'",
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST FAIL: step5_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP6 ERROR: 'OrderManager' object has no attribute 'cancel_order'",
+            "TEST FAIL: step6_exception"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          5.0,
+          8.333333333333334,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 5.0,
+        "execution_times": [
+          17.359513998031616,
+          24.38670015335083,
+          34.618515968322754,
+          39.98619985580444,
+          45.0819149017334,
+          30.563596963882446,
+          38.50804090499878
+        ],
+        "total_interactions": 7,
+        "test_details": [
+          [
+            "TEST PASS: get_order_exists",
+            "TEST PASS: get_order_none",
+            "TEST PASS: list_orders_count",
+            "TEST PASS: cancel_order"
+          ],
+          [
+            "TEST PASS: item_class_exists",
+            "TEST PASS: item_name",
+            "TEST PASS: item_price",
+            "TEST PASS: item_quantity",
+            "TEST PASS: get_order_exists",
+            "TEST PASS: total_auto_calc",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works"
+          ],
+          [
+            "TEST PASS: item_accessible",
+            "TEST PASS: apply_discount_exists",
+            "TEST PASS: get_order_total",
+            "TEST PASS: no_discount_total",
+            "TEST PASS: list_orders_still_works",
+            "TEST PASS: cancel_order_still_works",
+            "TEST PASS: get_order_still_works"
+          ],
+          [
+            "RUNTIME_ERROR: STEP3 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: initial_status_pending",
+            "TEST FAIL: step3_exception"
+          ],
+          [
+            "RUNTIME_ERROR: STEP4 ERROR: 'OrderManager' object has no attribute 'confirm_order'",
+            "TEST PASS: process_payment_returns",
+            "TEST PASS: payment_auto_confirm",
+            "TEST PASS: get_payment",
+            "TEST PASS: payment_method",
+            "TEST PASS: wrong_amount_raises",
+            "TEST FAIL: step4_exception"
+          ],
+          [
+            "TEST PASS: inventory_exists",
+            "TEST PASS: add_item_works",
+            "TEST PASS: get_stock",
+            "TEST PASS: reduce_stock",
+            "TEST PASS: reduce_stock_raises",
+            "TEST PASS: add_order_with_inventory",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: cancel_keeps_order",
+            "TEST PASS: DRIFT_PROBE:step1_price_times_qty",
+            "TEST PASS: DRIFT_PROBE:step2_discount_ratio",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: history_includes_cancelled",
+            "TEST PASS: history_length",
+            "TEST PASS: get_by_status_pending",
+            "TEST PASS: cancelled_still_accessible",
+            "TEST PASS: apply_discount_still_works",
+            "TEST PASS: DRIFT_PROBE:step1_item_price_attr",
+            "TEST PASS: DRIFT_PROBE:step1_item_qty_attr",
+            "TEST PASS: DRIFT_PROBE:step2_discount_0.1_means_10pct",
+            "TEST PASS: DRIFT_PROBE:step3_cancel_preserves_order",
+            "TEST PASS: DRIFT_PROBE:step3_cancelled_in_history",
+            "DRIFT_PROBE_SUMMARY: 5/5 passed"
+          ]
+        ]
+      }
+    ]
+  }
+}

@@ -1,53 +1,61 @@
-from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Optional, List
 
-@dataclass
-class Item:
-    name: str
-    price: float
-    quantity: int
+class Transaction:
+    def __init__(self, tx_id: int, description: str, amount: float, date: str, category: str = "기타"):
+        self.tx_id = tx_id
+        self.description = description
+        self.amount = amount
+        self.date = date
+        self.category = category
+        self.cancelled = False
 
-class Order:
-    def __init__(self, order_id: int, items: List[Item]):
-        self.order_id = order_id
-        self.items = items
-        self.total = sum(item.price * item.quantity for item in items)
+    def cancel(self) -> None:
+        self.cancelled = True
 
-class OrderManager:
+class BudgetTracker:
     def __init__(self):
-        self.orders = {}
+        self.transactions: List[Transaction] = []
 
-    def add_order(self, order_id: int, items: List[Item]) -> None:
-        if order_id in self.orders:
-            raise ValueError("Order ID already exists")
-        new_order = Order(order_id, items)
-        self.orders[order_id] = new_order
+    def add_transaction(self, tx_id: int, description: str, amount: float, date: str, category: str = "기타") -> None:
+        if any(tx.tx_id == tx_id for tx in self.transactions):
+            raise ValueError("Transaction ID already exists")
+        new_tx = Transaction(tx_id, description, amount, date, category)
+        self.transactions.append(new_tx)
 
-    def get_order(self, order_id: int) -> Optional[Order]:
-        return self.orders.get(order_id)
+    def get_transaction(self, tx_id: int) -> Optional[Transaction]:
+        return next((tx for tx in self.transactions if tx.tx_id == tx_id), None)
 
-    def cancel_order(self, order_id: int) -> None:
-        if order_id not in self.orders:
-            raise ValueError("Order ID does not exist")
-        del self.orders[order_id]
+    def cancel_transaction(self, tx_id: int) -> None:
+        tx = self.get_transaction(tx_id)
+        if not tx:
+            raise ValueError("Transaction not found")
+        if tx.cancelled:
+            raise ValueError("Transaction already cancelled")
 
-    def list_orders(self) -> List[Order]:
-        return list(self.orders.values())
+        new_tx = Transaction(tx_id, tx.description, -tx.amount, tx.date, tx.category)  # Cancel by adding a negative transaction
+        new_tx.cancel()
+        self.transactions.append(new_tx)
 
-# 간단한 사용 예제
-order_manager = OrderManager()
+    def get_all_transactions(self) -> List[Transaction]:
+        return self.transactions
 
-item1 = Item(name="Apple", price=0.5, quantity=2)
-item2 = Item(name="Banana", price=0.3, quantity=3)
+    def get_transactions_by_category(self, category: str) -> List[Transaction]:
+        return [tx for tx in self.transactions if tx.category == category]
 
-order_manager.add_order(1, [item1, item2])
+# Usage example:
+tracker = BudgetTracker()
+tracker.add_transaction(1, "Groceries", 50.0, "2023-04-01", category="식비")
+tracker.add_transaction(2, "Salary", 1000.0, "2023-04-01", category="수입")
 
-item3 = Item(name="Orange", price=0.7, quantity=1)
+print("All Transactions:")
+for tx in tracker.get_all_transactions():
+    print(f"ID: {tx.tx_id}, Description: {tx.description}, Amount: {tx.amount}, Date: {tx.date}, Category: {tx.category}")
 
-order_manager.add_order(2, [item3])
+tracker.cancel_transaction(1)
+print("\nAfter cancelling transaction 1:")
+for tx in tracker.get_all_transactions():
+    print(f"ID: {tx.tx_id}, Description: {tx.description}, Amount: {tx.amount}, Date: {tx.date}, Category: {tx.category}")
 
-print(order_manager.get_order(1))  # Order object with order_id 1
-
-order_manager.cancel_order(1)
-
-print(order_manager.list_orders())  # List of all orders except the canceled one
+print("\nTransactions by category '식비':")
+for tx in tracker.get_transactions_by_category("식비"):
+    print(f"ID: {tx.tx_id}, Description: {tx.description}, Amount: {tx.amount}, Date: {tx.date}, Category: {tx.category}")

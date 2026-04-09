@@ -170,6 +170,46 @@ class BaseAgent:
         """
         raise NotImplementedError("서브클래스에서 구현해야 합니다")
 
+    def modify_code_with_syntax_retry(self, current_code: str, modification_request: str,
+                                       max_retries: int = 2) -> str:
+        """
+        modify_code를 실행하고 SyntaxError 발생 시 최대 max_retries회 재시도.
+
+        재시도 시 수정 요청에 에러 내용과 교정 힌트를 추가해서 LLM이
+        같은 실수를 반복하지 않도록 유도한다.
+
+        Parameters
+        ----------
+        current_code         : 이전 단계까지 완성된 코드
+        modification_request : 이번 단계 수정 요청
+        max_retries          : 최대 재시도 횟수 (기본 2)
+        """
+        _SYNTAX_HINT = (
+            "\n\n[이전 응답 오류] Python SyntaxError가 발생했습니다: {error}\n"
+            "다음 사항을 반드시 지켜주세요:\n"
+            "- ?.연산자는 Python에 없습니다. None 체크는 'if x is not None:' 을 사용하세요.\n"
+            "- from dataclasses import dataclass, field 를 임포트하세요.\n"
+            "- from enum import Enum 을 임포트하세요.\n"
+            "- 완전한 Python 코드를 작성하세요."
+        )
+
+        request = modification_request
+        for attempt in range(max_retries + 1):
+            code = self.modify_code(current_code, request)
+            try:
+                ast.parse(code)
+                if attempt > 0:
+                    logger.info(f"SyntaxError 재시도 {attempt}회 만에 성공")
+                return code
+            except SyntaxError as e:
+                if attempt < max_retries:
+                    logger.warning(f"SyntaxError (시도 {attempt+1}/{max_retries+1}): {e}")
+                    request = modification_request + _SYNTAX_HINT.format(error=str(e))
+                else:
+                    logger.warning(f"SyntaxError 재시도 {max_retries}회 소진, 마지막 결과 반환")
+
+        return code
+
     def compress_code_for_context(self, code: str, max_body_lines: int = 4) -> str:
         """
         프롬프트 토큰을 줄이기 위해 현재 코드를 압축한다.

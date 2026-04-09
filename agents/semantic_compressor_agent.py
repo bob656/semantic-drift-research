@@ -202,6 +202,7 @@ class SemanticCompressorAgent(BaseAgent):
           1. Enum 클래스 + 그 값들
           2. .status = ... 할당 (어느 메서드에서 발생하는가)
           3. if ... status == ... 조건 분기
+          4. 부재 계약 — dict/list에서 del/pop을 하지 않는 메서드 (보존 계약)
         """
         lines = []
 
@@ -257,6 +258,36 @@ class SemanticCompressorAgent(BaseAgent):
                             lines.append(
                                 f"- {node.name}.{item.name}() raises: {exc_str[:60]}"
                             )
+
+            # 4. 부재 계약 — 상태 변경 메서드가 핵심 컨테이너를 삭제하지 않는가
+            # "cancel_order는 self.orders를 del/pop하지 않는다" 같은 보존 계약을 명시
+            _PRESERVE_ATTRS = {'orders', 'items', 'payments', 'history', 'records'}
+            for item in node.body:
+                if not isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    continue
+                has_status_change = any(
+                    isinstance(n, ast.Assign) and
+                    any(isinstance(t, ast.Attribute) and t.attr in _STATE_KEYWORDS
+                        for t in n.targets)
+                    for n in ast.walk(item)
+                )
+                if not has_status_change:
+                    continue
+                # 이 메서드에 del/pop 호출이 없는지 확인
+                has_delete = any(
+                    (isinstance(n, ast.Delete)) or
+                    (isinstance(n, ast.Call) and
+                     isinstance(getattr(n.func, 'attr', None), str) and
+                     n.func.attr in ('pop', 'remove', 'clear') and
+                     isinstance(getattr(n.func, 'value', None), ast.Attribute) and
+                     n.func.value.attr in _PRESERVE_ATTRS)
+                    for n in ast.walk(item)
+                )
+                if not has_delete:
+                    lines.append(
+                        f"- [보존 계약] {node.name}.{item.name}(): "
+                        f"데이터를 삭제하지 않고 상태만 변경 (del/pop 금지)"
+                    )
 
         return "\n".join(lines)
 

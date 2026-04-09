@@ -8,20 +8,26 @@ class Order:
 
 class OrderManager:
     def __init__(self):
+        # 주문을 저장할 딕셔너리. 키는 order_id, 값은 Order 객체입니다.
         self.orders = {}
 
     def add_order(self, order_id: int, items: List[str], total: float) -> None:
         if order_id in self.orders:
-            raise ValueError("Order already exists")
-        self.orders[order_id] = Order(order_id, items, total)
+            print(f"Order ID {order_id} already exists.")
+        else:
+            new_order = Order(order_id, items, total)
+            self.orders[order_id] = new_order
+            print(f"Order added with ID: {order_id}")
 
     def get_order(self, order_id: int) -> Optional[Order]:
         return self.orders.get(order_id)
 
     def cancel_order(self, order_id: int) -> None:
-        if order_id not in self.orders:
-            raise ValueError("Order does not exist")
-        del self.orders[order_id]
+        if order_id in self.orders:
+            del self.orders[order_id]
+            print(f"Order with ID {order_id} cancelled.")
+        else:
+            print(f"No order found with ID {order_id}")
 
     def list_orders(self) -> List[Order]:
         return list(self.orders.values())
@@ -31,18 +37,18 @@ if __name__ == "__main__":
     manager = OrderManager()
     
     # 주문 추가
-    manager.add_order(1, ["Apple", "Banana"], 2.5)
-    manager.add_order(2, ["Bread", "Milk"], 3.0)
-    
+    manager.add_order(1, ["Apple", "Banana"], 5.99)
+    manager.add_order(2, ["Cherry"], 3.49)
+
     # 주문 조회
-    order = manager.get_order(1)
-    if order:
-        print(f"Order ID: {order.order_id}, Items: {order.items}, Total: {order.total}")
-    
-    # 모든 주문 목록 출력
-    orders = manager.list_orders()
-    for order in orders:
-        print(f"Order ID: {order.order_id}, Items: {order.items}, Total: {order.total}")
-    
+    order_1 = manager.get_order(1)
+    if order_1:
+        print(f"Order 1: {order_1.items}, Total: ${order_1.total}")
+
     # 주문 취소
-    manager.cancel_order(1)
+    manager.cancel_order(2)
+
+    # 모든 주문 목록 출력
+    all_orders = manager.list_orders()
+    for order in all_orders:
+        print(f"ID: {order.order_id}, Items: {order.items}, Total: ${order.total}")

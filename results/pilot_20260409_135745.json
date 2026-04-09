@@ -1,0 +1,833 @@
+{
+  "metadata": {
+    "timestamp": "20260409_135745",
+    "model": "qwen2.5-coder:7b",
+    "host": "http://192.168.100.52:11434",
+    "repeats": 5,
+    "mode": "pilot",
+    "eval_mode": "exec",
+    "system_info": {
+      "platform": "macOS",
+      "environment": "Ollama + VSCode"
+    }
+  },
+  "summary": {
+    "baseline_mean_drift": 4.514285714285714,
+    "statedoc_mean_drift": NaN,
+    "semantic_mean_drift": null,
+    "improvement": NaN,
+    "baseline_std": 3.1389586210222324,
+    "statedoc_std": 0.0,
+    "semantic_std": 0.0,
+    "t_statistic": 0.0,
+    "p_value": 1.0,
+    "effect_size": 0.0,
+    "effect_interpretation": "작은 효과",
+    "significant": false,
+    "improvement_semantic": null,
+    "t_semantic": 0.0,
+    "p_semantic": 1.0,
+    "d_semantic": 0.0,
+    "significant_semantic": false,
+    "t_vs": 0.0,
+    "p_vs": 1.0,
+    "d_vs": 0.0,
+    "baseline_scores": [
+      [
+        8.571428571428571,
+        6.0,
+        10.0,
+        10.0,
+        8.571428571428571,
+        7.142857142857143
+      ],
+      [
+        10.0,
+        10.0,
+        0.0,
+        10.0,
+        8.571428571428571,
+        7.142857142857143
+      ],
+      [
+        8.571428571428571,
+        10.0,
+        10.0,
+        10.0,
+        8.571428571428571,
+        5.7142857142857135
+      ],
+      [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        8.571428571428571,
+        5.7142857142857135
+      ],
+      [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        8.571428571428571,
+        7.142857142857143
+      ]
+    ],
+    "statedoc_scores": [],
+    "semantic_scores": [],
+    "sample_size": 5
+  },
+  "raw_results": {
+    "baseline": [
+      {
+        "scores": [
+          8.571428571428571,
+          6.0,
+          10.0,
+          10.0,
+          8.571428571428571,
+          7.142857142857143
+        ],
+        "drift_rate": 2.571428571428571,
+        "execution_times": [
+          5.22171425819397,
+          7.538599967956543,
+          7.637824058532715,
+          12.159950971603394,
+          13.38315224647522,
+          14.611285924911499
+        ],
+        "total_interactions": 6,
+        "test_details": [
+          [
+            "TEST PASS: get_transaction_exists",
+            "TEST PASS: get_transaction_none",
+            "TEST FAIL: transaction_amount",
+            "TEST PASS: get_all_count",
+            "TEST PASS: cancel_no_delete",
+            "TEST PASS: cancel_preserves_history",
+            "TEST PASS: cancel_marked_or_new_record"
+          ],
+          [
+            "TEST FAIL: category_field_exists",
+            "TEST FAIL: category_value",
+            "TEST PASS: get_by_category",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: cancel_no_delete_still"
+          ],
+          [
+            "TEST PASS: monthly_summary_exists",
+            "TEST PASS: monthly_total_correct",
+            "TEST PASS: cancelled_in_history",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 1/1 passed"
+          ],
+          [
+            "TEST PASS: within_budget_ok",
+            "TEST PASS: over_budget_recorded",
+            "TEST PASS: budget_status_exists",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancelled_in_all",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: original_preserved",
+            "TEST FAIL: update_is_new_record_or_versioned",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_update_preserves_original",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_audit_trail_intact",
+            "DRIFT_PROBE_SUMMARY: 3/3 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: Transaction ID already exists",
+            "TEST PASS: archived_tx_accessible",
+            "TEST FAIL: archive_accessible",
+            "TEST PASS: recent_tx_still_active",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_archive_not_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST FAIL: step5_exception",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          0.0,
+          10.0,
+          8.571428571428571,
+          7.142857142857143
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          4.840490818023682,
+          7.2383129596710205,
+          8.97327184677124,
+          13.375843048095703,
+          15.144715785980225,
+          19.492366075515747
+        ],
+        "total_interactions": 6,
+        "test_details": [
+          [
+            "TEST PASS: get_transaction_exists",
+            "TEST PASS: get_transaction_none",
+            "TEST PASS: transaction_amount",
+            "TEST PASS: get_all_count",
+            "TEST PASS: cancel_no_delete",
+            "TEST PASS: cancel_preserves_history",
+            "TEST PASS: cancel_marked_or_new_record"
+          ],
+          [
+            "TEST PASS: category_field_exists",
+            "TEST PASS: category_value",
+            "TEST PASS: get_by_category",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: cancel_no_delete_still"
+          ],
+          [
+            "RUNTIME_ERROR: STEP2 ERROR: name 'timedelta' is not defined",
+            "TEST FAIL: step2_exception"
+          ],
+          [
+            "TEST PASS: within_budget_ok",
+            "TEST PASS: over_budget_recorded",
+            "TEST PASS: budget_status_exists",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancelled_in_all",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: original_preserved",
+            "TEST FAIL: update_is_new_record_or_versioned",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_update_preserves_original",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_audit_trail_intact",
+            "DRIFT_PROBE_SUMMARY: 3/3 passed"
+          ],
+          [
+            "TEST PASS: archived_tx_accessible",
+            "TEST FAIL: archive_accessible",
+            "TEST PASS: recent_tx_still_active",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_archive_not_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST FAIL: DRIFT_PROBE:step4_update_preserves_original",
+            "DRIFT_PROBE_SUMMARY: 2/3 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          8.571428571428571,
+          10.0,
+          10.0,
+          10.0,
+          8.571428571428571,
+          5.7142857142857135
+        ],
+        "drift_rate": 2.8571428571428577,
+        "execution_times": [
+          4.950034141540527,
+          8.3613440990448,
+          11.009913206100464,
+          15.842909097671509,
+          15.637811183929443,
+          19.732104063034058
+        ],
+        "total_interactions": 6,
+        "test_details": [
+          [
+            "TEST PASS: get_transaction_exists",
+            "TEST PASS: get_transaction_none",
+            "TEST PASS: transaction_amount",
+            "TEST PASS: get_all_count",
+            "TEST PASS: cancel_no_delete",
+            "TEST PASS: cancel_preserves_history",
+            "TEST FAIL: cancel_marked_or_new_record"
+          ],
+          [
+            "TEST PASS: category_field_exists",
+            "TEST PASS: category_value",
+            "TEST PASS: get_by_category",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: cancel_no_delete_still"
+          ],
+          [
+            "TEST PASS: monthly_summary_exists",
+            "TEST PASS: monthly_total_correct",
+            "TEST PASS: cancelled_in_history",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 1/1 passed"
+          ],
+          [
+            "TEST PASS: within_budget_ok",
+            "TEST PASS: over_budget_recorded",
+            "TEST PASS: budget_status_exists",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancelled_in_all",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: original_preserved",
+            "TEST FAIL: update_is_new_record_or_versioned",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_update_preserves_original",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_audit_trail_intact",
+            "DRIFT_PROBE_SUMMARY: 3/3 passed"
+          ],
+          [
+            "TEST PASS: archived_tx_accessible",
+            "TEST FAIL: archive_accessible",
+            "TEST PASS: recent_tx_still_active",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_archive_not_delete",
+            "TEST FAIL: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST FAIL: DRIFT_PROBE:step4_update_preserves_original",
+            "DRIFT_PROBE_SUMMARY: 1/3 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          8.571428571428571,
+          5.7142857142857135
+        ],
+        "drift_rate": 4.2857142857142865,
+        "execution_times": [
+          5.358368158340454,
+          8.860856056213379,
+          10.011108160018921,
+          13.5903639793396,
+          17.47644019126892,
+          15.74864935874939
+        ],
+        "total_interactions": 6,
+        "test_details": [
+          [
+            "TEST PASS: get_transaction_exists",
+            "TEST PASS: get_transaction_none",
+            "TEST PASS: transaction_amount",
+            "TEST PASS: get_all_count",
+            "TEST PASS: cancel_no_delete",
+            "TEST PASS: cancel_preserves_history",
+            "TEST PASS: cancel_marked_or_new_record"
+          ],
+          [
+            "TEST PASS: category_field_exists",
+            "TEST PASS: category_value",
+            "TEST PASS: get_by_category",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: cancel_no_delete_still"
+          ],
+          [
+            "TEST PASS: monthly_summary_exists",
+            "TEST PASS: monthly_total_correct",
+            "TEST PASS: cancelled_in_history",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 1/1 passed"
+          ],
+          [
+            "TEST PASS: within_budget_ok",
+            "TEST PASS: over_budget_recorded",
+            "TEST PASS: budget_status_exists",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancelled_in_all",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: original_preserved",
+            "TEST FAIL: update_is_new_record_or_versioned",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_update_preserves_original",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_audit_trail_intact",
+            "DRIFT_PROBE_SUMMARY: 3/3 passed"
+          ],
+          [
+            "TEST PASS: archived_tx_accessible",
+            "TEST FAIL: archive_accessible",
+            "TEST PASS: recent_tx_still_active",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_archive_not_delete",
+            "TEST FAIL: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST FAIL: DRIFT_PROBE:step4_update_preserves_original",
+            "DRIFT_PROBE_SUMMARY: 1/3 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          8.571428571428571,
+          7.142857142857143
+        ],
+        "drift_rate": 2.8571428571428568,
+        "execution_times": [
+          5.260750770568848,
+          8.257637023925781,
+          7.034035921096802,
+          11.011754035949707,
+          11.63852596282959,
+          13.486682176589966
+        ],
+        "total_interactions": 6,
+        "test_details": [
+          [
+            "TEST PASS: get_transaction_exists",
+            "TEST PASS: get_transaction_none",
+            "TEST PASS: transaction_amount",
+            "TEST PASS: get_all_count",
+            "TEST PASS: cancel_no_delete",
+            "TEST PASS: cancel_preserves_history",
+            "TEST PASS: cancel_marked_or_new_record"
+          ],
+          [
+            "TEST PASS: category_field_exists",
+            "TEST PASS: category_value",
+            "TEST PASS: get_by_category",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: cancel_no_delete_still"
+          ],
+          [
+            "TEST PASS: monthly_summary_exists",
+            "TEST PASS: monthly_total_correct",
+            "TEST PASS: cancelled_in_history",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 1/1 passed"
+          ],
+          [
+            "TEST PASS: within_budget_ok",
+            "TEST PASS: over_budget_recorded",
+            "TEST PASS: budget_status_exists",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancelled_in_all",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: original_preserved",
+            "TEST FAIL: update_is_new_record_or_versioned",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_update_preserves_original",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_audit_trail_intact",
+            "DRIFT_PROBE_SUMMARY: 3/3 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: Transaction ID already exists.",
+            "TEST PASS: archived_tx_accessible",
+            "TEST FAIL: archive_accessible",
+            "TEST PASS: recent_tx_still_active",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_archive_not_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST FAIL: step5_exception",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ]
+        ]
+      }
+    ],
+    "statedoc": [],
+    "semantic": [],
+    "semantic_v2": [
+      {
+        "scores": [
+          10.0,
+          10.0,
+          0.0,
+          10.0,
+          8.571428571428571,
+          5.0
+        ],
+        "drift_rate": 10.0,
+        "execution_times": [
+          8.36589527130127,
+          10.406049013137817,
+          26.868507146835327,
+          15.33220100402832,
+          20.284753799438477,
+          24.899219036102295
+        ],
+        "total_interactions": 6,
+        "test_details": [
+          [
+            "TEST PASS: get_transaction_exists",
+            "TEST PASS: get_transaction_none",
+            "TEST PASS: transaction_amount",
+            "TEST PASS: get_all_count",
+            "TEST PASS: cancel_no_delete",
+            "TEST PASS: cancel_preserves_history",
+            "TEST PASS: cancel_marked_or_new_record"
+          ],
+          [
+            "TEST PASS: category_field_exists",
+            "TEST PASS: category_value",
+            "TEST PASS: get_by_category",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: cancel_no_delete_still"
+          ],
+          [
+            "RUNTIME_ERROR: STEP2 ERROR: 'BudgetTracker' object has no attribute 'get_monthly_summary'",
+            "TEST FAIL: step2_exception"
+          ],
+          [
+            "TEST PASS: within_budget_ok",
+            "TEST PASS: over_budget_recorded",
+            "TEST PASS: budget_status_exists",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancelled_in_all",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: original_preserved",
+            "TEST FAIL: update_is_new_record_or_versioned",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_update_preserves_original",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_audit_trail_intact",
+            "DRIFT_PROBE_SUMMARY: 3/3 passed"
+          ],
+          [
+            "RUNTIME_ERROR: STEP5 ERROR: name 'archived_transaction' is not defined",
+            "TEST FAIL: archived_tx_accessible",
+            "TEST PASS: archive_accessible",
+            "TEST PASS: recent_tx_still_active",
+            "TEST PASS: get_all_still_works",
+            "TEST FAIL: DRIFT_PROBE:step0_archive_not_delete",
+            "TEST FAIL: step5_exception",
+            "DRIFT_PROBE_SUMMARY: 0/1 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          8.571428571428571,
+          5.7142857142857135
+        ],
+        "drift_rate": 4.2857142857142865,
+        "execution_times": [
+          7.124446868896484,
+          7.346909999847412,
+          10.583168983459473,
+          12.28524398803711,
+          14.626446962356567,
+          17.998726844787598
+        ],
+        "total_interactions": 6,
+        "test_details": [
+          [
+            "TEST PASS: get_transaction_exists",
+            "TEST PASS: get_transaction_none",
+            "TEST PASS: transaction_amount",
+            "TEST PASS: get_all_count",
+            "TEST PASS: cancel_no_delete",
+            "TEST PASS: cancel_preserves_history",
+            "TEST PASS: cancel_marked_or_new_record"
+          ],
+          [
+            "TEST PASS: category_field_exists",
+            "TEST PASS: category_value",
+            "TEST PASS: get_by_category",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: cancel_no_delete_still"
+          ],
+          [
+            "TEST PASS: monthly_summary_exists",
+            "TEST PASS: monthly_total_correct",
+            "TEST PASS: cancelled_in_history",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 1/1 passed"
+          ],
+          [
+            "TEST PASS: within_budget_ok",
+            "TEST PASS: over_budget_recorded",
+            "TEST PASS: budget_status_exists",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancelled_in_all",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: original_preserved",
+            "TEST FAIL: update_is_new_record_or_versioned",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_update_preserves_original",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_audit_trail_intact",
+            "DRIFT_PROBE_SUMMARY: 3/3 passed"
+          ],
+          [
+            "TEST PASS: archived_tx_accessible",
+            "TEST FAIL: archive_accessible",
+            "TEST PASS: recent_tx_still_active",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_archive_not_delete",
+            "TEST FAIL: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST FAIL: DRIFT_PROBE:step4_update_preserves_original",
+            "DRIFT_PROBE_SUMMARY: 1/3 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          8.571428571428571,
+          10.0,
+          10.0,
+          10.0,
+          8.571428571428571,
+          5.7142857142857135
+        ],
+        "drift_rate": 2.8571428571428577,
+        "execution_times": [
+          8.66687798500061,
+          11.022759914398193,
+          11.331732988357544,
+          18.97777509689331,
+          23.347023725509644,
+          25.778641939163208
+        ],
+        "total_interactions": 6,
+        "test_details": [
+          [
+            "TEST PASS: get_transaction_exists",
+            "TEST PASS: get_transaction_none",
+            "TEST PASS: transaction_amount",
+            "TEST PASS: get_all_count",
+            "TEST PASS: cancel_no_delete",
+            "TEST PASS: cancel_preserves_history",
+            "TEST FAIL: cancel_marked_or_new_record"
+          ],
+          [
+            "TEST PASS: category_field_exists",
+            "TEST PASS: category_value",
+            "TEST PASS: get_by_category",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: cancel_no_delete_still"
+          ],
+          [
+            "TEST PASS: monthly_summary_exists",
+            "TEST PASS: monthly_total_correct",
+            "TEST PASS: cancelled_in_history",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 1/1 passed"
+          ],
+          [
+            "TEST PASS: within_budget_ok",
+            "TEST PASS: over_budget_recorded",
+            "TEST PASS: budget_status_exists",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancelled_in_all",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: original_preserved",
+            "TEST FAIL: update_is_new_record_or_versioned",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_update_preserves_original",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_audit_trail_intact",
+            "DRIFT_PROBE_SUMMARY: 3/3 passed"
+          ],
+          [
+            "TEST FAIL: archived_tx_accessible",
+            "TEST PASS: archive_accessible",
+            "TEST PASS: recent_tx_still_active",
+            "TEST PASS: get_all_still_works",
+            "TEST FAIL: DRIFT_PROBE:step0_archive_not_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST FAIL: DRIFT_PROBE:step4_update_preserves_original",
+            "DRIFT_PROBE_SUMMARY: 1/3 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          8.571428571428571,
+          4.285714285714286
+        ],
+        "drift_rate": 5.714285714285714,
+        "execution_times": [
+          7.523932933807373,
+          10.097570657730103,
+          11.734601974487305,
+          16.872997999191284,
+          18.194645166397095,
+          21.558330297470093
+        ],
+        "total_interactions": 6,
+        "test_details": [
+          [
+            "TEST PASS: get_transaction_exists",
+            "TEST PASS: get_transaction_none",
+            "TEST PASS: transaction_amount",
+            "TEST PASS: get_all_count",
+            "TEST PASS: cancel_no_delete",
+            "TEST PASS: cancel_preserves_history",
+            "TEST PASS: cancel_marked_or_new_record"
+          ],
+          [
+            "TEST PASS: category_field_exists",
+            "TEST PASS: category_value",
+            "TEST PASS: get_by_category",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: cancel_no_delete_still"
+          ],
+          [
+            "TEST PASS: monthly_summary_exists",
+            "TEST PASS: monthly_total_correct",
+            "TEST PASS: cancelled_in_history",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 1/1 passed"
+          ],
+          [
+            "TEST PASS: within_budget_ok",
+            "TEST PASS: over_budget_recorded",
+            "TEST PASS: budget_status_exists",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancelled_in_all",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: original_preserved",
+            "TEST FAIL: update_is_new_record_or_versioned",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_update_preserves_original",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_audit_trail_intact",
+            "DRIFT_PROBE_SUMMARY: 3/3 passed"
+          ],
+          [
+            "TEST FAIL: archived_tx_accessible",
+            "TEST PASS: archive_accessible",
+            "TEST PASS: recent_tx_still_active",
+            "TEST PASS: get_all_still_works",
+            "TEST FAIL: DRIFT_PROBE:step0_archive_not_delete",
+            "TEST FAIL: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST FAIL: DRIFT_PROBE:step4_update_preserves_original",
+            "DRIFT_PROBE_SUMMARY: 0/3 passed"
+          ]
+        ]
+      },
+      {
+        "scores": [
+          8.571428571428571,
+          10.0,
+          10.0,
+          10.0,
+          8.571428571428571,
+          4.285714285714286
+        ],
+        "drift_rate": 4.285714285714286,
+        "execution_times": [
+          6.611186981201172,
+          8.258317232131958,
+          10.210468769073486,
+          15.020526885986328,
+          18.70792508125305,
+          12.351630687713623
+        ],
+        "total_interactions": 6,
+        "test_details": [
+          [
+            "TEST PASS: get_transaction_exists",
+            "TEST PASS: get_transaction_none",
+            "TEST PASS: transaction_amount",
+            "TEST PASS: get_all_count",
+            "TEST PASS: cancel_no_delete",
+            "TEST PASS: cancel_preserves_history",
+            "TEST FAIL: cancel_marked_or_new_record"
+          ],
+          [
+            "TEST PASS: category_field_exists",
+            "TEST PASS: category_value",
+            "TEST PASS: get_by_category",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: cancel_no_delete_still"
+          ],
+          [
+            "TEST PASS: monthly_summary_exists",
+            "TEST PASS: monthly_total_correct",
+            "TEST PASS: cancelled_in_history",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "DRIFT_PROBE_SUMMARY: 1/1 passed"
+          ],
+          [
+            "TEST PASS: within_budget_ok",
+            "TEST PASS: over_budget_recorded",
+            "TEST PASS: budget_status_exists",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_cancelled_in_all",
+            "DRIFT_PROBE_SUMMARY: 2/2 passed"
+          ],
+          [
+            "TEST PASS: original_preserved",
+            "TEST FAIL: update_is_new_record_or_versioned",
+            "TEST PASS: get_transaction_still_works",
+            "TEST PASS: get_all_still_works",
+            "TEST PASS: DRIFT_PROBE:step0_update_preserves_original",
+            "TEST PASS: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST PASS: DRIFT_PROBE:step0_audit_trail_intact",
+            "DRIFT_PROBE_SUMMARY: 3/3 passed"
+          ],
+          [
+            "TEST FAIL: archived_tx_accessible",
+            "TEST PASS: archive_accessible",
+            "TEST PASS: recent_tx_still_active",
+            "TEST PASS: get_all_still_works",
+            "TEST FAIL: DRIFT_PROBE:step0_archive_not_delete",
+            "TEST FAIL: DRIFT_PROBE:step0_cancel_no_delete",
+            "TEST FAIL: DRIFT_PROBE:step4_update_preserves_original",
+            "DRIFT_PROBE_SUMMARY: 0/3 passed"
+          ]
+        ]
+      }
+    ]
+  }
+}

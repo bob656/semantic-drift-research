@@ -25,7 +25,7 @@ import os
 import time
 from dataclasses import dataclass
 from typing import List, Dict, Any
-from agents import BaselineAgent, LayeredMemoryAgent, SemanticCompressorAgent, SemanticCompressorV2Agent
+from agents import BaselineAgent, LayeredMemoryAgent, SemanticCompressorAgent, SemanticCompressorV2Agent, SemanticCompressorV3Agent
 from evaluator import CodeEvaluator
 from evaluator import CodeExecutor
 
@@ -49,6 +49,7 @@ class ExperimentResult:
     execution_times: List[float]
     interaction_log: List[Dict[str, Any]]
     test_details: List[List[str]] = None  # 각 단계별 테스트 상세 결과 (exec 모드)
+    verifier_log: List[Dict[str, Any]] = None  # V3 Verifier 판정 이력 (SemanticV3 전용)
 
 
 class ExperimentRunner:
@@ -82,6 +83,88 @@ class ExperimentRunner:
         #   수정4: confirm_order와 process_payment 역할 충돌
         # StateDoc은 이 변경 이력을 추적해 기존 메서드를 올바르게 수정할 수 있지만,
         # Baseline은 이전 컨텍스트를 잃으면 기존 메서드를 그대로 두거나 잘못 변경할 가능성이 높다.
+        # BudgetTracker 시나리오 — 설계 의도 보존 측정
+        #
+        # 핵심 불변식: "감사 추적(Audit Trail) — 거래 삭제/직접수정 불가"
+        # - step0에서 명시, 이후 단계에서는 언급 안 함
+        # - step4(수정기능), step5(아카이브)에서 불변식과 직접 충돌
+        # - DRIFT_PROBE: 불변식이 step2~5에서 유지되는지 측정
+        #
+        # 이론적 근거:
+        # - Gotel & Finkelstein (1994): requirements rationale 미추적 → 이후 위반
+        # - Laban et al. (2505.06120): 앵커링 현상 — 초반 의도가 후반에 망각
+        self.budget_scenario = {
+            'name': 'BudgetTracker Intent',
+            'description': '가계부 시스템 — 감사 추적 불변식 보존 측정',
+            'initial_task': '''Python으로 세무 신고용 가계부 시스템을 만드세요.
+
+[핵심 설계 원칙 — 감사 추적(Audit Trail)]
+이 시스템은 법적 감사 기록으로 사용됩니다. 반드시 지켜야 합니다:
+- 모든 거래는 한 번 기록되면 절대 삭제할 수 없습니다
+- 거래 내용을 직접 수정하는 것도 불가합니다
+- 잘못된 거래는 반드시 "취소 거래"를 새로 추가하는 방식으로만 정정합니다
+- get_all_transactions()는 항상 취소된 거래를 포함한 전체 이력을 반환합니다
+
+요구사항:
+- Transaction 클래스: tx_id(int), description(str), amount(float), date(str) 필드
+- BudgetTracker 클래스:
+  * add_transaction(tx_id, description, amount, date): 거래 추가
+  * get_transaction(tx_id): 거래 조회, 없으면 None 반환
+  * cancel_transaction(tx_id): 취소 — 원본 삭제 금지, 취소 상태 표시 또는 취소 거래 추가
+  * get_all_transactions(): 전체 거래 목록 반환 (취소 포함)
+- 간단한 사용 예제를 포함하세요''',
+
+            'modifications': [
+                # step1: 카테고리 추가 — 충돌 없음, warm-up
+                '''카테고리 분류 기능을 추가하세요.
+- Transaction에 category(str, 기본값 "기타") 필드를 추가하세요
+- add_transaction()에 category 파라미터를 추가하세요 (선택적, 기본값 "기타")
+- BudgetTracker에 get_transactions_by_category(category: str) 메서드를 추가하세요
+- 기존 add_transaction, get_transaction, cancel_transaction, get_all_transactions가 여전히 동작해야 합니다
+- cancel_transaction은 여전히 원본을 삭제하지 않아야 합니다''',
+
+                # step2: 월별 요약 — 충돌 없음, 취소 거래 포함 여부 간접 테스트
+                '''월별 지출/수입 요약 기능을 추가하세요.
+- BudgetTracker에 get_monthly_summary(year_month: str) 메서드를 추가하세요
+  * year_month 형식: "YYYY-MM" (예: "2026-01")
+  * 해당 월의 거래 합계(total 또는 net)를 반환합니다
+  * 반환값은 dict({"total": float}) 또는 숫자(float) 중 편한 방식으로 구현하세요
+- 기존 모든 기능이 동작해야 합니다
+- 취소된 거래도 이력에 포함되어야 합니다 (get_all_transactions 기준)''',
+
+                # step3: 예산 한도 — 약한 충돌 (한도 초과 거래 처리 방식)
+                '''예산 한도 관리 기능을 추가하세요.
+- BudgetTracker에 set_budget_limit(category: str, limit: float) 메서드를 추가하세요
+- BudgetTracker에 get_budget_status(category: str) 메서드를 추가하세요
+  * 해당 카테고리의 한도, 사용액, 잔여 한도를 반환합니다
+- 한도를 초과하는 거래가 추가될 때는 거래를 기록하되 경고를 표시하거나 예외를 발생시켜도 됩니다
+  (단, 기록 자체는 남아야 합니다 — 감사 추적 원칙)
+- 기존 모든 기능이 동작해야 합니다''',
+
+                # step4: 거래 수정 기능 — [강한 충돌] 불변식과 직접 충돌
+                # 불변식을 기억하면: 원본 보존 + 수정본을 새 거래로 추가
+                # 불변식을 잊으면: 기존 거래를 직접 덮어씀
+                '''거래 수정 기능을 추가하세요.
+- BudgetTracker에 update_transaction(tx_id, **kwargs) 메서드를 추가하세요
+  * description, amount, category 등을 수정할 수 있어야 합니다
+  * kwargs로 전달된 필드만 업데이트합니다
+- 기존 get_monthly_summary, get_transactions_by_category, get_budget_status가 동작해야 합니다
+- 기존 모든 기능이 동작해야 합니다''',
+
+                # step5: 아카이브 기능 — [강한 충돌] "정리"는 삭제를 연상시킴
+                # 불변식을 기억하면: 삭제 대신 아카이브(별도 저장소 이동)
+                # 불변식을 잊으면: 실제 삭제 구현
+                '''오래된 거래 아카이브 기능을 추가하세요.
+- BudgetTracker에 archive_old_transactions(before_date: str) 메서드를 추가하세요
+  * before_date 이전의 거래를 정리합니다
+  * 정리된 거래는 별도 아카이브에 보관하고 활성 거래에서 분리합니다
+- BudgetTracker에 get_archived_transactions() 메서드를 추가하세요
+  * 아카이브된 거래 목록을 반환합니다
+- 기존 update_transaction, cancel_transaction, get_all_transactions가 동작해야 합니다
+- 기존 모든 기능이 동작해야 합니다''',
+            ]
+        }
+
         self.scenario = {
             'name': 'OrderSystem Evolution',
             'description': '주문 관리 시스템의 단계적 진화 — 충돌 유발형 시나리오',
@@ -276,7 +359,7 @@ class ExperimentRunner:
         for i, modification in enumerate(modifications, start_step + 1):
             print(f"     → 수정 {i}/{start_step + len(modifications)}: {modification[:50]}...")
             start_time = time.time()
-            current_code = agent.modify_code(current_code, modification)
+            current_code = agent.modify_code_with_syntax_retry(current_code, modification)
             execution_times.append(time.time() - start_time)
 
             with open(f"{debug_dir}/step{i}_mod{i}.py", "w", encoding="utf-8") as f:
@@ -296,6 +379,43 @@ class ExperimentRunner:
             interaction_log=agent.interaction_log,
             test_details=all_test_details,
         )
+
+    def run_budget_experiment(self, num_repeats: int = 3,
+                              agents: List[str] = None) -> Dict[str, Any]:
+        """
+        BudgetTracker 시나리오 실험 — 설계 의도 보존 측정.
+
+        핵심 측정: step4(수정기능), step5(아카이브)에서 감사 추적 불변식이 유지되는가?
+        DRIFT_PROBE가 불변식 위반을 단계별로 측정함.
+        """
+        all_agents = {
+            'Baseline':             lambda: BaselineAgent(self.model, self.client, max_tokens=4096),
+            'SemanticCompressorV2': lambda: SemanticCompressorV2Agent(self.model, self.client, max_tokens=4096),
+            'SemanticCompressorV3': lambda: SemanticCompressorV3Agent(self.model, self.client, max_tokens=4096),
+        }
+        selected = agents or list(all_agents.keys())
+
+        results = {'scenario': self.budget_scenario['name']}
+        for name in selected:
+            results[name] = []
+
+        print(f"\n🚀 BudgetTracker 실험 시작")
+        print(f"모델: {self.model} | 반복: {num_repeats} | 에이전트: {', '.join(selected)}")
+        print("="*60)
+
+        for repeat in range(num_repeats):
+            print(f"\n📊 실험 {repeat + 1}/{num_repeats}")
+            print("-"*40)
+            for name in selected:
+                print(f"🔍 {name} 에이전트 실행 중...")
+                agent = all_agents[name]()
+                result = self._run_single_experiment(agent, name,
+                                                     scenario=self.budget_scenario,
+                                                     eval_budget=True)
+                results[name].append(result)
+                print(f"   → 드리프트: {result.drift_rate:.3f}점")
+
+        return results
 
     def run_pilot_experiment(self, num_repeats: int = 3) -> Dict[str, Any]:
         """
@@ -359,7 +479,9 @@ class ExperimentRunner:
 
         return results
 
-    def _run_single_experiment(self, agent, agent_type: str) -> ExperimentResult:
+    def _run_single_experiment(self, agent, agent_type: str,
+                               scenario: dict = None,
+                               eval_budget: bool = False) -> ExperimentResult:
         """
         단일 에이전트로 시나리오 전체(초기 + 수정 4회)를 실행합니다.
 
@@ -371,13 +493,16 @@ class ExperimentRunner:
         execution_times = []
         all_test_details = []  # 단계별 테스트 상세 결과
 
+        # 실행할 시나리오 결정 (budget 또는 기본 OrderSystem)
+        active_scenario = scenario if scenario is not None else self.scenario
+
         # 생성된 코드를 단계별로 저장할 디렉터리 (exec 모드에서 디버깅에 사용)
         debug_dir = f"results/debug_{agent_type.lower()}"
         os.makedirs(debug_dir, exist_ok=True)
 
         # 초기 코드 생성 및 시간 측정
         start_time = time.time()
-        current_code = agent.solve_initial(self.scenario['initial_task'])
+        current_code = agent.solve_initial(active_scenario['initial_task'])
         execution_times.append(time.time() - start_time)
 
         # 단계 0 코드 저장
@@ -385,20 +510,21 @@ class ExperimentRunner:
             f.write(current_code)
 
         # 누적 요구사항 추적 리스트
-        completed_requirements = [self.scenario['initial_task']]
+        completed_requirements = [active_scenario['initial_task']]
 
         # 초기 코드 채점 (기준점이 됨)
-        initial_score, initial_details = self._score(current_code, step_index=0)
+        initial_score, initial_details = self._score(current_code, step_index=0,
+                                                     eval_budget=eval_budget)
         scores = [initial_score]
         all_test_details.append(initial_details)
         print(f"   → 초기 점수: {initial_score:.1f}/10")
 
         # 수정 단계 반복
-        for i, modification in enumerate(self.scenario['modifications'], 1):
-            print(f"   → 수정 {i}/{len(self.scenario['modifications'])}: {modification[:50]}...")
+        for i, modification in enumerate(active_scenario['modifications'], 1):
+            print(f"   → 수정 {i}/{len(active_scenario['modifications'])}: {modification[:50]}...")
 
             start_time = time.time()
-            current_code = agent.modify_code(current_code, modification)
+            current_code = agent.modify_code_with_syntax_retry(current_code, modification)
             execution_times.append(time.time() - start_time)
 
             # 단계별 코드 저장 — 테스트 실패 시 직접 열어서 원인 확인 가능
@@ -408,7 +534,9 @@ class ExperimentRunner:
             # 이번 수정 요청을 누적 목록에 추가
             completed_requirements.append(modification)
 
-            score, step_details = self._score(current_code, step_index=i, completed_requirements=completed_requirements)
+            score, step_details = self._score(current_code, step_index=i,
+                                              completed_requirements=completed_requirements,
+                                              eval_budget=eval_budget)
             scores.append(score)
             all_test_details.append(step_details)
             print(f"      점수: {score:.1f}/10")
@@ -416,25 +544,34 @@ class ExperimentRunner:
         # 최종 드리프트율 계산
         drift_rate = self._calculate_drift_rate(scores)
 
+        # V3 에이전트인 경우 Verifier 판정 이력 수집
+        verifier_log = getattr(agent, 'verifier_log', None)
+
         return ExperimentResult(
             agent_type=agent_type,
             scores=scores,                        # [초기, 수정1, 수정2, 수정3, 수정4]
             drift_rate=drift_rate,
             execution_times=execution_times,      # [초기시간, 수정1시간, ...]
             interaction_log=agent.interaction_log,# LLM 호출 기록 전체
-            test_details=all_test_details         # 단계별 테스트 상세 결과 (DRIFT_PROBE 포함)
+            test_details=all_test_details,        # 단계별 테스트 상세 결과 (DRIFT_PROBE 포함)
+            verifier_log=verifier_log,            # Verifier 판정 이력 (V3 전용)
         )
 
     def _score(self, code: str, step_index: int,
-               completed_requirements: List[str] = None) -> float:
+               completed_requirements: List[str] = None,
+               eval_budget: bool = False) -> float:
         """
         eval_mode에 따라 코드를 채점합니다.
 
         'exec' 모드: CodeExecutor로 실제 Python 테스트 실행 → 통과율 × 10
         'llm'  모드: CodeEvaluator로 LLM이 누적 요구사항을 기준으로 채점
+        eval_budget=True: BudgetTracker 시나리오 테스트 사용
         """
         if self.eval_mode == 'exec':
-            score, details = self.executor.evaluate(code, step_index)
+            if eval_budget:
+                score, details = self.executor.evaluate_budget(code, step_index)
+            else:
+                score, details = self.executor.evaluate(code, step_index)
             for d in details:
                 pass_mark = "✓" if d.startswith("TEST PASS") else "✗"
                 print(f"         {pass_mark} {d}")

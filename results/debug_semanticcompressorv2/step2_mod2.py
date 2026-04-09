@@ -1,77 +1,74 @@
-from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Optional, List, Dict
 
-@dataclass
-class Item:
-    name: str
-    price: float
-    quantity: int
+class Transaction:
+    def __init__(self, tx_id: int, description: str, amount: float, date: str, category: str = "기타"):
+        self.tx_id = tx_id
+        self.description = description
+        self.amount = amount
+        self.date = date
+        self.category = category
+        self.cancelled = False
 
-class Order:
-    def __init__(self, order_id: int, items: List[Item], discount_percent: float = 0.0):
-        self.order_id = order_id
-        self.items = items
-        self.discount_percent = discount_percent
-        self.calculate_total()
+    def cancel(self) -> None:
+        self.cancelled = True
 
-    def calculate_total(self) -> None:
-        total_before_discount = sum(item.price * item.quantity for item in self.items)
-        self.total = total_before_discount * (1 - self.discount_percent)
-
-class OrderManager:
+class BudgetTracker:
     def __init__(self):
-        self.orders = {}
+        self.transactions: List[Transaction] = []
 
-    def add_order(self, order_id: int, items: List[Item], discount_percent: float = 0.0) -> None:
-        if order_id in self.orders:
-            raise ValueError("Order ID already exists")
-        new_order = Order(order_id, items, discount_percent)
-        self.orders[order_id] = new_order
+    def add_transaction(self, tx_id: int, description: str, amount: float, date: str, category: str = "기타") -> None:
+        if any(tx.tx_id == tx_id for tx in self.transactions):
+            raise ValueError("Transaction ID already exists")
+        new_tx = Transaction(tx_id, description, amount, date, category)
+        self.transactions.append(new_tx)
 
-    def get_order(self, order_id: int) -> Optional[Order]:
-        return self.orders.get(order_id)
+    def get_transaction(self, tx_id: int) -> Optional[Transaction]:
+        return next((tx for tx in self.transactions if tx.tx_id == tx_id), None)
 
-    def cancel_order(self, order_id: int) -> None:
-        if order_id not in self.orders:
-            raise ValueError("Order ID does not exist")
-        del self.orders[order_id]
+    def cancel_transaction(self, tx_id: int) -> None:
+        tx = self.get_transaction(tx_id)
+        if not tx:
+            raise ValueError("Transaction not found")
+        if tx.cancelled:
+            raise ValueError("Transaction already cancelled")
 
-    def apply_discount(self, order_id: int, discount_percent: float) -> None:
-        if order_id not in self.orders:
-            raise ValueError("Order ID does not exist")
-        if not (0.0 <= discount_percent <= 1.0):
-            raise ValueError("Discount percent must be between 0.0 and 1.0")
-        self.orders[order_id].discount_percent = discount_percent
-        self.orders[order_id].calculate_total()
+        new_tx = Transaction(tx_id, tx.description, -tx.amount, tx.date, tx.category)  # Cancel by adding a negative transaction
+        new_tx.cancel()
+        self.transactions.append(new_tx)
 
-    def get_order_total(self, order_id: int) -> float:
-        if order_id not in self.orders:
-            raise ValueError("Order ID does not exist")
-        return self.orders[order_id].total
+    def get_all_transactions(self) -> List[Transaction]:
+        return self.transactions
 
-    def list_orders(self) -> List[Order]:
-        return list(self.orders.values())
+    def get_transactions_by_category(self, category: str) -> List[Transaction]:
+        return [tx for tx in self.transactions if tx.category == category]
 
-# 간단한 사용 예제
-order_manager = OrderManager()
+    def get_monthly_summary(self, year_month: str) -> Dict[str, float]:
+        total = 0.0
+        for tx in self.get_all_transactions():
+            if tx.date.startswith(year_month):
+                total += tx.amount
+        return {"total": total}
 
-item1 = Item(name="Apple", price=0.5, quantity=2)
-item2 = Item(name="Banana", price=0.3, quantity=3)
+# Usage example:
+tracker = BudgetTracker()
+tracker.add_transaction(1, "Groceries", 50.0, "2023-04-01", category="식비")
+tracker.add_transaction(2, "Salary", 1000.0, "2023-04-01", category="수입")
+tracker.add_transaction(3, "Groceries", -50.0, "2023-04-15", category="식비")  # Cancelled transaction
 
-order_manager.add_order(1, [item1, item2], discount_percent=0.1)  # 10% 할인
+print("All Transactions:")
+for tx in tracker.get_all_transactions():
+    print(f"ID: {tx.tx_id}, Description: {tx.description}, Amount: {tx.amount}, Date: {tx.date}, Category: {tx.category}")
 
-item3 = Item(name="Orange", price=0.7, quantity=1)
+tracker.cancel_transaction(1)
+print("\nAfter cancelling transaction 1:")
+for tx in tracker.get_all_transactions():
+    print(f"ID: {tx.tx_id}, Description: {tx.description}, Amount: {tx.amount}, Date: {tx.date}, Category: {tx.category}")
 
-order_manager.add_order(2, [item3], discount_percent=0.2)  # 20% 할인
+print("\nTransactions by category '식비':")
+for tx in tracker.get_transactions_by_category("식비"):
+    print(f"ID: {tx.tx_id}, Description: {tx.description}, Amount: {tx.amount}, Date: {tx.date}, Category: {tx.category}")
 
-print(order_manager.get_order(1))  # Order object with order_id 1 and discounted total
-print(f"Order 1 Total: {order_manager.get_order_total(1)}")  # Discounted total of Order 1
-
-order_manager.apply_discount(1, discount_percent=0.15)  # Additional 15% discount on Order 1
-
-print(order_manager.get_order(1))  # Updated Order object with order_id 1 and new discounted total
-print(f"Order 1 Total: {order_manager.get_order_total(1)}")  # New discounted total of Order 1
-
-order_manager.cancel_order(1)
-
-print(order_manager.list_orders())  # List of all orders except the canceled one
+# Monthly summary example
+print("\nMonthly Summary for 2023-04:")
+summary = tracker.get_monthly_summary("2023-04")
+print(f"Total: {summary['total']}")
