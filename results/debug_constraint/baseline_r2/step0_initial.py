@@ -1,11 +1,12 @@
 from dataclasses import dataclass
+from typing import Dict, Optional
 
-# 핵심 수치 상수 — 절대 변경 금지
-INTEREST_RATE = 0.025  # 연이율 (2.5%)
-LATE_FEE = 5000        # 연체료 (5000원)
-MAX_INSTALLMENTS = 36  # 최대 할부 개월 수 (36개월)
-MIN_PAYMENT = 10000    # 최소 납입액 (10000원)
-PENALTY_RATE = 0.015   # 연체 가산율 (1.5%)
+# 핵심 수치 상수
+INTEREST_RATE = 0.025
+LATE_FEE = 5000
+MAX_INSTALLMENTS = 36
+MIN_PAYMENT = 10000
+PENALTY_RATE = 0.015
 
 @dataclass
 class Loan:
@@ -17,7 +18,7 @@ class Loan:
 
 class LoanSystem:
     def __init__(self):
-        self.loans = {}
+        self.loans: Dict[int, Loan] = {}
 
     def create_loan(self, loan_id: int, borrower: str, principal: float, months: int) -> bool:
         if months > MAX_INSTALLMENTS:
@@ -25,10 +26,10 @@ class LoanSystem:
         self.loans[loan_id] = Loan(loan_id, borrower, principal, months, 'active')
         return True
 
-    def calculate_monthly_payment(self, loan_id: int) -> float:
+    def calculate_monthly_payment(self, loan_id: int) -> Optional[float]:
         loan = self.loans.get(loan_id)
         if not loan or loan.status != 'active':
-            return 0.0
+            return None
         r = INTEREST_RATE / 12
         monthly_payment = loan.principal * r / (1 - (1 + r) ** (-loan.months))
         return max(monthly_payment, MIN_PAYMENT)
@@ -40,12 +41,25 @@ class LoanSystem:
         penalty_amount = LATE_FEE + (loan.principal * PENALTY_RATE)
         loan.principal += penalty_amount
 
-    def get_loan(self, loan_id: int) -> Loan | None:
+    def get_loan(self, loan_id: int) -> Optional[Loan]:
         return self.loans.get(loan_id)
 
 # Example usage:
 loan_system = LoanSystem()
-loan_system.create_loan(1, "John Doe", 1000000, 36)
-print(loan_system.calculate_monthly_payment(1))  # Calculate monthly payment
-loan_system.apply_late_fee(1)                  # Apply late fee
-print(loan_system.get_loan(1))                 # Get loan details
+if loan_system.create_loan(1, "John Doe", 1000000, 36):
+    print("Loan created successfully.")
+else:
+    print("Failed to create loan due to invalid term.")
+
+monthly_payment = loan_system.calculate_monthly_payment(1)
+if monthly_payment is not None:
+    print(f"Monthly payment: {monthly_payment:.2f}원")
+else:
+    print("Failed to calculate monthly payment.")
+
+loan_system.apply_late_fee(1)
+loan = loan_system.get_loan(1)
+if loan:
+    print(f"Loan details - ID: {loan.loan_id}, Borrower: {loan.borrower}, Principal: {loan.principal:.2f}원, Months: {loan.months}, Status: {loan.status}")
+else:
+    print("Loan not found.")

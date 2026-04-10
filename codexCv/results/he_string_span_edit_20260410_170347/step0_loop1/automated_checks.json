@@ -1,0 +1,31 @@
+{
+  "syntax_ok": false,
+  "syntax_error": "unterminated string literal (detected at line 24) (<unknown>, line 24)",
+  "task_pass_rate": 0.0,
+  "contract_pass_rate": 0.0,
+  "task_test_results": [
+    {
+      "target": "tests/test_step0_task.py",
+      "status": "fail",
+      "details": "unterminated string literal (detected at line 24) (<unknown>, line 24)"
+    }
+  ],
+  "contract_test_results": [
+    {
+      "target": "api_signature",
+      "status": "fail",
+      "details": "unterminated string literal (detected at line 24) (<unknown>, line 24)"
+    },
+    {
+      "target": "inclusive_index_semantics",
+      "status": "fail",
+      "details": "unterminated string literal (detected at line 24) (<unknown>, line 24)"
+    },
+    {
+      "target": "out_of_range_empty",
+      "status": "fail",
+      "details": "unterminated string literal (detected at line 24) (<unknown>, line 24)"
+    }
+  ],
+  "static_probe_results": []
+}

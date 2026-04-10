@@ -1,0 +1,859 @@
+{
+  "metadata": {
+    "timestamp": "20260409_222426",
+    "model": "qwen2.5-coder:14b",
+    "host": "http://192.168.100.52:11434",
+    "repeats": 3,
+    "scenario": "LoanSystem — Numeric Constraint Preservation",
+    "numeric_contracts": {
+      "INTEREST_RATE": 0.025,
+      "LATE_FEE": 5000,
+      "MAX_INSTALLMENTS": 36,
+      "MIN_PAYMENT": 10000,
+      "PENALTY_RATE": 0.015
+    }
+  },
+  "raw_results": {
+    "Baseline": [
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 0.0,
+        "execution_times": [
+          313.05250000953674,
+          415.85809779167175,
+          403.1601848602295,
+          239.023175239563,
+          327.9279990196228,
+          485.65689992904663
+        ],
+        "details": [
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ]
+        ],
+        "contract_log": []
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          0.0
+        ],
+        "drift_rate": 1.0,
+        "execution_times": [
+          277.63031005859375,
+          397.26690196990967,
+          302.8900282382965,
+          402.46910333633423,
+          567.8763649463654,
+          614.4378180503845
+        ],
+        "details": [
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "MISSING  INTEREST_RATE: 코드에서 찾을 수 없음 (기대: 0.025)",
+            "MISSING  LATE_FEE: 코드에서 찾을 수 없음 (기대: 5000)",
+            "MISSING  MAX_INSTALLMENTS: 코드에서 찾을 수 없음 (기대: 36)",
+            "MISSING  MIN_PAYMENT: 코드에서 찾을 수 없음 (기대: 10000)",
+            "MISSING  PENALTY_RATE: 코드에서 찾을 수 없음 (기대: 0.015)"
+          ]
+        ],
+        "contract_log": []
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 0.0,
+        "execution_times": [
+          88.59808897972107,
+          104.50643920898438,
+          169.47252893447876,
+          204.60916304588318,
+          271.1678991317749,
+          135.32961463928223
+        ],
+        "details": [
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ]
+        ],
+        "contract_log": []
+      }
+    ],
+    "NumericContract": [
+      {
+        "scores": [
+          10.0,
+          10.0,
+          0.0,
+          10.0,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 0.0,
+        "execution_times": [
+          404.6810390949249,
+          519.7811710834503,
+          703.7580349445343,
+          230.19345474243164,
+          310.95960116386414,
+          466.56967997550964
+        ],
+        "details": [
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "MISSING  INTEREST_RATE: 코드에서 찾을 수 없음 (기대: 0.025)",
+            "MISSING  LATE_FEE: 코드에서 찾을 수 없음 (기대: 5000)",
+            "MISSING  MAX_INSTALLMENTS: 코드에서 찾을 수 없음 (기대: 36)",
+            "MISSING  MIN_PAYMENT: 코드에서 찾을 수 없음 (기대: 10000)",
+            "MISSING  PENALTY_RATE: 코드에서 찾을 수 없음 (기대: 0.015)"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ]
+        ],
+        "contract_log": [
+          {
+            "step": 1,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          },
+          {
+            "step": 2,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": null,
+                "preserved": false
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": null,
+                "preserved": false
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": null,
+                "preserved": false
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": null,
+                "preserved": false
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": null,
+                "preserved": false
+              }
+            }
+          },
+          {
+            "step": 3,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          },
+          {
+            "step": 4,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          },
+          {
+            "step": 5,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 0.0,
+        "execution_times": [
+          136.4594371318817,
+          229.5703980922699,
+          155.94469118118286,
+          208.28217101097107,
+          261.9448392391205,
+          379.00830912590027
+        ],
+        "details": [
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ]
+        ],
+        "contract_log": [
+          {
+            "step": 1,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          },
+          {
+            "step": 2,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          },
+          {
+            "step": 3,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          },
+          {
+            "step": 4,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          },
+          {
+            "step": 5,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "scores": [
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0,
+          10.0
+        ],
+        "drift_rate": 0.0,
+        "execution_times": [
+          91.45830774307251,
+          127.49243521690369,
+          162.92017793655396,
+          210.7582290172577,
+          297.6549849510193,
+          436.5019452571869
+        ],
+        "details": [
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ],
+          [
+            "PRESERVED INTEREST_RATE: 0.025 ✓",
+            "PRESERVED LATE_FEE: 5000.0 ✓",
+            "PRESERVED MAX_INSTALLMENTS: 36.0 ✓",
+            "PRESERVED MIN_PAYMENT: 10000.0 ✓",
+            "PRESERVED PENALTY_RATE: 0.015 ✓"
+          ]
+        ],
+        "contract_log": [
+          {
+            "step": 1,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          },
+          {
+            "step": 2,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          },
+          {
+            "step": 3,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          },
+          {
+            "step": 4,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          },
+          {
+            "step": 5,
+            "contracts": {
+              "INTEREST_RATE": {
+                "expected": 0.025,
+                "actual": 0.025,
+                "preserved": true
+              },
+              "LATE_FEE": {
+                "expected": 5000,
+                "actual": 5000.0,
+                "preserved": true
+              },
+              "MAX_INSTALLMENTS": {
+                "expected": 36,
+                "actual": 36.0,
+                "preserved": true
+              },
+              "MIN_PAYMENT": {
+                "expected": 10000,
+                "actual": 10000.0,
+                "preserved": true
+              },
+              "PENALTY_RATE": {
+                "expected": 0.015,
+                "actual": 0.015,
+                "preserved": true
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

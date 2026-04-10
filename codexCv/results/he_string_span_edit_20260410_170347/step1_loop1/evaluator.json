@@ -1,0 +1,20 @@
+{
+  "task_success": 0,
+  "state_alignment": 0,
+  "contract_preservation": 0,
+  "severity": "critical",
+  "drift_detected": true,
+  "findings": [
+    {
+      "type": "unknown",
+      "severity": "critical",
+      "location": "unknown",
+      "message": "Evaluator returned malformed JSON.",
+      "evidence": "```json\n{\n  \"task_success\": 0,\n  \"state_alignment\": 0,\n  \"contract_preservation\": 0,\n  \"severity\": \"fail\",\n  \"drift_detected\": true,\n  \"findings\": [\n    {\n      \"type\": \"syntax_error\",\n      \"severity\": \"critical\",\n      \"location\": \"code\",\n      \"message\": \"Unterminated string literal detected.\",\n "
+    }
+  ],
+  "repair_priority": [
+    "Return valid evaluator JSON."
+  ],
+  "summary": "Invalid evaluator output."
+}

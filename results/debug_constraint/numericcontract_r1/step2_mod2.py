@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from typing import List, Optional
 
 INTEREST_RATE = 0.025
 LATE_FEE = 5000
@@ -6,124 +6,108 @@ MAX_INSTALLMENTS = 36
 MIN_PAYMENT = 10000
 PENALTY_RATE = 0.015
 
-@dataclass
 class Payment:
-    payment_id: int
-    loan_id: int
-    amount: float
-    date: str
-    type: str
+    def __init__(self, payment_id: int, loan_id: int, amount: float, date: str, type: str):
+        self.payment_id = payment_id
+        self.loan_id = loan_id
+        self.amount = amount
+        self.date = date
+        self.type = type
 
-@dataclass
 class Loan:
-    loan_id: int
-    borrower: str
-    principal: float
-    months: int
-    status: str = "Active"
-    payments: list[Payment] = None
-
-    def __post_init__(self):
-        if self.payments is None:
-            self.payments = []
+    def __init__(self, loan_id: int, borrower: str, principal: float, months: int, status: str):
+        self.loan_id = loan_id
+        self.borrower = borrower
+        self.principal = principal
+        self.months = months
+        self.status = status
+        self.payment_history: List[Payment] = []
 
 class LoanSystem:
     def __init__(self):
-        self.loans = {}
-        self.payment_counter = 1  # Unique identifier for payments
+        self.loans: List[Loan] = []
+        self.next_payment_id = 1
 
     def create_loan(self, loan_id: int, borrower: str, principal: float, months: int) -> bool:
         if months > MAX_INSTALLMENTS:
             return False
-        loan = Loan(loan_id=loan_id, borrower=borrower, principal=principal, months=months)
-        self.loans[loan_id] = loan
+        new_loan = Loan(loan_id, borrower, principal, months, "active")
+        self.loans.append(new_loan)
         return True
 
-    def calculate_monthly_payment(self, loan_id: int) -> float:
-        loan = self.get_loan(loan_id)
-        if not loan:
-            raise ValueError("Loan not found")
-        
-        r = INTEREST_RATE / 12
-        monthly_payment = loan.principal * r / (1 - (1 + r) ** (-loan.months))
-        return max(monthly_payment, MIN_PAYMENT)
+    def calculate_monthly_payment(self, loan_id: int) -> Optional[float]:
+        for loan in self.loans:
+            if loan.loan_id == loan_id and loan.status == "active":
+                r = INTEREST_RATE / 12
+                monthly_payment = (loan.principal * r) / (1 - (1 + r) ** (-loan.months))
+                return max(monthly_payment, MIN_PAYMENT)
+        return None
 
     def apply_late_fee(self, loan_id: int):
-        loan = self.get_loan(loan_id)
-        if not loan:
-            raise ValueError("Loan not found")
-        
-        late_fee = LATE_FEE + (loan.principal * PENALTY_RATE)
-        # Assuming the fee is deducted from the principal for simplicity
-        loan.principal += late_fee
+        for loan in self.loans:
+            if loan.loan_id == loan_id and loan.status == "active":
+                late_fee = LATE_FEE + (loan.principal * PENALTY_RATE)
+                loan.principal += late_fee
+                break
 
-    def get_loan(self, loan_id: int) -> Loan | None:
-        return self.loans.get(loan_id)
+    def get_loan(self, loan_id: int) -> Optional[Loan]:
+        for loan in self.loans:
+            if loan.loan_id == loan_id:
+                return loan
+        return None
 
     def record_payment(self, loan_id: int, amount: float, date: str, payment_type='REGULAR'):
-        loan = self.get_loan(loan_id)
-        if not loan:
-            raise ValueError("Loan not found")
-        
-        payment = Payment(payment_id=self.payment_counter, loan_id=loan_id, amount=amount, date=date, type=payment_type)
-        loan.payments.append(payment)
-        self.payment_counter += 1
+        for loan in self.loans:
+            if loan.loan_id == loan_id and loan.status == "active":
+                new_payment = Payment(payment_id=self.next_payment_id, loan_id=loan_id, amount=amount, date=date, type=payment_type)
+                loan.payment_history.append(new_payment)
+                self.next_payment_id += 1
+                break
 
-    def get_payment_history(self, loan_id: int) -> list[Payment]:
-        loan = self.get_loan(loan_id)
-        if not loan:
-            raise ValueError("Loan not found")
-        
-        return loan.payments
+    def get_payment_history(self, loan_id: int) -> Optional[List[Payment]]:
+        for loan in self.loans:
+            if loan.loan_id == loan_id:
+                return loan.payment_history
+        return None
 
-    def calculate_early_repayment_discount(self, remaining_balance: float, remaining_months: int) -> float:
-        remaining_interest = remaining_balance * INTEREST_RATE / 12 * remaining_months
-        discount = remaining_interest * 0.1
-        return discount
+    def calculate_early_repayment(self, loan_id: int, remaining_balance: float) -> float:
+        loan = self.get_loan(loan_id)
+        if not loan or loan.status != "active":
+            raise ValueError("Invalid loan ID or loan is not active.")
+        
+        r = INTEREST_RATE / 12
+        remaining_months = loan.months - len(loan.payment_history)
+        residual_interest = remaining_balance * r * remaining_months
+        early_repayment_discount = residual_interest * 0.1
+        return early_repayment_discount
 
     def get_payoff_amount(self, loan_id: int) -> float:
         loan = self.get_loan(loan_id)
-        if not loan:
-            raise ValueError("Loan not found")
+        if not loan or loan.status != "active":
+            raise ValueError("Invalid loan ID or loan is not active.")
         
-        # Calculate the total amount to be paid off considering remaining balance and interest
-        remaining_balance = loan.principal - sum(payment.amount for payment in loan.payments)
-        remaining_months = loan.months - len(loan.payments)
-        monthly_interest = remaining_balance * INTEREST_RATE / 12
-        total_interest = monthly_interest * remaining_months
-        payoff_amount = remaining_balance + total_interest
-        return payoff_amount
+        remaining_balance = loan.principal
+        for payment in loan.payment_history:
+            remaining_balance -= payment.amount
+        
+        return remaining_balance
 
-# Example usage:
+# Example usage
 loan_system = LoanSystem()
-loan_created = loan_system.create_loan(1, "John Doe", 500000, 24)
-if loan_created:
-    print("Loan created successfully")
-else:
-    print("Failed to create loan")
-
-monthly_payment = loan_system.calculate_monthly_payment(1)
-print(f"Monthly payment: {monthly_payment}")
-
+loan_system.create_loan(1, "John Doe", 100000, 36)
+print(loan_system.calculate_monthly_payment(1))  # Should print the calculated monthly payment or MIN_PAYMENT if lower
 loan_system.apply_late_fee(1)
-late_fee_applied_loan = loan_system.get_loan(1)
-print(f"Updated principal after late fee: {late_fee_applied_loan.principal}")
+loan = loan_system.get_loan(1)
+if loan:
+    print(f"Loan ID: {loan.loan_id}, Borrower: {loan.borrower}, Principal: {loan.principal}, Months: {loan.months}, Status: {loan.status}")
+loan_system.record_payment(loan_id=1, amount=20000, date="2023-10-01")
+payment_history = loan_system.get_payment_history(loan_id=1)
+if payment_history:
+    for payment in payment_history:
+        print(f"Payment ID: {payment.payment_id}, Loan ID: {payment.loan_id}, Amount: {payment.amount}, Date: {payment.date}, Type: {payment.type}")
 
-# Record a payment
-loan_system.record_payment(1, 20000, "2023-10-01")
-
-# Get payment history
-payment_history = loan_system.get_payment_history(1)
-print("Payment History:")
-for payment in payment_history:
-    print(f"ID: {payment.payment_id}, Amount: {payment.amount}, Date: {payment.date}, Type: {payment.type}")
-
-# Calculate early repayment discount
-remaining_balance = late_fee_applied_loan.principal - sum(payment.amount for payment in loan.payments)
-remaining_months = 24 - len(loan.payments)  # Assuming the loan was created with 24 months initially
-discount = loan_system.calculate_early_repayment_discount(remaining_balance, remaining_months)
-print(f"Early repayment discount: {discount}")
-
-# Get payoff amount
+# New functionality usage
+early_repayment_discount = loan_system.calculate_early_repayment(1, 80000)
+print(f"Early Repayment Discount: {early_repayment_discount}")
 payoff_amount = loan_system.get_payoff_amount(1)
-print(f"Payoff amount: {payoff_amount}")
+print(f"Payoff Amount: {payoff_amount}")

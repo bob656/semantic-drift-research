@@ -1,0 +1,62 @@
+{
+  "scenario_id": "budget_tracker_v1",
+  "track": "controlled",
+  "source": "codexCv-authored",
+  "language": "python",
+  "description": "Budget tracker evolution focused on rollover semantics, balance preservation, and monthly boundaries.",
+  "step0": {
+    "prompt_file": "step0_prompt.md",
+    "task_tests": ["tests/test_step0_task.py"]
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "prompt_file": "step1_prompt.md",
+      "task_tests": ["tests/test_step1_task.py"],
+      "contracts_checked": ["api_add_expense", "balance_nonnegative"]
+    },
+    {
+      "step_id": 2,
+      "prompt_file": "step2_prompt.md",
+      "task_tests": ["tests/test_step2_task.py"],
+      "contracts_checked": ["api_add_expense", "monthly_rollover_semantics", "balance_nonnegative"]
+    },
+    {
+      "step_id": 3,
+      "prompt_file": "step3_prompt.md",
+      "task_tests": ["tests/test_step3_task.py"],
+      "contracts_checked": ["api_add_expense", "monthly_rollover_semantics", "balance_nonnegative"]
+    }
+  ],
+  "contracts": [
+    {
+      "contract_id": "api_add_expense",
+      "type": "api",
+      "description": "add_expense(category, amount) must remain callable with two required positional arguments after self.",
+      "rationale": "New reporting features do not require API breakage.",
+      "check_type": "ast",
+      "check_target": "tests/probes.py::check_add_expense_signature"
+    },
+    {
+      "contract_id": "monthly_rollover_semantics",
+      "type": "semantic",
+      "description": "Unused monthly budget rolls into the next month; overspending does not create hidden credit.",
+      "rationale": "Reporting and alert features should not change accounting semantics.",
+      "check_type": "exec",
+      "check_target": "tests/test_contracts.py::test_rollover_semantics"
+    },
+    {
+      "contract_id": "balance_nonnegative",
+      "type": "boundary",
+      "description": "Available balance reported to the user must not become positive due to accounting sign errors after overspend.",
+      "rationale": "Feature additions should preserve the sign convention of balances.",
+      "check_type": "exec",
+      "check_target": "tests/test_contracts.py::test_balance_sign_convention"
+    }
+  ],
+  "evaluation": {
+    "task_metric": "step_task_pass_rate",
+    "contract_metric": "contract_preservation_rate",
+    "primary_report": ["first_drift_step", "contract_failure_density", "recovery_rate"]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "scenario_id": "mbpp_discount_cap_edit",
+  "track": "derived",
+  "source": "MBPP+-style, manually extended into edit sequence",
+  "language": "python",
+  "description": "Function-level sequence derived from a MBPP+ style pricing function with discount cap preservation.",
+  "step0": {
+    "prompt_file": "step0_prompt.md",
+    "task_tests": ["tests/test_step0_task.py"]
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "prompt_file": "step1_prompt.md",
+      "task_tests": ["tests/test_step1_task.py"],
+      "contracts_checked": ["api_signature", "discount_cap"]
+    },
+    {
+      "step_id": 2,
+      "prompt_file": "step2_prompt.md",
+      "task_tests": ["tests/test_step2_task.py"],
+      "contracts_checked": ["api_signature", "discount_cap", "minimum_zero_total"]
+    }
+  ],
+  "contracts": [
+    {
+      "contract_id": "api_signature",
+      "type": "api",
+      "description": "final_price(price, discount_percent) remains the primary call signature.",
+      "rationale": "Tax and formatting extensions should not require API replacement.",
+      "check_type": "ast",
+      "check_target": "tests/probes.py::check_final_price_signature"
+    },
+    {
+      "contract_id": "discount_cap",
+      "type": "numeric",
+      "description": "Discount percent remains capped at 50%.",
+      "rationale": "Additional behavior should not weaken the original safety guard.",
+      "check_type": "exec",
+      "check_target": "tests/test_contracts.py::test_discount_cap"
+    },
+    {
+      "contract_id": "minimum_zero_total",
+      "type": "boundary",
+      "description": "Computed price never drops below zero.",
+      "rationale": "Tax support should not introduce negative totals through arithmetic errors.",
+      "check_type": "exec",
+      "check_target": "tests/test_contracts.py::test_nonnegative_total"
+    }
+  ],
+  "evaluation": {
+    "task_metric": "step_task_pass_rate",
+    "contract_metric": "contract_preservation_rate",
+    "primary_report": ["first_drift_step", "final_regression_count"]
+  }
+}

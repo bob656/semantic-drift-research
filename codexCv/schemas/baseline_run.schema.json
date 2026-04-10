@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "codexCv Baseline Run",
+  "type": "object",
+  "required": ["metadata", "steps", "metrics"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["timestamp", "scenario_id", "model", "max_refinements"],
+      "properties": {
+        "timestamp": { "type": "string" },
+        "scenario_id": { "type": "string" },
+        "model": { "type": "string" },
+        "max_refinements": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["step_id", "request", "contracts_checked", "loops", "final_state_document", "final_code"],
+        "properties": {
+          "step_id": { "type": "integer", "minimum": 0 },
+          "request": { "type": "string" },
+          "contracts_checked": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "loops": {
+            "type": "array"
+          },
+          "final_state_document": { "type": "object" },
+          "final_code": { "type": "string" }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "required": [
+        "drift_rate",
+        "recovery_success",
+        "token_efficiency",
+        "asl",
+        "false_state_rate",
+        "stale_state_rate",
+        "task_drift_decoupling_rate"
+      ],
+      "properties": {
+        "drift_rate": { "type": "number" },
+        "recovery_success": { "type": "number" },
+        "token_efficiency": { "type": "number" },
+        "asl": { "type": "integer", "minimum": 0 },
+        "first_drift_step": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "false_state_rate": { "type": "number" },
+        "stale_state_rate": { "type": "number" },
+        "task_drift_decoupling_rate": { "type": "number" }
+      }
+    }
+  }
+}

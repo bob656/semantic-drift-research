@@ -1,0 +1,42 @@
+{
+  "syntax_ok": true,
+  "syntax_error": null,
+  "task_pass_rate": 1.0,
+  "contract_pass_rate": 1.0,
+  "task_test_results": [
+    {
+      "target": "inclusive_extract",
+      "status": "pass",
+      "details": "extract_span('abcdef',1,3) should be 'bcd'"
+    },
+    {
+      "target": "invalid_range_empty",
+      "status": "pass",
+      "details": "invalid ranges should return empty string"
+    }
+  ],
+  "contract_test_results": [
+    {
+      "target": "api_signature",
+      "status": "pass"
+    },
+    {
+      "target": "inclusive_index_semantics",
+      "status": "pass",
+      "details": "expected 'bcd', got 'bcd'"
+    },
+    {
+      "target": "out_of_range_empty",
+      "status": "pass",
+      "details": "expected empty string, got ''"
+    }
+  ],
+  "static_probe_results": [
+    {
+      "contract_id": "api_signature",
+      "check_type": "ast",
+      "status": "pass",
+      "details": "tests/probes.py::check_extract_span_signature"
+    }
+  ]
+}

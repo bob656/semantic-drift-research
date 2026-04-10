@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "codexCv Scenario",
+  "type": "object",
+  "required": [
+    "scenario_id",
+    "track",
+    "source",
+    "language",
+    "description",
+    "step0",
+    "steps",
+    "contracts",
+    "evaluation"
+  ],
+  "properties": {
+    "scenario_id": {
+      "type": "string"
+    },
+    "track": {
+      "type": "string",
+      "enum": ["controlled", "derived"]
+    },
+    "source": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string",
+      "const": "python"
+    },
+    "description": {
+      "type": "string"
+    },
+    "step0": {
+      "type": "object",
+      "required": ["prompt_file", "task_tests"],
+      "properties": {
+        "prompt_file": {
+          "type": "string"
+        },
+        "task_tests": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["step_id", "prompt_file", "task_tests", "contracts_checked"],
+        "properties": {
+          "step_id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "prompt_file": {
+            "type": "string"
+          },
+          "task_tests": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "contracts_checked": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "contracts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "contract_id",
+          "type",
+          "description",
+          "rationale",
+          "check_type",
+          "check_target"
+        ],
+        "properties": {
+          "contract_id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["api", "state", "semantic", "numeric", "boundary"]
+          },
+          "description": {
+            "type": "string"
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "check_type": {
+            "type": "string",
+            "enum": ["exec", "ast", "regex", "static_analysis"]
+          },
+          "check_target": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "required": ["task_metric", "contract_metric", "primary_report"],
+      "properties": {
+        "task_metric": {
+          "type": "string"
+        },
+        "contract_metric": {
+          "type": "string"
+        },
+        "primary_report": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

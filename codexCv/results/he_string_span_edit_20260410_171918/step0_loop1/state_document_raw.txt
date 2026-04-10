@@ -1,0 +1,29 @@
+```json
+{
+  "schema_version": "codexCv-state-v1",
+  "step_id": 0,
+  "loop_id": 1,
+  "blueprint": {
+    "entities": ["extract_span"],
+    "public_api": ["extract_span"],
+    "state_transitions": [],
+    "invariants": []
+  },
+  "delta": {
+    "changed": [
+      {
+        "contract_id": "api_signature",
+        "type": "api",
+        "description": "Added function definition for extract_span."
+      }
+    ],
+    "unchanged": [
+      {
+        "contract_id": "inclusive_index_semantics",
+        "type": "semantic",
+        "description": "The `end` index remains inclusive."
+      },
+      {
+        "contract_id": "out_of_range_empty",
+        "type": "boundary",
+        "description": "Invalid ranges still return an empty string rather than raising

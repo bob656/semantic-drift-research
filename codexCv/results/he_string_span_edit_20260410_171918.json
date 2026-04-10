@@ -1,0 +1,400 @@
+{
+  "metadata": {
+    "timestamp": "2026-04-10T17:20:29.907514",
+    "scenario_id": "derived/humaneval_plus/he_string_span_edit",
+    "model": "qwen2.5-coder:7b",
+    "max_refinements": 0
+  },
+  "steps": [
+    {
+      "step_id": 0,
+      "request": "Write a Python function `extract_span(text, start, end)`.\n\nRequirements:\n\n- Return the substring from `start` to `end`, inclusive.\n- If the range is invalid or outside the string, return an empty string.\n- Do not raise for invalid ranges.\n\nReturn complete Python code only.\n",
+      "contracts_checked": [
+        "api_signature",
+        "inclusive_index_semantics",
+        "out_of_range_empty"
+      ],
+      "loops": [
+        {
+          "loop_id": 1,
+          "generator_raw": "```python\ndef extract_span(text, start, end):\n    if start < 0 or end >= len(text) or start > end:\n        return \"\"\n    return text[start:end + 1]\n```",
+          "state_doc_raw": "```json\n{\n  \"schema_version\": \"codexCv-state-v1\",\n  \"step_id\": 0,\n  \"loop_id\": 1,\n  \"blueprint\": {\n    \"entities\": [\"extract_span\"],\n    \"public_api\": [\"extract_span\"],\n    \"state_transitions\": [],\n    \"invariants\": []\n  },\n  \"delta\": {\n    \"changed\": [\n      {\n        \"contract_id\": \"api_signature\",\n        \"type\": \"api\",\n        \"description\": \"Added function definition for extract_span.\"\n      }\n    ],\n    \"unchanged\": [\n      {\n        \"contract_id\": \"inclusive_index_semantics\",\n        \"type\": \"semantic\",\n        \"description\": \"The `end` index remains inclusive.\"\n      },\n      {\n        \"contract_id\": \"out_of_range_empty\",\n        \"type\": \"boundary\",\n        \"description\": \"Invalid ranges still return an empty string rather than raising",
+          "evaluator_raw": "```json\n{\n  \"task_success\": 1,\n  \"state_alignment\": 1,\n  \"contract_preservation\": 1,\n  \"severity\": \"pass\",\n  \"drift_detected\": false,\n  \"findings\": [],\n  \"repair_priority\": [],\n  \"summary\": \"The code meets all requirements, preserves contracts, and aligns with the state document.\"\n}\n```",
+          "state_document": {
+            "schema_version": "codexCv-state-v1",
+            "step_id": 0,
+            "loop_id": 1,
+            "blueprint": {
+              "entities": [],
+              "public_api": [
+                "extract_span(text, start, end)"
+              ],
+              "state_transitions": [],
+              "invariants": [
+                "extract_span(text, start, end) signature must remain unchanged.",
+                "The `end` index remains inclusive.",
+                "Invalid ranges still return an empty string rather than raising."
+              ]
+            },
+            "delta": {
+              "changed": [
+                "extract_span(text, start, end)"
+              ],
+              "unchanged": [],
+              "removed": []
+            },
+            "risks": [
+              "LLM state document was missing or malformed."
+            ],
+            "grounding_notes": [
+              "State document synthesized by harness from AST-visible entities and APIs."
+            ]
+          },
+          "code": "def extract_span(text, start, end):\n    if start < 0 or end >= len(text) or start > end:\n        return \"\"\n    return text[start:end + 1]",
+          "automated_checks": {
+            "syntax_ok": true,
+            "syntax_error": null,
+            "task_pass_rate": 1.0,
+            "contract_pass_rate": 1.0,
+            "task_test_results": [
+              {
+                "target": "inclusive_extract",
+                "status": "pass",
+                "details": "extract_span('abcdef',1,3) should be 'bcd'"
+              },
+              {
+                "target": "invalid_range_empty",
+                "status": "pass",
+                "details": "invalid ranges should return empty string"
+              }
+            ],
+            "contract_test_results": [
+              {
+                "target": "api_signature",
+                "status": "pass"
+              },
+              {
+                "target": "inclusive_index_semantics",
+                "status": "pass",
+                "details": "expected 'bcd', got 'bcd'"
+              },
+              {
+                "target": "out_of_range_empty",
+                "status": "pass",
+                "details": "expected empty string, got ''"
+              }
+            ],
+            "static_probe_results": [
+              {
+                "contract_id": "api_signature",
+                "check_type": "ast",
+                "status": "pass",
+                "details": "tests/probes.py::check_extract_span_signature"
+              }
+            ]
+          },
+          "evaluator_result": {
+            "task_success": 1,
+            "state_alignment": 1,
+            "contract_preservation": 1,
+            "severity": "pass",
+            "drift_detected": false,
+            "findings": [],
+            "repair_priority": [],
+            "summary": "The code meets all requirements, preserves contracts, and aligns with the state document."
+          },
+          "refinement_triggered": false,
+          "prompt_tokens_estimate": {
+            "generator_prompt_chars": 1759,
+            "evaluator_prompt_chars": 3313
+          }
+        }
+      ],
+      "final_state_document": {
+        "schema_version": "codexCv-state-v1",
+        "step_id": 0,
+        "loop_id": 1,
+        "blueprint": {
+          "entities": [],
+          "public_api": [
+            "extract_span(text, start, end)"
+          ],
+          "state_transitions": [],
+          "invariants": [
+            "extract_span(text, start, end) signature must remain unchanged.",
+            "The `end` index remains inclusive.",
+            "Invalid ranges still return an empty string rather than raising."
+          ]
+        },
+        "delta": {
+          "changed": [
+            "extract_span(text, start, end)"
+          ],
+          "unchanged": [],
+          "removed": []
+        },
+        "risks": [
+          "LLM state document was missing or malformed."
+        ],
+        "grounding_notes": [
+          "State document synthesized by harness from AST-visible entities and APIs."
+        ]
+      },
+      "final_code": "def extract_span(text, start, end):\n    if start < 0 or end >= len(text) or start > end:\n        return \"\"\n    return text[start:end + 1]"
+    },
+    {
+      "step_id": 1,
+      "request": "Extend `extract_span(text, start, end)` with whitespace normalization.\n\nRequirements:\n\n- Add an optional keyword argument `normalize_whitespace=False`.\n- If enabled, collapse multiple spaces in the extracted substring into a single space.\n- Keep the original inclusive boundary semantics.\n- Existing invalid-range behavior must remain unchanged.\n\nReturn complete Python code only.\n",
+      "contracts_checked": [
+        "api_signature",
+        "inclusive_index_semantics"
+      ],
+      "loops": [
+        {
+          "loop_id": 1,
+          "generator_raw": "```python\ndef extract_span(text, start, end, normalize_whitespace=False):\n    if start < 0 or end >= len(text) or start > end:\n        return \"\"\n    span = text[start:end + 1]\n    if normalize_whitespace:\n        span = ' '.join(span.split())\n    return span\n```",
+          "state_doc_raw": "```json\n{\n  \"schema_version\": \"codexCv-state-v1\",\n  \"step_id\": 1,\n  \"loop_id\": 1,\n  \"blueprint\": {\n    \"entities\": [],\n    \"public_api\": [\n      \"extract_span(text, start, end)\"\n    ],\n    \"state_transitions\": [],\n    \"invariants\": [\n      \"extract_span(text, start, end) signature must remain unchanged.\",\n      \"The `end` index remains inclusive.\",\n      \"Invalid ranges still return an empty string rather than raising.\"\n    ]\n  },\n  \"delta\": {\n    \"changed\": [\n      \"extract_span(text, start, end)\"\n    ],\n    \"unchanged\": [],\n    \"removed\": []\n  },\n  \"risks\": [],\n  \"grounding_notes\": []\n}\n```",
+          "evaluator_raw": "```json\n{\n  \"task_success\": 1,\n  \"state_alignment\": 1,\n  \"contract_preservation\": 1,\n  \"severity\": \"pass\",\n  \"drift_detected\": false,\n  \"findings\": [],\n  \"repair_priority\": [],\n  \"summary\": \"The code successfully implements the requested changes and maintains all preserved contracts.\"\n}\n```",
+          "state_document": {
+            "schema_version": "codexCv-state-v1",
+            "step_id": 1,
+            "loop_id": 1,
+            "blueprint": {
+              "entities": [],
+              "public_api": [
+                "extract_span(text, start, end)"
+              ],
+              "state_transitions": [],
+              "invariants": [
+                "extract_span(text, start, end) signature must remain unchanged.",
+                "The `end` index remains inclusive.",
+                "Invalid ranges still return an empty string rather than raising."
+              ]
+            },
+            "delta": {
+              "changed": [
+                "extract_span(text, start, end)"
+              ],
+              "unchanged": [],
+              "removed": []
+            },
+            "risks": [],
+            "grounding_notes": []
+          },
+          "code": "def extract_span(text, start, end, normalize_whitespace=False):\n    if start < 0 or end >= len(text) or start > end:\n        return \"\"\n    span = text[start:end + 1]\n    if normalize_whitespace:\n        span = ' '.join(span.split())\n    return span",
+          "automated_checks": {
+            "syntax_ok": true,
+            "syntax_error": null,
+            "task_pass_rate": 1.0,
+            "contract_pass_rate": 1.0,
+            "task_test_results": [
+              {
+                "target": "normalize_whitespace",
+                "status": "pass",
+                "details": "expected 'a b c', got 'a b c'"
+              }
+            ],
+            "contract_test_results": [
+              {
+                "target": "api_signature",
+                "status": "pass"
+              },
+              {
+                "target": "inclusive_index_semantics",
+                "status": "pass",
+                "details": "expected 'bcd', got 'bcd'"
+              }
+            ],
+            "static_probe_results": [
+              {
+                "contract_id": "api_signature",
+                "check_type": "ast",
+                "status": "pass",
+                "details": "tests/probes.py::check_extract_span_signature"
+              }
+            ]
+          },
+          "evaluator_result": {
+            "task_success": 1,
+            "state_alignment": 1,
+            "contract_preservation": 1,
+            "severity": "pass",
+            "drift_detected": false,
+            "findings": [],
+            "repair_priority": [],
+            "summary": "The code successfully implements the requested changes and maintains all preserved contracts."
+          },
+          "refinement_triggered": false,
+          "prompt_tokens_estimate": {
+            "generator_prompt_chars": 2163,
+            "evaluator_prompt_chars": 2855
+          }
+        }
+      ],
+      "final_state_document": {
+        "schema_version": "codexCv-state-v1",
+        "step_id": 1,
+        "loop_id": 1,
+        "blueprint": {
+          "entities": [],
+          "public_api": [
+            "extract_span(text, start, end)"
+          ],
+          "state_transitions": [],
+          "invariants": [
+            "extract_span(text, start, end) signature must remain unchanged.",
+            "The `end` index remains inclusive.",
+            "Invalid ranges still return an empty string rather than raising."
+          ]
+        },
+        "delta": {
+          "changed": [
+            "extract_span(text, start, end)"
+          ],
+          "unchanged": [],
+          "removed": []
+        },
+        "risks": [],
+        "grounding_notes": []
+      },
+      "final_code": "def extract_span(text, start, end, normalize_whitespace=False):\n    if start < 0 or end >= len(text) or start > end:\n        return \"\"\n    span = text[start:end + 1]\n    if normalize_whitespace:\n        span = ' '.join(span.split())\n    return span"
+    },
+    {
+      "step_id": 2,
+      "request": "Extend `extract_span(text, start, end)` with optional trimming.\n\nRequirements:\n\n- Add an optional keyword argument `strip_result=False`.\n- If enabled, trim leading and trailing whitespace after extraction.\n- Preserve the original invalid-range behavior.\n- Preserve inclusive end-index semantics.\n\nReturn complete Python code only.\n",
+      "contracts_checked": [
+        "api_signature",
+        "inclusive_index_semantics",
+        "out_of_range_empty"
+      ],
+      "loops": [
+        {
+          "loop_id": 1,
+          "generator_raw": "```python\ndef extract_span(text, start, end, strip_result=False):\n    if start < 0 or end >= len(text) or start > end:\n        return \"\"\n    span = text[start:end + 1]\n    if strip_result:\n        span = span.strip()\n    return span\n```",
+          "state_doc_raw": "```json\n{\n  \"schema_version\": \"codexCv-state-v1\",\n  \"step_id\": 2,\n  \"loop_id\": 1,\n  \"blueprint\": {\n    \"entities\": [],\n    \"public_api\": [\n      \"extract_span(text, start, end)\"\n    ],\n    \"state_transitions\": [],\n    \"invariants\": [\n      \"extract_span(text, start, end) signature must remain unchanged.\",\n      \"The `end` index remains inclusive.\",\n      \"Invalid ranges still return an empty string rather than raising.\"\n    ]\n  },\n  \"delta\": {\n    \"changed\": [\n      \"extract_span(text, start, end)\"\n    ],\n    \"unchanged\": [],\n    \"removed\": []\n  },\n  \"risks\": [],\n  \"grounding_notes\": [\n    \"Added optional `strip_result` parameter to `extract_span`.\"\n  ]\n}\n```",
+          "evaluator_raw": "```json\n{\n  \"task_success\": 1,\n  \"state_alignment\": 1,\n  \"contract_preservation\": 1,\n  \"severity\": \"pass\",\n  \"drift_detected\": false,\n  \"findings\": [],\n  \"repair_priority\": [],\n  \"summary\": \"The code successfully implements the requested changes and preserves all contracts.\"\n}\n```",
+          "state_document": {
+            "schema_version": "codexCv-state-v1",
+            "step_id": 2,
+            "loop_id": 1,
+            "blueprint": {
+              "entities": [],
+              "public_api": [
+                "extract_span(text, start, end)"
+              ],
+              "state_transitions": [],
+              "invariants": [
+                "extract_span(text, start, end) signature must remain unchanged.",
+                "The `end` index remains inclusive.",
+                "Invalid ranges still return an empty string rather than raising."
+              ]
+            },
+            "delta": {
+              "changed": [
+                "extract_span(text, start, end)"
+              ],
+              "unchanged": [],
+              "removed": []
+            },
+            "risks": [],
+            "grounding_notes": [
+              "Added optional `strip_result` parameter to `extract_span`."
+            ]
+          },
+          "code": "def extract_span(text, start, end, strip_result=False):\n    if start < 0 or end >= len(text) or start > end:\n        return \"\"\n    span = text[start:end + 1]\n    if strip_result:\n        span = span.strip()\n    return span",
+          "automated_checks": {
+            "syntax_ok": true,
+            "syntax_error": null,
+            "task_pass_rate": 1.0,
+            "contract_pass_rate": 1.0,
+            "task_test_results": [
+              {
+                "target": "strip_result",
+                "status": "pass",
+                "details": "expected 'abc', got 'abc'"
+              }
+            ],
+            "contract_test_results": [
+              {
+                "target": "api_signature",
+                "status": "pass"
+              },
+              {
+                "target": "inclusive_index_semantics",
+                "status": "pass",
+                "details": "expected 'bcd', got 'bcd'"
+              },
+              {
+                "target": "out_of_range_empty",
+                "status": "pass",
+                "details": "expected empty string, got ''"
+              }
+            ],
+            "static_probe_results": [
+              {
+                "contract_id": "api_signature",
+                "check_type": "ast",
+                "status": "pass",
+                "details": "tests/probes.py::check_extract_span_signature"
+              }
+            ]
+          },
+          "evaluator_result": {
+            "task_success": 1,
+            "state_alignment": 1,
+            "contract_preservation": 1,
+            "severity": "pass",
+            "drift_detected": false,
+            "findings": [],
+            "repair_priority": [],
+            "summary": "The code successfully implements the requested changes and preserves all contracts."
+          },
+          "refinement_triggered": false,
+          "prompt_tokens_estimate": {
+            "generator_prompt_chars": 2355,
+            "evaluator_prompt_chars": 3227
+          }
+        }
+      ],
+      "final_state_document": {
+        "schema_version": "codexCv-state-v1",
+        "step_id": 2,
+        "loop_id": 1,
+        "blueprint": {
+          "entities": [],
+          "public_api": [
+            "extract_span(text, start, end)"
+          ],
+          "state_transitions": [],
+          "invariants": [
+            "extract_span(text, start, end) signature must remain unchanged.",
+            "The `end` index remains inclusive.",
+            "Invalid ranges still return an empty string rather than raising."
+          ]
+        },
+        "delta": {
+          "changed": [
+            "extract_span(text, start, end)"
+          ],
+          "unchanged": [],
+          "removed": []
+        },
+        "risks": [],
+        "grounding_notes": [
+          "Added optional `strip_result` parameter to `extract_span`."
+        ]
+      },
+      "final_code": "def extract_span(text, start, end, strip_result=False):\n    if start < 0 or end >= len(text) or start > end:\n        return \"\"\n    span = text[start:end + 1]\n    if strip_result:\n        span = span.strip()\n    return span"
+    }
+  ],
+  "metrics": {
+    "drift_rate": 0.0,
+    "recovery_success": 0.0,
+    "token_efficiency": 0.1914241960183767,
+    "asl": 3,
+    "first_drift_step": null,
+    "false_state_rate": 0.0,
+    "stale_state_rate": 0.0,
+    "task_drift_decoupling_rate": 0.0
+  }
+}

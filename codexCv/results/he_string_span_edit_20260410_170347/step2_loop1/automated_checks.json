@@ -1,0 +1,31 @@
+{
+  "syntax_ok": false,
+  "syntax_error": "invalid syntax (<unknown>, line 1)",
+  "task_pass_rate": 0.0,
+  "contract_pass_rate": 0.0,
+  "task_test_results": [
+    {
+      "target": "tests/test_step2_task.py",
+      "status": "fail",
+      "details": "invalid syntax (<unknown>, line 1)"
+    }
+  ],
+  "contract_test_results": [
+    {
+      "target": "api_signature",
+      "status": "fail",
+      "details": "invalid syntax (<unknown>, line 1)"
+    },
+    {
+      "target": "inclusive_index_semantics",
+      "status": "fail",
+      "details": "invalid syntax (<unknown>, line 1)"
+    },
+    {
+      "target": "out_of_range_empty",
+      "status": "fail",
+      "details": "invalid syntax (<unknown>, line 1)"
+    }
+  ],
+  "static_probe_results": []
+}

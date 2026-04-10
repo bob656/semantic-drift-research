@@ -1,0 +1,20 @@
+{
+  "task_success": 0,
+  "state_alignment": 0,
+  "contract_preservation": 0,
+  "severity": "fail",
+  "drift_detected": true,
+  "findings": [
+    {
+      "type": "unknown",
+      "severity": "critical",
+      "location": "code",
+      "message": "Syntax error in the code: unterminated string literal.",
+      "evidence": "unterminated string literal (detected at line 24) (<unknown>, line 24)"
+    }
+  ],
+  "repair_priority": [
+    "Fix the syntax error in the code."
+  ],
+  "summary": "The code contains a syntax error and cannot be evaluated."
+}

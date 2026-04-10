@@ -1,0 +1,56 @@
+{
+  "scenario_id": "he_string_span_edit",
+  "track": "derived",
+  "source": "HumanEval+-style, manually extended into edit sequence",
+  "language": "python",
+  "description": "Function-level sequence derived from a HumanEval+ style prompt with boundary-sensitive string extraction.",
+  "step0": {
+    "prompt_file": "step0_prompt.md",
+    "task_tests": ["tests/test_step0_task.py"]
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "prompt_file": "step1_prompt.md",
+      "task_tests": ["tests/test_step1_task.py"],
+      "contracts_checked": ["api_signature", "inclusive_index_semantics"]
+    },
+    {
+      "step_id": 2,
+      "prompt_file": "step2_prompt.md",
+      "task_tests": ["tests/test_step2_task.py"],
+      "contracts_checked": ["api_signature", "inclusive_index_semantics", "out_of_range_empty"]
+    }
+  ],
+  "contracts": [
+    {
+      "contract_id": "api_signature",
+      "type": "api",
+      "description": "extract_span(text, start, end) signature must remain unchanged.",
+      "rationale": "New formatting behavior should not introduce an API break.",
+      "check_type": "ast",
+      "check_target": "tests/probes.py::check_extract_span_signature"
+    },
+    {
+      "contract_id": "inclusive_index_semantics",
+      "type": "semantic",
+      "description": "The `end` index remains inclusive.",
+      "rationale": "Adding convenience behavior should not silently change boundary semantics.",
+      "check_type": "exec",
+      "check_target": "tests/test_contracts.py::test_end_is_inclusive"
+    },
+    {
+      "contract_id": "out_of_range_empty",
+      "type": "boundary",
+      "description": "Invalid ranges still return an empty string rather than raising.",
+      "rationale": "Formatting support should not alter error handling semantics.",
+      "check_type": "exec",
+      "check_target": "tests/test_contracts.py::test_invalid_range_returns_empty"
+    }
+  ],
+  "evaluation": {
+    "task_metric": "step_task_pass_rate",
+    "contract_metric": "contract_preservation_rate",
+    "primary_report": ["first_drift_step", "final_regression_count"]
+  }
+}

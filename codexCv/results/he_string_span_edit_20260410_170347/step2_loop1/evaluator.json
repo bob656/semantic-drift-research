@@ -1,0 +1,20 @@
+{
+  "task_success": 0,
+  "state_alignment": 0,
+  "contract_preservation": 0,
+  "severity": "fail",
+  "drift_detected": true,
+  "findings": [
+    {
+      "type": "unknown",
+      "severity": "critical",
+      "location": "code",
+      "message": "Invalid syntax detected in the provided code.",
+      "evidence": "invalid syntax (<unknown>, line 1)"
+    }
+  ],
+  "repair_priority": [
+    "Fix the invalid syntax in the provided code."
+  ],
+  "summary": "The provided code contains invalid syntax and cannot be evaluated further."
+}

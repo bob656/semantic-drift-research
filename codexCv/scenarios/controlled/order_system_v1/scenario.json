@@ -1,0 +1,62 @@
+{
+  "scenario_id": "order_system_v1",
+  "track": "controlled",
+  "source": "codexCv-authored",
+  "language": "python",
+  "description": "Order manager evolution focused on API stability, state semantics, and total consistency.",
+  "step0": {
+    "prompt_file": "step0_prompt.md",
+    "task_tests": ["tests/test_step0_task.py"]
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "prompt_file": "step1_prompt.md",
+      "task_tests": ["tests/test_step1_task.py"],
+      "contracts_checked": ["api_create_order", "total_consistency"]
+    },
+    {
+      "step_id": 2,
+      "prompt_file": "step2_prompt.md",
+      "task_tests": ["tests/test_step2_task.py"],
+      "contracts_checked": ["api_create_order", "state_cancel_terminal", "total_consistency"]
+    },
+    {
+      "step_id": 3,
+      "prompt_file": "step3_prompt.md",
+      "task_tests": ["tests/test_step3_task.py"],
+      "contracts_checked": ["api_create_order", "state_cancel_terminal", "total_consistency"]
+    }
+  ],
+  "contracts": [
+    {
+      "contract_id": "api_create_order",
+      "type": "api",
+      "description": "create_order(customer, items) must remain callable with two required positional arguments.",
+      "rationale": "Later edits add internal behavior, not a breaking API redesign.",
+      "check_type": "ast",
+      "check_target": "tests/probes.py::check_create_order_signature"
+    },
+    {
+      "contract_id": "state_cancel_terminal",
+      "type": "state",
+      "description": "A cancelled order cannot return to CONFIRMED.",
+      "rationale": "Payment and inventory edits should not alter cancellation semantics.",
+      "check_type": "exec",
+      "check_target": "tests/test_contracts.py::test_cancel_is_terminal"
+    },
+    {
+      "contract_id": "total_consistency",
+      "type": "semantic",
+      "description": "Order total must equal item subtotal minus discounts plus shipping.",
+      "rationale": "Feature additions should preserve price semantics unless explicitly changed.",
+      "check_type": "exec",
+      "check_target": "tests/test_contracts.py::test_total_consistency"
+    }
+  ],
+  "evaluation": {
+    "task_metric": "step_task_pass_rate",
+    "contract_metric": "contract_preservation_rate",
+    "primary_report": ["first_drift_step", "final_regression_count", "recovery_rate"]
+  }
+}

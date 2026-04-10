@@ -1,0 +1,208 @@
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta
+
+# 핵심 수치 상수
+INTEREST_RATE = 0.025
+LATE_FEE = 5000
+MAX_INSTALLMENTS = 36
+MIN_PAYMENT = 10000
+PENALTY_RATE = 0.015
+
+@dataclass
+class Payment:
+    payment_id: int
+    loan_id: int
+    amount: float
+    date: str
+    type: str
+
+@dataclass
+class Loan:
+    loan_id: int
+    borrower: str
+    principal: float
+    months: int
+    status: str = "active"
+    payments: list[Payment] = field(default_factory=list)  # 납부 이력 저장
+
+    def __post_init__(self):
+        if self.payments is None:
+            self.payments = []
+
+class LoanSystem:
+    def __init__(self):
+        self.loans = {}
+        self.next_payment_id = 1  # Payment ID를 위한 전역 변수
+
+    def create_loan(self, loan_id: int, borrower: str, principal: float, months: int) -> bool:
+        if months > MAX_INSTALLMENTS:
+            return False
+        new_loan = Loan(loan_id, borrower, principal, months)
+        self.loans[loan_id] = new_loan
+        return True
+
+    def calculate_monthly_payment(self, loan_id: int) -> float:
+        loan = self.loans.get(loan_id)
+        if not loan or loan.status != "active":
+            raise ValueError("Loan is not active")
+        
+        r = INTEREST_RATE / 12
+        monthly_payment = (loan.principal * r) / (1 - (1 + r) ** (-loan.months))
+        return max(monthly_payment, MIN_PAYMENT)
+
+    def apply_late_fee(self, loan_id: int):
+        loan = self.loans.get(loan_id)
+        if not loan or loan.status != "active":
+            raise ValueError("Loan is not active")
+        
+        late_fee = LATE_FEE + loan.principal * PENALTY_RATE
+        # 여기서 실제로 연체료를 추가하는 로직을 구현해야 합니다.
+        # 예를 들어, loan.principal += late_fee 와 같이 잔액에 연체료를 더할 수 있습니다.
+
+    def record_payment(self, loan_id: int, amount: float, date: str, payment_type='REGULAR'):
+        loan = self.loans.get(loan_id)
+        if not loan or loan.status != "active":
+            raise ValueError("Loan is not active")
+        
+        new_payment = Payment(payment_id=self.next_payment_id, loan_id=loan_id, amount=amount, date=date, type=payment_type)
+        loan.payments.append(new_payment)
+        self.next_payment_id += 1
+
+    def get_payment_history(self, loan_id: int) -> list[Payment]:
+        loan = self.loans.get(loan_id)
+        if not loan or loan.status != "active":
+            raise ValueError("Loan is not active")
+        
+        return loan.payments
+
+    def get_loan(self, loan_id: int) -> Loan:
+        return self.loans.get(loan_id)
+
+    def calculate_early_repayment(self, loan_id: int, remaining_balance: float):
+        loan = self.loans.get(loan_id)
+        if not loan or loan.status != "active":
+            raise ValueError("Loan is not active")
+        
+        r = INTEREST_RATE / 12
+        remaining_months = len([p for p in loan.payments if p.type == 'REGULAR'])
+        remaining_interest = remaining_balance * r * remaining_months
+        early_repayment_discount = remaining_interest * 0.1
+        return early_repayment_discount
+
+    def get_payoff_amount(self, loan_id: int):
+        loan = self.loans.get(loan_id)
+        if not loan or loan.status != "active":
+            raise ValueError("Loan is not active")
+        
+        total_paid = sum(p.amount for p in loan.payments)
+        remaining_balance = loan.principal - total_paid
+        return remaining_balance + (remaining_balance * INTEREST_RATE / 12 * len([p for p in loan.payments if p.type == 'REGULAR']))
+
+    def check_overdue(self, loan_id: int, last_payment_date: str, today: str) -> bool:
+        loan = self.loans.get(loan_id)
+        if not loan or loan.status != "active":
+            raise ValueError("Loan is not active")
+        
+        last_payment_date = datetime.strptime(last_payment_date, "%Y-%m-%d")
+        today = datetime.strptime(today, "%Y-%m-%d")
+        return (today - last_payment_date).days > 30
+
+    def get_overdue_amount(self, loan_id: int) -> float:
+        loan = self.loans.get(loan_id)
+        if not loan or loan.status != "active":
+            raise ValueError("Loan is not active")
+        
+        total_due = sum(p.amount for p in loan.payments if p.type == 'REGULAR')
+        overdue_amount = 0
+        for payment in loan.payments:
+            if self.check_overdue(loan_id, payment.date, datetime.now().strftime("%Y-%m-%d")):
+                late_fee = LATE_FEE + (payment.amount * PENALTY_RATE)
+                overdue_amount += (payment.amount + late_fee)  # 연체료와 가산 이자 포함
+        
+        return overdue_amount
+
+    def generate_payment_schedule(self, loan_id):
+        loan = self.loans.get(loan_id)
+        if not loan or loan.status != "active":
+            raise ValueError("Loan is not active")
+        
+        schedule = []
+        principal = loan.principal
+        monthly_interest_rate = INTEREST_RATE / 12
+        monthly_payment = self.calculate_monthly_payment(loan_id)
+
+        for month in range(loan.months):
+            interest = principal * monthly_interest_rate
+            if monthly_payment >= interest:
+                principal -= (monthly_payment - interest)
+            else:
+                principal -= 0
+                interest = monthly_payment
+
+            balance = max(principal, 0)
+            schedule.append({
+                'installment': month + 1,
+                'payment_amount': monthly_payment,
+                'principal_part': monthly_payment - interest,
+                'interest_part': interest,
+                'remaining_balance': balance
+            })
+
+        return schedule
+
+    def get_remaining_balance(self, loan_id, paid_months):
+        loan = self.loans.get(loan_id)
+        if not loan or loan.status != "active":
+            raise ValueError("Loan is not active")
+        
+        remaining_months = loan.months - paid_months
+        principal = loan.principal
+        monthly_interest_rate = INTEREST_RATE / 12
+
+        for _ in range(paid_months):
+            interest = principal * monthly_interest_rate
+            if self.calculate_monthly_payment(loan_id) >= interest:
+                principal -= (self.calculate_monthly_payment(loan_id) - interest)
+            else:
+                principal -= 0
+                interest = self.calculate_monthly_payment(loan_id)
+
+        return max(principal, 0) * (1 + monthly_interest_rate) ** remaining_months
+
+    def generate_monthly_report(self, year: int, month: int):
+        report = {
+            'total_loans': 0,
+            'total_principal': 0.0,
+            'average_rate': INTEREST_RATE,
+            'overdue_count': 0,
+            'total_late_fees': 0.0
+        }
+
+        for loan in self.loans.values():
+            if not loan or loan.status != "active":
+                continue
+
+            report['total_loans'] += 1
+            report['total_principal'] += loan.principal
+
+            # 연체 여부 확인 및 연체료 추가
+            last_payment_date = datetime.strptime(max(loan.payments, key=lambda p: p.date).date, "%Y-%m-%d")
+            today = datetime.now()
+            if (today.year == year and today.month == month) or (last_payment_date.year < year or (last_payment_date.year == year and last_payment_date.month < month)):
+                report['overdue_count'] += 1
+                report['total_late_fees'] += LATE_FEE + loan.principal * PENALTY_RATE
+
+        if report['total_loans'] > 0:
+            report['average_rate'] = INTEREST_RATE / report['total_loans']
+
+        return report
+
+    def summarize_portfolio(self):
+        summary = {
+            'total_active_loans': len([loan for loan in self.loans.values() if loan.status == "active"]),
+            'total_principal_amount': sum(loan.principal for loan in self.loans.values()),
+            'average_interest_rate': INTEREST_RATE,
+            'overdue_loans_count': sum(1 for loan in self.loans.values() if loan.status == "active" and any(self.check_overdue(loan.loan_id, payment.date, datetime.now().strftime("%Y-%m-%d")) for payment in loan.payments))
+        }
+
+        return summary

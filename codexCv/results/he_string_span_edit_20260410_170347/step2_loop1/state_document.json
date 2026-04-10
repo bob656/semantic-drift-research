@@ -1,0 +1,22 @@
+{
+  "schema_version": "codexCv-state-v1",
+  "step_id": 2,
+  "loop_id": 1,
+  "blueprint": {
+    "entities": [],
+    "public_api": [],
+    "state_transitions": [],
+    "invariants": []
+  },
+  "delta": {
+    "changed": [],
+    "unchanged": [],
+    "removed": []
+  },
+  "risks": [
+    "Generator omitted the structured state document block."
+  ],
+  "grounding_notes": [
+    "Fallback state document was synthesized by the harness."
+  ]
+}

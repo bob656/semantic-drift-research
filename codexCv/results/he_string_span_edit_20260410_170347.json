@@ -1,0 +1,365 @@
+{
+  "metadata": {
+    "timestamp": "2026-04-10T17:04:11.500548",
+    "scenario_id": "derived/humaneval_plus/he_string_span_edit",
+    "model": "qwen2.5-coder:7b",
+    "max_refinements": 0
+  },
+  "steps": [
+    {
+      "step_id": 0,
+      "request": "Write a Python function `extract_span(text, start, end)`.\n\nRequirements:\n\n- Return the substring from `start` to `end`, inclusive.\n- If the range is invalid or outside the string, return an empty string.\n- Do not raise for invalid ranges.\n\nReturn complete Python code only.\n",
+      "contracts_checked": [
+        "api_signature",
+        "inclusive_index_semantics",
+        "out_of_range_empty"
+      ],
+      "loops": [
+        {
+          "loop_id": 1,
+          "generator_raw": "<<STATE_DOCUMENT_JSON>>\n{\n  \"schema_version\": \"codexCv-state-v1\",\n  \"step_id\": 0,\n  \"loop_id\": 0,\n  \"blueprint\": {\n    \"entities\": [\"text\", \"start\", \"end\"],\n    \"public_api\": [\"extract_span(text, start, end)\"],\n    \"state_transitions\": [],\n    \"invariants\": [\n      {\n        \"contract_id\": \"api_signature\",\n        \"type\": \"api\",\n        \"description\": \"The function signature remains unchanged.\",\n        \"rationale\": \"New formatting behavior should not introduce an API break.\"\n      },\n      {\n        \"contract_id\": \"inclusive_index_semantics\",\n        \"type\": \"semantic\",\n        \"description\": \"The `end` index remains inclusive.\",\n        \"rationale\": \"Adding convenience behavior should not silently change boundary semantics.\"\n      },\n      {\n        \"contract_id\": \"out_of_range",
+          "state_document": {
+            "schema_version": "codexCv-state-v1",
+            "step_id": 0,
+            "loop_id": 1,
+            "blueprint": {
+              "entities": [],
+              "public_api": [],
+              "state_transitions": [],
+              "invariants": []
+            },
+            "delta": {
+              "changed": [],
+              "unchanged": [],
+              "removed": []
+            },
+            "risks": [
+              "Generator omitted the structured state document block."
+            ],
+            "grounding_notes": [
+              "Fallback state document was synthesized by the harness."
+            ]
+          },
+          "code": "<<STATE_DOCUMENT_JSON>>\n{\n  \"schema_version\": \"codexCv-state-v1\",\n  \"step_id\": 0,\n  \"loop_id\": 0,\n  \"blueprint\": {\n    \"entities\": [\"text\", \"start\", \"end\"],\n    \"public_api\": [\"extract_span(text, start, end)\"],\n    \"state_transitions\": [],\n    \"invariants\": [\n      {\n        \"contract_id\": \"api_signature\",\n        \"type\": \"api\",\n        \"description\": \"The function signature remains unchanged.\",\n        \"rationale\": \"New formatting behavior should not introduce an API break.\"\n      },\n      {\n        \"contract_id\": \"inclusive_index_semantics\",\n        \"type\": \"semantic\",\n        \"description\": \"The `end` index remains inclusive.\",\n        \"rationale\": \"Adding convenience behavior should not silently change boundary semantics.\"\n      },\n      {\n        \"contract_id\": \"out_of_range",
+          "automated_checks": {
+            "syntax_ok": false,
+            "syntax_error": "unterminated string literal (detected at line 24) (<unknown>, line 24)",
+            "task_pass_rate": 0.0,
+            "contract_pass_rate": 0.0,
+            "task_test_results": [
+              {
+                "target": "tests/test_step0_task.py",
+                "status": "fail",
+                "details": "unterminated string literal (detected at line 24) (<unknown>, line 24)"
+              }
+            ],
+            "contract_test_results": [
+              {
+                "target": "api_signature",
+                "status": "fail",
+                "details": "unterminated string literal (detected at line 24) (<unknown>, line 24)"
+              },
+              {
+                "target": "inclusive_index_semantics",
+                "status": "fail",
+                "details": "unterminated string literal (detected at line 24) (<unknown>, line 24)"
+              },
+              {
+                "target": "out_of_range_empty",
+                "status": "fail",
+                "details": "unterminated string literal (detected at line 24) (<unknown>, line 24)"
+              }
+            ],
+            "static_probe_results": []
+          },
+          "evaluator_result": {
+            "task_success": 0,
+            "state_alignment": 0,
+            "contract_preservation": 0,
+            "severity": "fail",
+            "drift_detected": true,
+            "findings": [
+              {
+                "type": "unknown",
+                "severity": "critical",
+                "location": "code",
+                "message": "Syntax error in the code: unterminated string literal.",
+                "evidence": "unterminated string literal (detected at line 24) (<unknown>, line 24)"
+              }
+            ],
+            "repair_priority": [
+              "Fix the syntax error in the code."
+            ],
+            "summary": "The code contains a syntax error and cannot be evaluated."
+          },
+          "refinement_triggered": false,
+          "prompt_tokens_estimate": {
+            "generator_prompt_chars": 2387,
+            "evaluator_prompt_chars": 3650
+          }
+        }
+      ],
+      "final_state_document": {
+        "schema_version": "codexCv-state-v1",
+        "step_id": 0,
+        "loop_id": 1,
+        "blueprint": {
+          "entities": [],
+          "public_api": [],
+          "state_transitions": [],
+          "invariants": []
+        },
+        "delta": {
+          "changed": [],
+          "unchanged": [],
+          "removed": []
+        },
+        "risks": [
+          "Generator omitted the structured state document block."
+        ],
+        "grounding_notes": [
+          "Fallback state document was synthesized by the harness."
+        ]
+      },
+      "final_code": "<<STATE_DOCUMENT_JSON>>\n{\n  \"schema_version\": \"codexCv-state-v1\",\n  \"step_id\": 0,\n  \"loop_id\": 0,\n  \"blueprint\": {\n    \"entities\": [\"text\", \"start\", \"end\"],\n    \"public_api\": [\"extract_span(text, start, end)\"],\n    \"state_transitions\": [],\n    \"invariants\": [\n      {\n        \"contract_id\": \"api_signature\",\n        \"type\": \"api\",\n        \"description\": \"The function signature remains unchanged.\",\n        \"rationale\": \"New formatting behavior should not introduce an API break.\"\n      },\n      {\n        \"contract_id\": \"inclusive_index_semantics\",\n        \"type\": \"semantic\",\n        \"description\": \"The `end` index remains inclusive.\",\n        \"rationale\": \"Adding convenience behavior should not silently change boundary semantics.\"\n      },\n      {\n        \"contract_id\": \"out_of_range"
+    },
+    {
+      "step_id": 1,
+      "request": "Extend `extract_span(text, start, end)` with whitespace normalization.\n\nRequirements:\n\n- Add an optional keyword argument `normalize_whitespace=False`.\n- If enabled, collapse multiple spaces in the extracted substring into a single space.\n- Keep the original inclusive boundary semantics.\n- Existing invalid-range behavior must remain unchanged.\n\nReturn complete Python code only.\n",
+      "contracts_checked": [
+        "api_signature",
+        "inclusive_index_semantics"
+      ],
+      "loops": [
+        {
+          "loop_id": 1,
+          "generator_raw": "<<STATE_DOCUMENT_JSON>>\n{\n  \"schema_version\": \"codexCv-state-v1\",\n  \"step_id\": 0,\n  \"loop_id\": 0,\n  \"blueprint\": {\n    \"entities\": [\"text\", \"start\", \"end\"],\n    \"public_api\": [\"extract_span(text, start, end, normalize_whitespace=False)\"],\n    \"state_transitions\": [],\n    \"invariants\": [\n      {\n        \"contract_id\": \"api_signature\",\n        \"type\": \"api\",\n        \"description\": \"The function signature remains unchanged.\",\n        \"rationale\": \"New formatting behavior should not introduce an API break.\"\n      },\n      {\n        \"contract_id\": \"inclusive_index_semantics\",\n        \"type\": \"semantic\",\n        \"description\": \"The `end` index remains inclusive.\",\n        \"rationale\": \"Adding convenience behavior should not silently change boundary semantics.\"\n      }\n    ]\n  },\n  \"delta",
+          "state_document": {
+            "schema_version": "codexCv-state-v1",
+            "step_id": 1,
+            "loop_id": 1,
+            "blueprint": {
+              "entities": [],
+              "public_api": [],
+              "state_transitions": [],
+              "invariants": []
+            },
+            "delta": {
+              "changed": [],
+              "unchanged": [],
+              "removed": []
+            },
+            "risks": [
+              "Generator omitted the structured state document block."
+            ],
+            "grounding_notes": [
+              "Fallback state document was synthesized by the harness."
+            ]
+          },
+          "code": "<<STATE_DOCUMENT_JSON>>\n{\n  \"schema_version\": \"codexCv-state-v1\",\n  \"step_id\": 0,\n  \"loop_id\": 0,\n  \"blueprint\": {\n    \"entities\": [\"text\", \"start\", \"end\"],\n    \"public_api\": [\"extract_span(text, start, end, normalize_whitespace=False)\"],\n    \"state_transitions\": [],\n    \"invariants\": [\n      {\n        \"contract_id\": \"api_signature\",\n        \"type\": \"api\",\n        \"description\": \"The function signature remains unchanged.\",\n        \"rationale\": \"New formatting behavior should not introduce an API break.\"\n      },\n      {\n        \"contract_id\": \"inclusive_index_semantics\",\n        \"type\": \"semantic\",\n        \"description\": \"The `end` index remains inclusive.\",\n        \"rationale\": \"Adding convenience behavior should not silently change boundary semantics.\"\n      }\n    ]\n  },\n  \"delta",
+          "automated_checks": {
+            "syntax_ok": false,
+            "syntax_error": "unterminated string literal (detected at line 25) (<unknown>, line 25)",
+            "task_pass_rate": 0.0,
+            "contract_pass_rate": 0.0,
+            "task_test_results": [
+              {
+                "target": "tests/test_step1_task.py",
+                "status": "fail",
+                "details": "unterminated string literal (detected at line 25) (<unknown>, line 25)"
+              }
+            ],
+            "contract_test_results": [
+              {
+                "target": "api_signature",
+                "status": "fail",
+                "details": "unterminated string literal (detected at line 25) (<unknown>, line 25)"
+              },
+              {
+                "target": "inclusive_index_semantics",
+                "status": "fail",
+                "details": "unterminated string literal (detected at line 25) (<unknown>, line 25)"
+              }
+            ],
+            "static_probe_results": []
+          },
+          "evaluator_result": {
+            "task_success": 0,
+            "state_alignment": 0,
+            "contract_preservation": 0,
+            "severity": "critical",
+            "drift_detected": true,
+            "findings": [
+              {
+                "type": "unknown",
+                "severity": "critical",
+                "location": "unknown",
+                "message": "Evaluator returned malformed JSON.",
+                "evidence": "```json\n{\n  \"task_success\": 0,\n  \"state_alignment\": 0,\n  \"contract_preservation\": 0,\n  \"severity\": \"fail\",\n  \"drift_detected\": true,\n  \"findings\": [\n    {\n      \"type\": \"syntax_error\",\n      \"severity\": \"critical\",\n      \"location\": \"code\",\n      \"message\": \"Unterminated string literal detected.\",\n "
+              }
+            ],
+            "repair_priority": [
+              "Return valid evaluator JSON."
+            ],
+            "summary": "Invalid evaluator output."
+          },
+          "refinement_triggered": false,
+          "prompt_tokens_estimate": {
+            "generator_prompt_chars": 3153,
+            "evaluator_prompt_chars": 3326
+          }
+        }
+      ],
+      "final_state_document": {
+        "schema_version": "codexCv-state-v1",
+        "step_id": 1,
+        "loop_id": 1,
+        "blueprint": {
+          "entities": [],
+          "public_api": [],
+          "state_transitions": [],
+          "invariants": []
+        },
+        "delta": {
+          "changed": [],
+          "unchanged": [],
+          "removed": []
+        },
+        "risks": [
+          "Generator omitted the structured state document block."
+        ],
+        "grounding_notes": [
+          "Fallback state document was synthesized by the harness."
+        ]
+      },
+      "final_code": "<<STATE_DOCUMENT_JSON>>\n{\n  \"schema_version\": \"codexCv-state-v1\",\n  \"step_id\": 0,\n  \"loop_id\": 0,\n  \"blueprint\": {\n    \"entities\": [\"text\", \"start\", \"end\"],\n    \"public_api\": [\"extract_span(text, start, end, normalize_whitespace=False)\"],\n    \"state_transitions\": [],\n    \"invariants\": [\n      {\n        \"contract_id\": \"api_signature\",\n        \"type\": \"api\",\n        \"description\": \"The function signature remains unchanged.\",\n        \"rationale\": \"New formatting behavior should not introduce an API break.\"\n      },\n      {\n        \"contract_id\": \"inclusive_index_semantics\",\n        \"type\": \"semantic\",\n        \"description\": \"The `end` index remains inclusive.\",\n        \"rationale\": \"Adding convenience behavior should not silently change boundary semantics.\"\n      }\n    ]\n  },\n  \"delta"
+    },
+    {
+      "step_id": 2,
+      "request": "Extend `extract_span(text, start, end)` with optional trimming.\n\nRequirements:\n\n- Add an optional keyword argument `strip_result=False`.\n- If enabled, trim leading and trailing whitespace after extraction.\n- Preserve the original invalid-range behavior.\n- Preserve inclusive end-index semantics.\n\nReturn complete Python code only.\n",
+      "contracts_checked": [
+        "api_signature",
+        "inclusive_index_semantics",
+        "out_of_range_empty"
+      ],
+      "loops": [
+        {
+          "loop_id": 1,
+          "generator_raw": "<<STATE_DOCUMENT_JSON>>\n{\n  \"schema_version\": \"codexCv-state-v1\",\n  \"step_id\": 0,\n  \"loop_id\": 0,\n  \"blueprint\": {\n    \"entities\": [\"text\", \"start\", \"end\"],\n    \"public_api\": [\"extract_span(text, start, end, strip_result=False)\"],\n    \"state_transitions\": [],\n    \"invariants\": [\n      {\n        \"contract_id\": \"api_signature\",\n        \"type\": \"api\",\n        \"description\": \"The function signature remains unchanged.\",\n        \"rationale\": \"New formatting behavior should not introduce an API break.\"\n      },\n      {\n        \"contract_id\": \"inclusive_index_semantics\",\n        \"type\": \"semantic\",\n        \"description\": \"The `end` index remains inclusive.\",\n        \"rationale\": \"Adding convenience behavior should not silently change boundary semantics.\"\n      },\n      {\n        \"contract_id\":",
+          "state_document": {
+            "schema_version": "codexCv-state-v1",
+            "step_id": 2,
+            "loop_id": 1,
+            "blueprint": {
+              "entities": [],
+              "public_api": [],
+              "state_transitions": [],
+              "invariants": []
+            },
+            "delta": {
+              "changed": [],
+              "unchanged": [],
+              "removed": []
+            },
+            "risks": [
+              "Generator omitted the structured state document block."
+            ],
+            "grounding_notes": [
+              "Fallback state document was synthesized by the harness."
+            ]
+          },
+          "code": "<<STATE_DOCUMENT_JSON>>\n{\n  \"schema_version\": \"codexCv-state-v1\",\n  \"step_id\": 0,\n  \"loop_id\": 0,\n  \"blueprint\": {\n    \"entities\": [\"text\", \"start\", \"end\"],\n    \"public_api\": [\"extract_span(text, start, end, strip_result=False)\"],\n    \"state_transitions\": [],\n    \"invariants\": [\n      {\n        \"contract_id\": \"api_signature\",\n        \"type\": \"api\",\n        \"description\": \"The function signature remains unchanged.\",\n        \"rationale\": \"New formatting behavior should not introduce an API break.\"\n      },\n      {\n        \"contract_id\": \"inclusive_index_semantics\",\n        \"type\": \"semantic\",\n        \"description\": \"The `end` index remains inclusive.\",\n        \"rationale\": \"Adding convenience behavior should not silently change boundary semantics.\"\n      },\n      {\n        \"contract_id\":",
+          "automated_checks": {
+            "syntax_ok": false,
+            "syntax_error": "invalid syntax (<unknown>, line 1)",
+            "task_pass_rate": 0.0,
+            "contract_pass_rate": 0.0,
+            "task_test_results": [
+              {
+                "target": "tests/test_step2_task.py",
+                "status": "fail",
+                "details": "invalid syntax (<unknown>, line 1)"
+              }
+            ],
+            "contract_test_results": [
+              {
+                "target": "api_signature",
+                "status": "fail",
+                "details": "invalid syntax (<unknown>, line 1)"
+              },
+              {
+                "target": "inclusive_index_semantics",
+                "status": "fail",
+                "details": "invalid syntax (<unknown>, line 1)"
+              },
+              {
+                "target": "out_of_range_empty",
+                "status": "fail",
+                "details": "invalid syntax (<unknown>, line 1)"
+              }
+            ],
+            "static_probe_results": []
+          },
+          "evaluator_result": {
+            "task_success": 0,
+            "state_alignment": 0,
+            "contract_preservation": 0,
+            "severity": "fail",
+            "drift_detected": true,
+            "findings": [
+              {
+                "type": "unknown",
+                "severity": "critical",
+                "location": "code",
+                "message": "Invalid syntax detected in the provided code.",
+                "evidence": "invalid syntax (<unknown>, line 1)"
+              }
+            ],
+            "repair_priority": [
+              "Fix the invalid syntax in the provided code."
+            ],
+            "summary": "The provided code contains invalid syntax and cannot be evaluated further."
+          },
+          "refinement_triggered": false,
+          "prompt_tokens_estimate": {
+            "generator_prompt_chars": 3373,
+            "evaluator_prompt_chars": 3533
+          }
+        }
+      ],
+      "final_state_document": {
+        "schema_version": "codexCv-state-v1",
+        "step_id": 2,
+        "loop_id": 1,
+        "blueprint": {
+          "entities": [],
+          "public_api": [],
+          "state_transitions": [],
+          "invariants": []
+        },
+        "delta": {
+          "changed": [],
+          "unchanged": [],
+          "removed": []
+        },
+        "risks": [
+          "Generator omitted the structured state document block."
+        ],
+        "grounding_notes": [
+          "Fallback state document was synthesized by the harness."
+        ]
+      },
+      "final_code": "<<STATE_DOCUMENT_JSON>>\n{\n  \"schema_version\": \"codexCv-state-v1\",\n  \"step_id\": 0,\n  \"loop_id\": 0,\n  \"blueprint\": {\n    \"entities\": [\"text\", \"start\", \"end\"],\n    \"public_api\": [\"extract_span(text, start, end, strip_result=False)\"],\n    \"state_transitions\": [],\n    \"invariants\": [\n      {\n        \"contract_id\": \"api_signature\",\n        \"type\": \"api\",\n        \"description\": \"The function signature remains unchanged.\",\n        \"rationale\": \"New formatting behavior should not introduce an API break.\"\n      },\n      {\n        \"contract_id\": \"inclusive_index_semantics\",\n        \"type\": \"semantic\",\n        \"description\": \"The `end` index remains inclusive.\",\n        \"rationale\": \"Adding convenience behavior should not silently change boundary semantics.\"\n      },\n      {\n        \"contract_id\":"
+    }
+  ],
+  "metrics": {
+    "drift_rate": 1.0,
+    "recovery_success": 0.0,
+    "token_efficiency": 0.0,
+    "asl": 2,
+    "first_drift_step": 0,
+    "false_state_rate": 0.0,
+    "stale_state_rate": 0.0,
+    "task_drift_decoupling_rate": 0.0
+  }
+}
